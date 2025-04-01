@@ -1,0 +1,4871 @@
+[
+  {
+    "timestamp": "2025-03-31T17:16:35.503731",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/BigAddition.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/BigAddition.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.505504",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Addition.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Addition.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.507385",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Util.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Util.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.509348",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Multiplication.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Multiplication.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.515938",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/GameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/GameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.521127",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Enemy.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Enemy.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.529917",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/World.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/World.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.532090",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/BigMultiplication.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/BigMultiplication.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.534595",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Subtraction.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Subtraction.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.538029",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Player.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Player.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.540818",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/MathHero.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/MathHero.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.544869",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Level.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Level.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.548904",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Division.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/Division.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.557968",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/ListeningGameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/MathHero/src/ListeningGameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.566346",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Tetris/src/TetrisBlock.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Tetris/src/TetrisBlock.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.573249",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Tetris/src/TetrisComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Tetris/src/TetrisComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.578232",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Tetris/src/PlayTetris.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Tetris/src/PlayTetris.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.587451",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Tetris/src/TetrisGrid.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Tetris/src/TetrisGrid.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.591112",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Tetris/src/BlockGrid.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Tetris/src/BlockGrid.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.597858",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Craps/src/CrapsComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Craps/src/CrapsComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.603563",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Craps/src/CrapsGame.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Craps/src/CrapsGame.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.607380",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Craps/src/CrapsState.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Craps/src/CrapsState.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.611261",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Craps/src/PlayCraps.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Craps/src/PlayCraps.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.615102",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Craps/src/Dice.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Craps/src/Dice.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.618585",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Craps/src/CrapsEngine.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Craps/src/CrapsEngine.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.627000",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/GameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/GameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.630389",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/MakeGame.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/MakeGame.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.638838",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/Pong.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/Pong.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.640379",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/Paddle.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/Paddle.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.644755",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/PongUpdate.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/PongUpdate.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.650776",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/Ball.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/Ball.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.654445",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/JoinGame.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/JoinGame.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.660896",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/ListeningGameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/PongServer/src/ListeningGameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.671414",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/Play.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/Play.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.673782",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/Planet.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/Planet.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.683056",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/Field.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/Field.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.688370",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/Goal.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/Goal.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.696945",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/Comet.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/Comet.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.702615",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/GravitySoccer.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/GravitySoccer.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.706262",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/Direction.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/Direction.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.712958",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/gameutil/GameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/gameutil/GameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.722219",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/gameutil/ListeningGameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/gameutil/ListeningGameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.727956",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/gameutil/ImageLoader.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Comet/src/gameutil/ImageLoader.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.733548",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Pong/src/PongComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Pong/src/PongComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.736069",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Pong/src/PlayPong.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Pong/src/PlayPong.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.739791",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Pong/src/Paddle.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Pong/src/Paddle.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.744695",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Pong/src/PongEnvironment.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Pong/src/PongEnvironment.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.752084",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Pong/src/Ball.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Pong/src/Ball.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.759535",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/Blackjack.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/Blackjack.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.765998",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/Card.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/Card.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.772465",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/BlackjackHand.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/BlackjackHand.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.779353",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/Deck.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/Deck.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.787705",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/ioutil/WavePlayer.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/ioutil/WavePlayer.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.795274",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/ioutil/SerializableImage.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/ioutil/SerializableImage.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.807164",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/ioutil/FileEncrypter.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/ioutil/FileEncrypter.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.815484",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/ioutil/ImageSaver.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/ioutil/ImageSaver.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.819196",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/ioutil/IOable.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/ioutil/IOable.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.827543",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/ioutil/AePlayWave.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/ioutil/AePlayWave.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.831628",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/gameutil/GameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/gameutil/GameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.838380",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/gameutil/ListeningGameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/gameutil/ListeningGameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.844736",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/gameutil/ImageLoader.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Blackjack/src/gameutil/ImageLoader.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.849676",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/Cronometro.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/Cronometro.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.851592",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/Frogger.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/Frogger.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.858607",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/FroggerLevelEngine.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/FroggerLevelEngine.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.862610",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/Frog.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/Frog.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.864548",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/FroggerState.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/FroggerState.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.873721",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/TrafficPattern.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/TrafficPattern.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.875148",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/FroggerLevel.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/FroggerLevel.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.881217",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/PlayFrogger.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/PlayFrogger.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.884328",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/Car.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/Car.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.901934",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/FroggerComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Frogger/src/FroggerComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.907414",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Catch/src/CatchEngine.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Catch/src/CatchEngine.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.913313",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Catch/src/CatchComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Catch/src/CatchComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.917636",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Catch/src/PlayCatch.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Catch/src/PlayCatch.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.923377",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Catch/src/Ball.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Catch/src/Ball.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.928772",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Catch/src/Bucket.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/Catch/src/Bucket.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.933293",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/FallDown/src/PlayFallDown.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/FallDown/src/PlayFallDown.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.939200",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/FallDown/src/Ball.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/FallDown/src/Ball.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.944657",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/FallDown/src/Brick.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/FallDown/src/Brick.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.950425",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/FallDown/src/FallDownComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/FallDown/src/FallDownComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.958352",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/FallDown/src/FallDownEngine.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpmmyr2pnb/Java-Games-master/FallDown/src/FallDownEngine.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:49.963605",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/RegularDecoder.py",
+    "results": {
+      "file_size": 4545,
+      "line_count": 131,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 5,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch",
+        "GlobalAttention",
+        "torch.autograd",
+        "Beam",
+        "decoders"
+      ],
+      "complexity": 14,
+      "maintainability": {
+        "score": 59.308520248232895,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 90,
+        "issues": [
+          "Consider using enumerate() instead of range(len()) at line 126"
+        ]
+      },
+      "non_empty_lines": 108,
+      "comment_lines": 8,
+      "comment_ratio": 0.07407407407407407,
+      "avg_line_length": 40.870370370370374,
+      "max_line_length": 131
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:49.975372",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/build.py",
+    "results": {
+      "file_size": 5932,
+      "line_count": 157,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 2,
+      "class_count": 0,
+      "imports": [
+        "json",
+        "argparse",
+        "collections",
+        "Tree",
+        "os",
+        "pdb",
+        "pdb"
+      ],
+      "complexity": 37,
+      "maintainability": {
+        "score": 41.4163542808521,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 128,
+      "comment_lines": 5,
+      "comment_ratio": 0.0390625,
+      "avg_line_length": 45.1171875,
+      "max_line_length": 269
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:49.980260",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/Tree.py",
+    "results": {
+      "file_size": 1309,
+      "line_count": 50,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 3,
+      "class_count": 0,
+      "imports": [
+        "antlr4",
+        "java.JavaLexer",
+        "java.JavaParserModified",
+        "queue"
+      ],
+      "complexity": 7,
+      "maintainability": {
+        "score": 72.03428674174987,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 42,
+      "comment_lines": 4,
+      "comment_ratio": 0.09523809523809523,
+      "avg_line_length": 29.976190476190474,
+      "max_line_length": 63
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:49.985296",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/translate.py",
+    "results": {
+      "file_size": 2537,
+      "line_count": 60,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 1,
+      "class_count": 0,
+      "imports": [
+        "argparse",
+        "preprocess",
+        "torch",
+        "S2SModel",
+        "sys"
+      ],
+      "complexity": 4,
+      "maintainability": {
+        "score": 65.83154459816383,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 52,
+      "comment_lines": 0,
+      "comment_ratio": 0.0,
+      "avg_line_length": 47.63461538461539,
+      "max_line_length": 172
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.023018",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/preprocess.py",
+    "results": {
+      "file_size": 23599,
+      "line_count": 503,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 26,
+      "class_count": 3,
+      "imports": [
+        "argparse",
+        "torch",
+        "collections",
+        "random",
+        "re",
+        "json",
+        "time",
+        "numpy",
+        "ipdb"
+      ],
+      "complexity": 92,
+      "maintainability": {
+        "score": 14.912732483063074,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [
+        "Long method detected: make_batch_into_tensor"
+      ],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 426,
+      "comment_lines": 30,
+      "comment_ratio": 0.07042253521126761,
+      "avg_line_length": 54.21596244131455,
+      "max_line_length": 196
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.028734",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/decoders.py",
+    "results": {
+      "file_size": 2157,
+      "line_count": 60,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 7,
+      "class_count": 2,
+      "imports": [
+        "torch.autograd"
+      ],
+      "complexity": 2,
+      "maintainability": {
+        "score": 68.46049230726852,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 49,
+      "comment_lines": 5,
+      "comment_ratio": 0.10204081632653061,
+      "avg_line_length": 42.795918367346935,
+      "max_line_length": 141
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.037758",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/UtilClass.py",
+    "results": {
+      "file_size": 4076,
+      "line_count": 105,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 10,
+      "class_count": 8,
+      "imports": [
+        "torch",
+        "torch.nn",
+        "allennlp.modules.seq2vec_encoders",
+        "allennlp.nn.util",
+        "torch.nn.utils.rnn",
+        "torch.nn.utils.rnn"
+      ],
+      "complexity": 9,
+      "maintainability": {
+        "score": 56.17557160817436,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 84,
+      "comment_lines": 3,
+      "comment_ratio": 0.03571428571428571,
+      "avg_line_length": 47.273809523809526,
+      "max_line_length": 123
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.041770",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/RegularEncoder.py",
+    "results": {
+      "file_size": 1084,
+      "line_count": 31,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 2,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch.autograd",
+        "UtilClass"
+      ],
+      "complexity": 1,
+      "maintainability": {
+        "score": 67.87967487402553,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 26,
+      "comment_lines": 0,
+      "comment_ratio": 0.0,
+      "avg_line_length": 40.5,
+      "max_line_length": 83
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.059262",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/CopyGenerator.py",
+    "results": {
+      "file_size": 11344,
+      "line_count": 264,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 14,
+      "class_count": 4,
+      "imports": [
+        "torch.nn",
+        "torch.nn.functional",
+        "torch",
+        "torch.autograd",
+        "UtilClass"
+      ],
+      "complexity": 13,
+      "maintainability": {
+        "score": 53.24472243819193,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 220,
+      "comment_lines": 22,
+      "comment_ratio": 0.1,
+      "avg_line_length": 50.36363636363637,
+      "max_line_length": 140
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.066017",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/S2SModel.py",
+    "results": {
+      "file_size": 3212,
+      "line_count": 85,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 3,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch.autograd",
+        "torch.nn",
+        "Statistics",
+        "UtilClass",
+        "Beam",
+        "CopyGenerator",
+        "RegularDecoder",
+        "ProdDecoder",
+        "RegularEncoder",
+        "ConcodeEncoder",
+        "ConcodeDecoder",
+        "decoders"
+      ],
+      "complexity": 11,
+      "maintainability": {
+        "score": 61.24871567254013,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 67,
+      "comment_lines": 5,
+      "comment_ratio": 0.07462686567164178,
+      "avg_line_length": 46.67164179104478,
+      "max_line_length": 160
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.074247",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/train.py",
+    "results": {
+      "file_size": 5813,
+      "line_count": 138,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 1,
+      "class_count": 0,
+      "imports": [
+        "random",
+        "argparse",
+        "torch",
+        "torch",
+        "torch.nn",
+        "preprocess",
+        "S2SModel",
+        "Trainer",
+        "os",
+        "numpy"
+      ],
+      "complexity": 5,
+      "maintainability": {
+        "score": 55.28407651731624,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [
+        "Long method detected: main"
+      ],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 122,
+      "comment_lines": 3,
+      "comment_ratio": 0.02459016393442623,
+      "avg_line_length": 46.51639344262295,
+      "max_line_length": 95
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.085763",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/ProdDecoder.py",
+    "results": {
+      "file_size": 6955,
+      "line_count": 185,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 6,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch",
+        "GlobalAttention",
+        "torch.autograd",
+        "Beam",
+        "UtilClass",
+        "preprocess",
+        "decoders"
+      ],
+      "complexity": 23,
+      "maintainability": {
+        "score": 59.152419868350584,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 90,
+        "issues": [
+          "Consider using enumerate() instead of range(len()) at line 180"
+        ]
+      },
+      "non_empty_lines": 151,
+      "comment_lines": 15,
+      "comment_ratio": 0.09933774834437085,
+      "avg_line_length": 44.83443708609271,
+      "max_line_length": 145
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.095706",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/ConcodeEncoder.py",
+    "results": {
+      "file_size": 5358,
+      "line_count": 116,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 2,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch",
+        "torch.autograd",
+        "UtilClass"
+      ],
+      "complexity": 7,
+      "maintainability": {
+        "score": 53.94650381554498,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 93,
+      "comment_lines": 1,
+      "comment_ratio": 0.010752688172043012,
+      "avg_line_length": 56.365591397849464,
+      "max_line_length": 214
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.099862",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/Statistics.py",
+    "results": {
+      "file_size": 1316,
+      "line_count": 43,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 7,
+      "class_count": 1,
+      "imports": [
+        "time",
+        "math",
+        "sys"
+      ],
+      "complexity": 1,
+      "maintainability": {
+        "score": 68.66183258347662,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 36,
+      "comment_lines": 0,
+      "comment_ratio": 0.0,
+      "avg_line_length": 35.361111111111114,
+      "max_line_length": 95
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.107526",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/Trainer.py",
+    "results": {
+      "file_size": 3875,
+      "line_count": 99,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 4,
+      "class_count": 1,
+      "imports": [
+        "Statistics",
+        "torch",
+        "torch.optim",
+        "torch.nn.utils",
+        "torch.nn",
+        "time"
+      ],
+      "complexity": 11,
+      "maintainability": {
+        "score": 39.82809515214872,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 80,
+      "comment_lines": 0,
+      "comment_ratio": 0.0,
+      "avg_line_length": 47.2,
+      "max_line_length": 217
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.121240",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/ConcodeDecoder.py",
+    "results": {
+      "file_size": 8780,
+      "line_count": 238,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 6,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch",
+        "GlobalAttention",
+        "torch.autograd",
+        "Beam",
+        "UtilClass",
+        "preprocess",
+        "decoders",
+        "torch.nn.functional"
+      ],
+      "complexity": 27,
+      "maintainability": {
+        "score": 52.19335131605283,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 90,
+        "issues": [
+          "Consider using enumerate() instead of range(len()) at line 232"
+        ]
+      },
+      "non_empty_lines": 187,
+      "comment_lines": 15,
+      "comment_ratio": 0.08021390374331551,
+      "avg_line_length": 45.67914438502674,
+      "max_line_length": 145
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.137240",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/Beam.py",
+    "results": {
+      "file_size": 10002,
+      "line_count": 272,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 14,
+      "class_count": 2,
+      "imports": [
+        "torch",
+        "preprocess",
+        "torch.autograd",
+        "copy"
+      ],
+      "complexity": 30,
+      "maintainability": {
+        "score": 52.40466119635222,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 220,
+      "comment_lines": 41,
+      "comment_ratio": 0.18636363636363637,
+      "avg_line_length": 44.22727272727273,
+      "max_line_length": 191
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.150807",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/GlobalAttention.py",
+    "results": {
+      "file_size": 7240,
+      "line_count": 212,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 6,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch.nn",
+        "UtilClass"
+      ],
+      "complexity": 14,
+      "maintainability": {
+        "score": 62.944427781729864,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 174,
+      "comment_lines": 17,
+      "comment_ratio": 0.09770114942528736,
+      "avg_line_length": 40.39080459770115,
+      "max_line_length": 81
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.158309",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/tools/exact.py",
+    "results": {
+      "file_size": 208,
+      "line_count": 16,
+      "file_type": "text/plain",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 0,
+      "class_count": 0,
+      "imports": [
+        "sys"
+      ],
+      "complexity": 3,
+      "maintainability": {
+        "score": 64.8704638343316,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 11,
+      "comment_lines": 0,
+      "comment_ratio": 0.0,
+      "avg_line_length": 17.454545454545453,
+      "max_line_length": 31
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.192760",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/java/JavaLexer.py",
+    "results": {
+      "file_size": 39389,
+      "line_count": 624,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 2,
+      "class_count": 1,
+      "imports": [
+        "antlr4",
+        "io"
+      ],
+      "complexity": 2,
+      "maintainability": {
+        "score": 100.0,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 608,
+      "comment_lines": 1,
+      "comment_ratio": 0.001644736842105263,
+      "avg_line_length": 63.75822368421053,
+      "max_line_length": 103
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.207436",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/java/process_grammar.py",
+    "results": {
+      "file_size": 4202,
+      "line_count": 152,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 1,
+      "class_count": 0,
+      "imports": [],
+      "complexity": 38,
+      "maintainability": {
+        "score": 52.70688766972186,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [
+        "Deep nesting detected at line 21",
+        "Deep nesting detected at line 68",
+        "Deep nesting detected at line 105",
+        "Deep nesting detected at line 26"
+      ],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 123,
+      "comment_lines": 15,
+      "comment_ratio": 0.12195121951219512,
+      "avg_line_length": 32.926829268292686,
+      "max_line_length": 94
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:50.948117",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/java/JavaParserModified.py",
+    "results": {
+      "file_size": 656343,
+      "line_count": 17330,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 1702,
+      "class_count": 226,
+      "imports": [
+        "antlr4",
+        "io",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors"
+      ],
+      "complexity": 1438,
+      "maintainability": {
+        "score": 0.0,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [
+        "Long method detected: sempred",
+        "Deep nesting detected at line 1842",
+        "Deep nesting detected at line 2443",
+        "Deep nesting detected at line 2691",
+        "Deep nesting detected at line 3232",
+        "Deep nesting detected at line 3642",
+        "Deep nesting detected at line 4195",
+        "Deep nesting detected at line 4950",
+        "Deep nesting detected at line 5437",
+        "Deep nesting detected at line 5613",
+        "Deep nesting detected at line 7205",
+        "Deep nesting detected at line 8655",
+        "Deep nesting detected at line 9533",
+        "Deep nesting detected at line 10536",
+        "Deep nesting detected at line 10977",
+        "Deep nesting detected at line 11625",
+        "Deep nesting detected at line 11701",
+        "Deep nesting detected at line 12355",
+        "Deep nesting detected at line 12502",
+        "Deep nesting detected at line 13102",
+        "Deep nesting detected at line 1848",
+        "Deep nesting detected at line 2448",
+        "Deep nesting detected at line 2701",
+        "Deep nesting detected at line 3244",
+        "Deep nesting detected at line 3648",
+        "Deep nesting detected at line 4201",
+        "Deep nesting detected at line 4956",
+        "Deep nesting detected at line 5449",
+        "Deep nesting detected at line 8665",
+        "Deep nesting detected at line 9539",
+        "Deep nesting detected at line 10542",
+        "Deep nesting detected at line 11630",
+        "Deep nesting detected at line 11702",
+        "Deep nesting detected at line 12365",
+        "Deep nesting detected at line 12508",
+        "Deep nesting detected at line 1856",
+        "Deep nesting detected at line 2453",
+        "Deep nesting detected at line 2713",
+        "Deep nesting detected at line 3258",
+        "Deep nesting detected at line 3656",
+        "Deep nesting detected at line 4207",
+        "Deep nesting detected at line 5463",
+        "Deep nesting detected at line 8671",
+        "Deep nesting detected at line 9549",
+        "Deep nesting detected at line 10550",
+        "Deep nesting detected at line 11637",
+        "Deep nesting detected at line 11709",
+        "Deep nesting detected at line 12516",
+        "Deep nesting detected at line 3272",
+        "Deep nesting detected at line 4213",
+        "Deep nesting detected at line 8679",
+        "Deep nesting detected at line 9561",
+        "Deep nesting detected at line 10560",
+        "Deep nesting detected at line 11648",
+        "Deep nesting detected at line 11722",
+        "Deep nesting detected at line 3288",
+        "Deep nesting detected at line 9571",
+        "Deep nesting detected at line 11735",
+        "Deep nesting detected at line 3302",
+        "Deep nesting detected at line 9583",
+        "Deep nesting detected at line 11748",
+        "Deep nesting detected at line 3318",
+        "Deep nesting detected at line 9597",
+        "Deep nesting detected at line 11761",
+        "Deep nesting detected at line 3334",
+        "Deep nesting detected at line 9607",
+        "Deep nesting detected at line 11774",
+        "Deep nesting detected at line 3352",
+        "Deep nesting detected at line 9621",
+        "Deep nesting detected at line 11787",
+        "Deep nesting detected at line 3366",
+        "Deep nesting detected at line 9631",
+        "Deep nesting detected at line 11800",
+        "Deep nesting detected at line 3382",
+        "Deep nesting detected at line 9641",
+        "Deep nesting detected at line 11813",
+        "Deep nesting detected at line 9653",
+        "Deep nesting detected at line 11826",
+        "Deep nesting detected at line 9665",
+        "Deep nesting detected at line 11839",
+        "Deep nesting detected at line 9679",
+        "Deep nesting detected at line 11856",
+        "Deep nesting detected at line 9691",
+        "Deep nesting detected at line 11869",
+        "Deep nesting detected at line 9705",
+        "Deep nesting detected at line 11882",
+        "Deep nesting detected at line 9719",
+        "Deep nesting detected at line 11897",
+        "Deep nesting detected at line 9735",
+        "Deep nesting detected at line 11910",
+        "Deep nesting detected at line 9745",
+        "Deep nesting detected at line 9753",
+        "Deep nesting detected at line 9763",
+        "Deep nesting detected at line 9773",
+        "Deep nesting detected at line 9781"
+      ],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 13537,
+      "comment_lines": 2,
+      "comment_ratio": 0.0001477432222796779,
+      "avg_line_length": 47.16340400384132,
+      "max_line_length": 925
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:51.589007",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/java/JavaParser.py",
+    "results": {
+      "file_size": 547472,
+      "line_count": 14486,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 1591,
+      "class_count": 202,
+      "imports": [
+        "antlr4",
+        "io",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors"
+      ],
+      "complexity": 1214,
+      "maintainability": {
+        "score": 0.0,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [
+        "Long method detected: expression_sempred",
+        "Deep nesting detected at line 5806",
+        "Deep nesting detected at line 6918",
+        "Deep nesting detected at line 7545",
+        "Deep nesting detected at line 7959",
+        "Deep nesting detected at line 9014",
+        "Deep nesting detected at line 9767",
+        "Deep nesting detected at line 10509",
+        "Deep nesting detected at line 11976",
+        "Deep nesting detected at line 12097",
+        "Deep nesting detected at line 12975",
+        "Deep nesting detected at line 13998",
+        "Deep nesting detected at line 5811",
+        "Deep nesting detected at line 6924",
+        "Deep nesting detected at line 7551",
+        "Deep nesting detected at line 10515",
+        "Deep nesting detected at line 11981",
+        "Deep nesting detected at line 12098",
+        "Deep nesting detected at line 12985",
+        "Deep nesting detected at line 14003",
+        "Deep nesting detected at line 5816",
+        "Deep nesting detected at line 6930",
+        "Deep nesting detected at line 10535",
+        "Deep nesting detected at line 11988",
+        "Deep nesting detected at line 12105",
+        "Deep nesting detected at line 12991",
+        "Deep nesting detected at line 14008",
+        "Deep nesting detected at line 6936",
+        "Deep nesting detected at line 10555",
+        "Deep nesting detected at line 11999",
+        "Deep nesting detected at line 12118",
+        "Deep nesting detected at line 12997",
+        "Deep nesting detected at line 10569",
+        "Deep nesting detected at line 12006",
+        "Deep nesting detected at line 12131",
+        "Deep nesting detected at line 10579",
+        "Deep nesting detected at line 12013",
+        "Deep nesting detected at line 12144",
+        "Deep nesting detected at line 10593",
+        "Deep nesting detected at line 12020",
+        "Deep nesting detected at line 12157",
+        "Deep nesting detected at line 10633",
+        "Deep nesting detected at line 12027",
+        "Deep nesting detected at line 12170",
+        "Deep nesting detected at line 10661",
+        "Deep nesting detected at line 12208",
+        "Deep nesting detected at line 10694",
+        "Deep nesting detected at line 12221",
+        "Deep nesting detected at line 10704",
+        "Deep nesting detected at line 12234",
+        "Deep nesting detected at line 10720",
+        "Deep nesting detected at line 12247",
+        "Deep nesting detected at line 12260",
+        "Deep nesting detected at line 12273",
+        "Deep nesting detected at line 12286",
+        "Deep nesting detected at line 12299",
+        "Deep nesting detected at line 12312",
+        "Deep nesting detected at line 12325",
+        "Deep nesting detected at line 12338",
+        "Deep nesting detected at line 12351",
+        "Deep nesting detected at line 12368",
+        "Deep nesting detected at line 12381",
+        "Deep nesting detected at line 12394",
+        "Deep nesting detected at line 12407",
+        "Deep nesting detected at line 12420",
+        "Deep nesting detected at line 12433",
+        "Deep nesting detected at line 12446",
+        "Deep nesting detected at line 12459",
+        "Deep nesting detected at line 12472",
+        "Deep nesting detected at line 12485",
+        "Deep nesting detected at line 12498",
+        "Deep nesting detected at line 12511",
+        "Deep nesting detected at line 12524",
+        "Deep nesting detected at line 12573",
+        "Deep nesting detected at line 12588"
+      ],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 10971,
+      "comment_lines": 2,
+      "comment_ratio": 0.0001822987877130617,
+      "avg_line_length": 48.548628201622456,
+      "max_line_length": 1723
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:51.629572",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/java/JavaParserModifiedListener.py",
+    "results": {
+      "file_size": 71297,
+      "line_count": 2035,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 450,
+      "class_count": 1,
+      "imports": [
+        "antlr4",
+        "JavaParserModified",
+        "JavaParserModified"
+      ],
+      "complexity": 3,
+      "maintainability": {
+        "score": 0.0,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 1358,
+      "comment_lines": 452,
+      "comment_ratio": 0.3328424153166421,
+      "avg_line_length": 51.00294550810015,
+      "max_line_length": 118
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:16:51.666150",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmpa30rzzx2/concode-master/java/JavaParserListener.py",
+    "results": {
+      "file_size": 59343,
+      "line_count": 1819,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 402,
+      "class_count": 1,
+      "imports": [
+        "antlr4",
+        "JavaParser",
+        "JavaParser"
+      ],
+      "complexity": 3,
+      "maintainability": {
+        "score": 1.129511811104958,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 1214,
+      "comment_lines": 404,
+      "comment_ratio": 0.33278418451400327,
+      "avg_line_length": 47.3838550247117,
+      "max_line_length": 110
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.190995",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/RegularDecoder.py",
+    "results": {
+      "file_size": 4545,
+      "line_count": 131,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 5,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch",
+        "GlobalAttention",
+        "torch.autograd",
+        "Beam",
+        "decoders"
+      ],
+      "complexity": 14,
+      "maintainability": {
+        "score": 59.308520248232895,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 90,
+        "issues": [
+          "Consider using enumerate() instead of range(len()) at line 126"
+        ]
+      },
+      "non_empty_lines": 108,
+      "comment_lines": 8,
+      "comment_ratio": 0.07407407407407407,
+      "avg_line_length": 40.870370370370374,
+      "max_line_length": 131
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.204509",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/build.py",
+    "results": {
+      "file_size": 5932,
+      "line_count": 157,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 2,
+      "class_count": 0,
+      "imports": [
+        "json",
+        "argparse",
+        "collections",
+        "Tree",
+        "os",
+        "pdb",
+        "pdb"
+      ],
+      "complexity": 37,
+      "maintainability": {
+        "score": 41.4163542808521,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 128,
+      "comment_lines": 5,
+      "comment_ratio": 0.0390625,
+      "avg_line_length": 45.1171875,
+      "max_line_length": 269
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.209520",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/Tree.py",
+    "results": {
+      "file_size": 1309,
+      "line_count": 50,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 3,
+      "class_count": 0,
+      "imports": [
+        "antlr4",
+        "java.JavaLexer",
+        "java.JavaParserModified",
+        "queue"
+      ],
+      "complexity": 7,
+      "maintainability": {
+        "score": 72.03428674174987,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 42,
+      "comment_lines": 4,
+      "comment_ratio": 0.09523809523809523,
+      "avg_line_length": 29.976190476190474,
+      "max_line_length": 63
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.215120",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/translate.py",
+    "results": {
+      "file_size": 2537,
+      "line_count": 60,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 1,
+      "class_count": 0,
+      "imports": [
+        "argparse",
+        "preprocess",
+        "torch",
+        "S2SModel",
+        "sys"
+      ],
+      "complexity": 4,
+      "maintainability": {
+        "score": 65.83154459816383,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 52,
+      "comment_lines": 0,
+      "comment_ratio": 0.0,
+      "avg_line_length": 47.63461538461539,
+      "max_line_length": 172
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.253027",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/preprocess.py",
+    "results": {
+      "file_size": 23599,
+      "line_count": 503,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 26,
+      "class_count": 3,
+      "imports": [
+        "argparse",
+        "torch",
+        "collections",
+        "random",
+        "re",
+        "json",
+        "time",
+        "numpy",
+        "ipdb"
+      ],
+      "complexity": 92,
+      "maintainability": {
+        "score": 14.912732483063074,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [
+        "Long method detected: make_batch_into_tensor"
+      ],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 426,
+      "comment_lines": 30,
+      "comment_ratio": 0.07042253521126761,
+      "avg_line_length": 54.21596244131455,
+      "max_line_length": 196
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.259083",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/decoders.py",
+    "results": {
+      "file_size": 2157,
+      "line_count": 60,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 7,
+      "class_count": 2,
+      "imports": [
+        "torch.autograd"
+      ],
+      "complexity": 2,
+      "maintainability": {
+        "score": 68.46049230726852,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 49,
+      "comment_lines": 5,
+      "comment_ratio": 0.10204081632653061,
+      "avg_line_length": 42.795918367346935,
+      "max_line_length": 141
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.268385",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/UtilClass.py",
+    "results": {
+      "file_size": 4076,
+      "line_count": 105,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 10,
+      "class_count": 8,
+      "imports": [
+        "torch",
+        "torch.nn",
+        "allennlp.modules.seq2vec_encoders",
+        "allennlp.nn.util",
+        "torch.nn.utils.rnn",
+        "torch.nn.utils.rnn"
+      ],
+      "complexity": 9,
+      "maintainability": {
+        "score": 56.17557160817436,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 84,
+      "comment_lines": 3,
+      "comment_ratio": 0.03571428571428571,
+      "avg_line_length": 47.273809523809526,
+      "max_line_length": 123
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.272787",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/RegularEncoder.py",
+    "results": {
+      "file_size": 1084,
+      "line_count": 31,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 2,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch.autograd",
+        "UtilClass"
+      ],
+      "complexity": 1,
+      "maintainability": {
+        "score": 67.87967487402553,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 26,
+      "comment_lines": 0,
+      "comment_ratio": 0.0,
+      "avg_line_length": 40.5,
+      "max_line_length": 83
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.290558",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/CopyGenerator.py",
+    "results": {
+      "file_size": 11344,
+      "line_count": 264,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 14,
+      "class_count": 4,
+      "imports": [
+        "torch.nn",
+        "torch.nn.functional",
+        "torch",
+        "torch.autograd",
+        "UtilClass"
+      ],
+      "complexity": 13,
+      "maintainability": {
+        "score": 53.24472243819193,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 220,
+      "comment_lines": 22,
+      "comment_ratio": 0.1,
+      "avg_line_length": 50.36363636363637,
+      "max_line_length": 140
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.297285",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/S2SModel.py",
+    "results": {
+      "file_size": 3212,
+      "line_count": 85,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 3,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch.autograd",
+        "torch.nn",
+        "Statistics",
+        "UtilClass",
+        "Beam",
+        "CopyGenerator",
+        "RegularDecoder",
+        "ProdDecoder",
+        "RegularEncoder",
+        "ConcodeEncoder",
+        "ConcodeDecoder",
+        "decoders"
+      ],
+      "complexity": 11,
+      "maintainability": {
+        "score": 61.24871567254013,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 67,
+      "comment_lines": 5,
+      "comment_ratio": 0.07462686567164178,
+      "avg_line_length": 46.67164179104478,
+      "max_line_length": 160
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.305573",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/train.py",
+    "results": {
+      "file_size": 5813,
+      "line_count": 138,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 1,
+      "class_count": 0,
+      "imports": [
+        "random",
+        "argparse",
+        "torch",
+        "torch",
+        "torch.nn",
+        "preprocess",
+        "S2SModel",
+        "Trainer",
+        "os",
+        "numpy"
+      ],
+      "complexity": 5,
+      "maintainability": {
+        "score": 55.28407651731624,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [
+        "Long method detected: main"
+      ],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 122,
+      "comment_lines": 3,
+      "comment_ratio": 0.02459016393442623,
+      "avg_line_length": 46.51639344262295,
+      "max_line_length": 95
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.318081",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/ProdDecoder.py",
+    "results": {
+      "file_size": 6955,
+      "line_count": 185,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 6,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch",
+        "GlobalAttention",
+        "torch.autograd",
+        "Beam",
+        "UtilClass",
+        "preprocess",
+        "decoders"
+      ],
+      "complexity": 23,
+      "maintainability": {
+        "score": 59.152419868350584,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 90,
+        "issues": [
+          "Consider using enumerate() instead of range(len()) at line 180"
+        ]
+      },
+      "non_empty_lines": 151,
+      "comment_lines": 15,
+      "comment_ratio": 0.09933774834437085,
+      "avg_line_length": 44.83443708609271,
+      "max_line_length": 145
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.329379",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/ConcodeEncoder.py",
+    "results": {
+      "file_size": 5358,
+      "line_count": 116,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 2,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch",
+        "torch.autograd",
+        "UtilClass"
+      ],
+      "complexity": 7,
+      "maintainability": {
+        "score": 53.94650381554498,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 93,
+      "comment_lines": 1,
+      "comment_ratio": 0.010752688172043012,
+      "avg_line_length": 56.365591397849464,
+      "max_line_length": 214
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.334252",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/Statistics.py",
+    "results": {
+      "file_size": 1316,
+      "line_count": 43,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 7,
+      "class_count": 1,
+      "imports": [
+        "time",
+        "math",
+        "sys"
+      ],
+      "complexity": 1,
+      "maintainability": {
+        "score": 68.66183258347662,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 36,
+      "comment_lines": 0,
+      "comment_ratio": 0.0,
+      "avg_line_length": 35.361111111111114,
+      "max_line_length": 95
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.342805",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/Trainer.py",
+    "results": {
+      "file_size": 3875,
+      "line_count": 99,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 4,
+      "class_count": 1,
+      "imports": [
+        "Statistics",
+        "torch",
+        "torch.optim",
+        "torch.nn.utils",
+        "torch.nn",
+        "time"
+      ],
+      "complexity": 11,
+      "maintainability": {
+        "score": 39.82809515214872,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 80,
+      "comment_lines": 0,
+      "comment_ratio": 0.0,
+      "avg_line_length": 47.2,
+      "max_line_length": 217
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.357820",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/ConcodeDecoder.py",
+    "results": {
+      "file_size": 8780,
+      "line_count": 238,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 6,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch",
+        "GlobalAttention",
+        "torch.autograd",
+        "Beam",
+        "UtilClass",
+        "preprocess",
+        "decoders",
+        "torch.nn.functional"
+      ],
+      "complexity": 27,
+      "maintainability": {
+        "score": 52.19335131605283,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 90,
+        "issues": [
+          "Consider using enumerate() instead of range(len()) at line 232"
+        ]
+      },
+      "non_empty_lines": 187,
+      "comment_lines": 15,
+      "comment_ratio": 0.08021390374331551,
+      "avg_line_length": 45.67914438502674,
+      "max_line_length": 145
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.377679",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/Beam.py",
+    "results": {
+      "file_size": 10002,
+      "line_count": 272,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 14,
+      "class_count": 2,
+      "imports": [
+        "torch",
+        "preprocess",
+        "torch.autograd",
+        "copy"
+      ],
+      "complexity": 30,
+      "maintainability": {
+        "score": 52.40466119635222,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 220,
+      "comment_lines": 41,
+      "comment_ratio": 0.18636363636363637,
+      "avg_line_length": 44.22727272727273,
+      "max_line_length": 191
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.393239",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/GlobalAttention.py",
+    "results": {
+      "file_size": 7240,
+      "line_count": 212,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 6,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch.nn",
+        "UtilClass"
+      ],
+      "complexity": 14,
+      "maintainability": {
+        "score": 62.944427781729864,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 174,
+      "comment_lines": 17,
+      "comment_ratio": 0.09770114942528736,
+      "avg_line_length": 40.39080459770115,
+      "max_line_length": 81
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.402925",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/tools/exact.py",
+    "results": {
+      "file_size": 208,
+      "line_count": 16,
+      "file_type": "text/plain",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 0,
+      "class_count": 0,
+      "imports": [
+        "sys"
+      ],
+      "complexity": 3,
+      "maintainability": {
+        "score": 64.8704638343316,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 11,
+      "comment_lines": 0,
+      "comment_ratio": 0.0,
+      "avg_line_length": 17.454545454545453,
+      "max_line_length": 31
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.440258",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/java/JavaLexer.py",
+    "results": {
+      "file_size": 39389,
+      "line_count": 624,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 2,
+      "class_count": 1,
+      "imports": [
+        "antlr4",
+        "io"
+      ],
+      "complexity": 2,
+      "maintainability": {
+        "score": 100.0,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 608,
+      "comment_lines": 1,
+      "comment_ratio": 0.001644736842105263,
+      "avg_line_length": 63.75822368421053,
+      "max_line_length": 103
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:07.456772",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/java/process_grammar.py",
+    "results": {
+      "file_size": 4202,
+      "line_count": 152,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 1,
+      "class_count": 0,
+      "imports": [],
+      "complexity": 38,
+      "maintainability": {
+        "score": 52.70688766972186,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [
+        "Deep nesting detected at line 21",
+        "Deep nesting detected at line 68",
+        "Deep nesting detected at line 105",
+        "Deep nesting detected at line 26"
+      ],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 123,
+      "comment_lines": 15,
+      "comment_ratio": 0.12195121951219512,
+      "avg_line_length": 32.926829268292686,
+      "max_line_length": 94
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:08.211367",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/java/JavaParserModified.py",
+    "results": {
+      "file_size": 656343,
+      "line_count": 17330,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 1702,
+      "class_count": 226,
+      "imports": [
+        "antlr4",
+        "io",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors"
+      ],
+      "complexity": 1438,
+      "maintainability": {
+        "score": 0.0,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [
+        "Long method detected: sempred",
+        "Deep nesting detected at line 1842",
+        "Deep nesting detected at line 2443",
+        "Deep nesting detected at line 2691",
+        "Deep nesting detected at line 3232",
+        "Deep nesting detected at line 3642",
+        "Deep nesting detected at line 4195",
+        "Deep nesting detected at line 4950",
+        "Deep nesting detected at line 5437",
+        "Deep nesting detected at line 5613",
+        "Deep nesting detected at line 7205",
+        "Deep nesting detected at line 8655",
+        "Deep nesting detected at line 9533",
+        "Deep nesting detected at line 10536",
+        "Deep nesting detected at line 10977",
+        "Deep nesting detected at line 11625",
+        "Deep nesting detected at line 11701",
+        "Deep nesting detected at line 12355",
+        "Deep nesting detected at line 12502",
+        "Deep nesting detected at line 13102",
+        "Deep nesting detected at line 1848",
+        "Deep nesting detected at line 2448",
+        "Deep nesting detected at line 2701",
+        "Deep nesting detected at line 3244",
+        "Deep nesting detected at line 3648",
+        "Deep nesting detected at line 4201",
+        "Deep nesting detected at line 4956",
+        "Deep nesting detected at line 5449",
+        "Deep nesting detected at line 8665",
+        "Deep nesting detected at line 9539",
+        "Deep nesting detected at line 10542",
+        "Deep nesting detected at line 11630",
+        "Deep nesting detected at line 11702",
+        "Deep nesting detected at line 12365",
+        "Deep nesting detected at line 12508",
+        "Deep nesting detected at line 1856",
+        "Deep nesting detected at line 2453",
+        "Deep nesting detected at line 2713",
+        "Deep nesting detected at line 3258",
+        "Deep nesting detected at line 3656",
+        "Deep nesting detected at line 4207",
+        "Deep nesting detected at line 5463",
+        "Deep nesting detected at line 8671",
+        "Deep nesting detected at line 9549",
+        "Deep nesting detected at line 10550",
+        "Deep nesting detected at line 11637",
+        "Deep nesting detected at line 11709",
+        "Deep nesting detected at line 12516",
+        "Deep nesting detected at line 3272",
+        "Deep nesting detected at line 4213",
+        "Deep nesting detected at line 8679",
+        "Deep nesting detected at line 9561",
+        "Deep nesting detected at line 10560",
+        "Deep nesting detected at line 11648",
+        "Deep nesting detected at line 11722",
+        "Deep nesting detected at line 3288",
+        "Deep nesting detected at line 9571",
+        "Deep nesting detected at line 11735",
+        "Deep nesting detected at line 3302",
+        "Deep nesting detected at line 9583",
+        "Deep nesting detected at line 11748",
+        "Deep nesting detected at line 3318",
+        "Deep nesting detected at line 9597",
+        "Deep nesting detected at line 11761",
+        "Deep nesting detected at line 3334",
+        "Deep nesting detected at line 9607",
+        "Deep nesting detected at line 11774",
+        "Deep nesting detected at line 3352",
+        "Deep nesting detected at line 9621",
+        "Deep nesting detected at line 11787",
+        "Deep nesting detected at line 3366",
+        "Deep nesting detected at line 9631",
+        "Deep nesting detected at line 11800",
+        "Deep nesting detected at line 3382",
+        "Deep nesting detected at line 9641",
+        "Deep nesting detected at line 11813",
+        "Deep nesting detected at line 9653",
+        "Deep nesting detected at line 11826",
+        "Deep nesting detected at line 9665",
+        "Deep nesting detected at line 11839",
+        "Deep nesting detected at line 9679",
+        "Deep nesting detected at line 11856",
+        "Deep nesting detected at line 9691",
+        "Deep nesting detected at line 11869",
+        "Deep nesting detected at line 9705",
+        "Deep nesting detected at line 11882",
+        "Deep nesting detected at line 9719",
+        "Deep nesting detected at line 11897",
+        "Deep nesting detected at line 9735",
+        "Deep nesting detected at line 11910",
+        "Deep nesting detected at line 9745",
+        "Deep nesting detected at line 9753",
+        "Deep nesting detected at line 9763",
+        "Deep nesting detected at line 9773",
+        "Deep nesting detected at line 9781"
+      ],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 13537,
+      "comment_lines": 2,
+      "comment_ratio": 0.0001477432222796779,
+      "avg_line_length": 47.16340400384132,
+      "max_line_length": 925
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:08.835521",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/java/JavaParser.py",
+    "results": {
+      "file_size": 547472,
+      "line_count": 14486,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 1591,
+      "class_count": 202,
+      "imports": [
+        "antlr4",
+        "io",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors"
+      ],
+      "complexity": 1214,
+      "maintainability": {
+        "score": 0.0,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [
+        "Long method detected: expression_sempred",
+        "Deep nesting detected at line 5806",
+        "Deep nesting detected at line 6918",
+        "Deep nesting detected at line 7545",
+        "Deep nesting detected at line 7959",
+        "Deep nesting detected at line 9014",
+        "Deep nesting detected at line 9767",
+        "Deep nesting detected at line 10509",
+        "Deep nesting detected at line 11976",
+        "Deep nesting detected at line 12097",
+        "Deep nesting detected at line 12975",
+        "Deep nesting detected at line 13998",
+        "Deep nesting detected at line 5811",
+        "Deep nesting detected at line 6924",
+        "Deep nesting detected at line 7551",
+        "Deep nesting detected at line 10515",
+        "Deep nesting detected at line 11981",
+        "Deep nesting detected at line 12098",
+        "Deep nesting detected at line 12985",
+        "Deep nesting detected at line 14003",
+        "Deep nesting detected at line 5816",
+        "Deep nesting detected at line 6930",
+        "Deep nesting detected at line 10535",
+        "Deep nesting detected at line 11988",
+        "Deep nesting detected at line 12105",
+        "Deep nesting detected at line 12991",
+        "Deep nesting detected at line 14008",
+        "Deep nesting detected at line 6936",
+        "Deep nesting detected at line 10555",
+        "Deep nesting detected at line 11999",
+        "Deep nesting detected at line 12118",
+        "Deep nesting detected at line 12997",
+        "Deep nesting detected at line 10569",
+        "Deep nesting detected at line 12006",
+        "Deep nesting detected at line 12131",
+        "Deep nesting detected at line 10579",
+        "Deep nesting detected at line 12013",
+        "Deep nesting detected at line 12144",
+        "Deep nesting detected at line 10593",
+        "Deep nesting detected at line 12020",
+        "Deep nesting detected at line 12157",
+        "Deep nesting detected at line 10633",
+        "Deep nesting detected at line 12027",
+        "Deep nesting detected at line 12170",
+        "Deep nesting detected at line 10661",
+        "Deep nesting detected at line 12208",
+        "Deep nesting detected at line 10694",
+        "Deep nesting detected at line 12221",
+        "Deep nesting detected at line 10704",
+        "Deep nesting detected at line 12234",
+        "Deep nesting detected at line 10720",
+        "Deep nesting detected at line 12247",
+        "Deep nesting detected at line 12260",
+        "Deep nesting detected at line 12273",
+        "Deep nesting detected at line 12286",
+        "Deep nesting detected at line 12299",
+        "Deep nesting detected at line 12312",
+        "Deep nesting detected at line 12325",
+        "Deep nesting detected at line 12338",
+        "Deep nesting detected at line 12351",
+        "Deep nesting detected at line 12368",
+        "Deep nesting detected at line 12381",
+        "Deep nesting detected at line 12394",
+        "Deep nesting detected at line 12407",
+        "Deep nesting detected at line 12420",
+        "Deep nesting detected at line 12433",
+        "Deep nesting detected at line 12446",
+        "Deep nesting detected at line 12459",
+        "Deep nesting detected at line 12472",
+        "Deep nesting detected at line 12485",
+        "Deep nesting detected at line 12498",
+        "Deep nesting detected at line 12511",
+        "Deep nesting detected at line 12524",
+        "Deep nesting detected at line 12573",
+        "Deep nesting detected at line 12588"
+      ],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 10971,
+      "comment_lines": 2,
+      "comment_ratio": 0.0001822987877130617,
+      "avg_line_length": 48.548628201622456,
+      "max_line_length": 1723
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:08.873960",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/java/JavaParserModifiedListener.py",
+    "results": {
+      "file_size": 71297,
+      "line_count": 2035,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 450,
+      "class_count": 1,
+      "imports": [
+        "antlr4",
+        "JavaParserModified",
+        "JavaParserModified"
+      ],
+      "complexity": 3,
+      "maintainability": {
+        "score": 0.0,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 1358,
+      "comment_lines": 452,
+      "comment_ratio": 0.3328424153166421,
+      "avg_line_length": 51.00294550810015,
+      "max_line_length": 118
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:08.911104",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmps9ngd0cr/concode-master/java/JavaParserListener.py",
+    "results": {
+      "file_size": 59343,
+      "line_count": 1819,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 402,
+      "class_count": 1,
+      "imports": [
+        "antlr4",
+        "JavaParser",
+        "JavaParser"
+      ],
+      "complexity": 3,
+      "maintainability": {
+        "score": 1.129511811104958,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 1214,
+      "comment_lines": 404,
+      "comment_ratio": 0.33278418451400327,
+      "avg_line_length": 47.3838550247117,
+      "max_line_length": 110
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.622597",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/RegularDecoder.py",
+    "results": {
+      "file_size": 4545,
+      "line_count": 131,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 5,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch",
+        "GlobalAttention",
+        "torch.autograd",
+        "Beam",
+        "decoders"
+      ],
+      "complexity": 14,
+      "maintainability": {
+        "score": 59.308520248232895,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 90,
+        "issues": [
+          "Consider using enumerate() instead of range(len()) at line 126"
+        ]
+      },
+      "non_empty_lines": 108,
+      "comment_lines": 8,
+      "comment_ratio": 0.07407407407407407,
+      "avg_line_length": 40.870370370370374,
+      "max_line_length": 131
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.637303",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/build.py",
+    "results": {
+      "file_size": 5932,
+      "line_count": 157,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 2,
+      "class_count": 0,
+      "imports": [
+        "json",
+        "argparse",
+        "collections",
+        "Tree",
+        "os",
+        "pdb",
+        "pdb"
+      ],
+      "complexity": 37,
+      "maintainability": {
+        "score": 41.4163542808521,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 128,
+      "comment_lines": 5,
+      "comment_ratio": 0.0390625,
+      "avg_line_length": 45.1171875,
+      "max_line_length": 269
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.643309",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/Tree.py",
+    "results": {
+      "file_size": 1309,
+      "line_count": 50,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 3,
+      "class_count": 0,
+      "imports": [
+        "antlr4",
+        "java.JavaLexer",
+        "java.JavaParserModified",
+        "queue"
+      ],
+      "complexity": 7,
+      "maintainability": {
+        "score": 72.03428674174987,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 42,
+      "comment_lines": 4,
+      "comment_ratio": 0.09523809523809523,
+      "avg_line_length": 29.976190476190474,
+      "max_line_length": 63
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.649394",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/translate.py",
+    "results": {
+      "file_size": 2537,
+      "line_count": 60,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 1,
+      "class_count": 0,
+      "imports": [
+        "argparse",
+        "preprocess",
+        "torch",
+        "S2SModel",
+        "sys"
+      ],
+      "complexity": 4,
+      "maintainability": {
+        "score": 65.83154459816383,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 52,
+      "comment_lines": 0,
+      "comment_ratio": 0.0,
+      "avg_line_length": 47.63461538461539,
+      "max_line_length": 172
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.687882",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/preprocess.py",
+    "results": {
+      "file_size": 23599,
+      "line_count": 503,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 26,
+      "class_count": 3,
+      "imports": [
+        "argparse",
+        "torch",
+        "collections",
+        "random",
+        "re",
+        "json",
+        "time",
+        "numpy",
+        "ipdb"
+      ],
+      "complexity": 92,
+      "maintainability": {
+        "score": 14.912732483063074,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [
+        "Long method detected: make_batch_into_tensor"
+      ],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 426,
+      "comment_lines": 30,
+      "comment_ratio": 0.07042253521126761,
+      "avg_line_length": 54.21596244131455,
+      "max_line_length": 196
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.694596",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/decoders.py",
+    "results": {
+      "file_size": 2157,
+      "line_count": 60,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 7,
+      "class_count": 2,
+      "imports": [
+        "torch.autograd"
+      ],
+      "complexity": 2,
+      "maintainability": {
+        "score": 68.46049230726852,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 49,
+      "comment_lines": 5,
+      "comment_ratio": 0.10204081632653061,
+      "avg_line_length": 42.795918367346935,
+      "max_line_length": 141
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.704278",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/UtilClass.py",
+    "results": {
+      "file_size": 4076,
+      "line_count": 105,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 10,
+      "class_count": 8,
+      "imports": [
+        "torch",
+        "torch.nn",
+        "allennlp.modules.seq2vec_encoders",
+        "allennlp.nn.util",
+        "torch.nn.utils.rnn",
+        "torch.nn.utils.rnn"
+      ],
+      "complexity": 9,
+      "maintainability": {
+        "score": 56.17557160817436,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 84,
+      "comment_lines": 3,
+      "comment_ratio": 0.03571428571428571,
+      "avg_line_length": 47.273809523809526,
+      "max_line_length": 123
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.709343",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/RegularEncoder.py",
+    "results": {
+      "file_size": 1084,
+      "line_count": 31,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 2,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch.autograd",
+        "UtilClass"
+      ],
+      "complexity": 1,
+      "maintainability": {
+        "score": 67.87967487402553,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 26,
+      "comment_lines": 0,
+      "comment_ratio": 0.0,
+      "avg_line_length": 40.5,
+      "max_line_length": 83
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.727704",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/CopyGenerator.py",
+    "results": {
+      "file_size": 11344,
+      "line_count": 264,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 14,
+      "class_count": 4,
+      "imports": [
+        "torch.nn",
+        "torch.nn.functional",
+        "torch",
+        "torch.autograd",
+        "UtilClass"
+      ],
+      "complexity": 13,
+      "maintainability": {
+        "score": 53.24472243819193,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 220,
+      "comment_lines": 22,
+      "comment_ratio": 0.1,
+      "avg_line_length": 50.36363636363637,
+      "max_line_length": 140
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.735782",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/S2SModel.py",
+    "results": {
+      "file_size": 3212,
+      "line_count": 85,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 3,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch.autograd",
+        "torch.nn",
+        "Statistics",
+        "UtilClass",
+        "Beam",
+        "CopyGenerator",
+        "RegularDecoder",
+        "ProdDecoder",
+        "RegularEncoder",
+        "ConcodeEncoder",
+        "ConcodeDecoder",
+        "decoders"
+      ],
+      "complexity": 11,
+      "maintainability": {
+        "score": 61.24871567254013,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 67,
+      "comment_lines": 5,
+      "comment_ratio": 0.07462686567164178,
+      "avg_line_length": 46.67164179104478,
+      "max_line_length": 160
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.745743",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/train.py",
+    "results": {
+      "file_size": 5813,
+      "line_count": 138,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 1,
+      "class_count": 0,
+      "imports": [
+        "random",
+        "argparse",
+        "torch",
+        "torch",
+        "torch.nn",
+        "preprocess",
+        "S2SModel",
+        "Trainer",
+        "os",
+        "numpy"
+      ],
+      "complexity": 5,
+      "maintainability": {
+        "score": 55.28407651731624,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [
+        "Long method detected: main"
+      ],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 122,
+      "comment_lines": 3,
+      "comment_ratio": 0.02459016393442623,
+      "avg_line_length": 46.51639344262295,
+      "max_line_length": 95
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.763492",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/ProdDecoder.py",
+    "results": {
+      "file_size": 6955,
+      "line_count": 185,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 6,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch",
+        "GlobalAttention",
+        "torch.autograd",
+        "Beam",
+        "UtilClass",
+        "preprocess",
+        "decoders"
+      ],
+      "complexity": 23,
+      "maintainability": {
+        "score": 59.152419868350584,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 90,
+        "issues": [
+          "Consider using enumerate() instead of range(len()) at line 180"
+        ]
+      },
+      "non_empty_lines": 151,
+      "comment_lines": 15,
+      "comment_ratio": 0.09933774834437085,
+      "avg_line_length": 44.83443708609271,
+      "max_line_length": 145
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.775307",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/ConcodeEncoder.py",
+    "results": {
+      "file_size": 5358,
+      "line_count": 116,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 2,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch",
+        "torch.autograd",
+        "UtilClass"
+      ],
+      "complexity": 7,
+      "maintainability": {
+        "score": 53.94650381554498,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 93,
+      "comment_lines": 1,
+      "comment_ratio": 0.010752688172043012,
+      "avg_line_length": 56.365591397849464,
+      "max_line_length": 214
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.780996",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/Statistics.py",
+    "results": {
+      "file_size": 1316,
+      "line_count": 43,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 7,
+      "class_count": 1,
+      "imports": [
+        "time",
+        "math",
+        "sys"
+      ],
+      "complexity": 1,
+      "maintainability": {
+        "score": 68.66183258347662,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 36,
+      "comment_lines": 0,
+      "comment_ratio": 0.0,
+      "avg_line_length": 35.361111111111114,
+      "max_line_length": 95
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.791988",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/Trainer.py",
+    "results": {
+      "file_size": 3875,
+      "line_count": 99,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 4,
+      "class_count": 1,
+      "imports": [
+        "Statistics",
+        "torch",
+        "torch.optim",
+        "torch.nn.utils",
+        "torch.nn",
+        "time"
+      ],
+      "complexity": 11,
+      "maintainability": {
+        "score": 39.82809515214872,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 80,
+      "comment_lines": 0,
+      "comment_ratio": 0.0,
+      "avg_line_length": 47.2,
+      "max_line_length": 217
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.812912",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/ConcodeDecoder.py",
+    "results": {
+      "file_size": 8780,
+      "line_count": 238,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 6,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch",
+        "GlobalAttention",
+        "torch.autograd",
+        "Beam",
+        "UtilClass",
+        "preprocess",
+        "decoders",
+        "torch.nn.functional"
+      ],
+      "complexity": 27,
+      "maintainability": {
+        "score": 52.19335131605283,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 90,
+        "issues": [
+          "Consider using enumerate() instead of range(len()) at line 232"
+        ]
+      },
+      "non_empty_lines": 187,
+      "comment_lines": 15,
+      "comment_ratio": 0.08021390374331551,
+      "avg_line_length": 45.67914438502674,
+      "max_line_length": 145
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.833021",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/Beam.py",
+    "results": {
+      "file_size": 10002,
+      "line_count": 272,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 14,
+      "class_count": 2,
+      "imports": [
+        "torch",
+        "preprocess",
+        "torch.autograd",
+        "copy"
+      ],
+      "complexity": 30,
+      "maintainability": {
+        "score": 52.40466119635222,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 220,
+      "comment_lines": 41,
+      "comment_ratio": 0.18636363636363637,
+      "avg_line_length": 44.22727272727273,
+      "max_line_length": 191
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.847002",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/GlobalAttention.py",
+    "results": {
+      "file_size": 7240,
+      "line_count": 212,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 6,
+      "class_count": 1,
+      "imports": [
+        "torch",
+        "torch.nn",
+        "UtilClass"
+      ],
+      "complexity": 14,
+      "maintainability": {
+        "score": 62.944427781729864,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 174,
+      "comment_lines": 17,
+      "comment_ratio": 0.09770114942528736,
+      "avg_line_length": 40.39080459770115,
+      "max_line_length": 81
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.855584",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/tools/exact.py",
+    "results": {
+      "file_size": 208,
+      "line_count": 16,
+      "file_type": "text/plain",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 0,
+      "class_count": 0,
+      "imports": [
+        "sys"
+      ],
+      "complexity": 3,
+      "maintainability": {
+        "score": 64.8704638343316,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 11,
+      "comment_lines": 0,
+      "comment_ratio": 0.0,
+      "avg_line_length": 17.454545454545453,
+      "max_line_length": 31
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.889585",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/java/JavaLexer.py",
+    "results": {
+      "file_size": 39389,
+      "line_count": 624,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 2,
+      "class_count": 1,
+      "imports": [
+        "antlr4",
+        "io"
+      ],
+      "complexity": 2,
+      "maintainability": {
+        "score": 100.0,
+        "issues": []
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 608,
+      "comment_lines": 1,
+      "comment_ratio": 0.001644736842105263,
+      "avg_line_length": 63.75822368421053,
+      "max_line_length": 103
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:16.903275",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/java/process_grammar.py",
+    "results": {
+      "file_size": 4202,
+      "line_count": 152,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 1,
+      "class_count": 0,
+      "imports": [],
+      "complexity": 38,
+      "maintainability": {
+        "score": 52.70688766972186,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [
+        "Deep nesting detected at line 21",
+        "Deep nesting detected at line 68",
+        "Deep nesting detected at line 105",
+        "Deep nesting detected at line 26"
+      ],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 123,
+      "comment_lines": 15,
+      "comment_ratio": 0.12195121951219512,
+      "avg_line_length": 32.926829268292686,
+      "max_line_length": 94
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:17.653322",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/java/JavaParserModified.py",
+    "results": {
+      "file_size": 656343,
+      "line_count": 17330,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 1702,
+      "class_count": 226,
+      "imports": [
+        "antlr4",
+        "io",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors"
+      ],
+      "complexity": 1438,
+      "maintainability": {
+        "score": 0.0,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [
+        "Long method detected: sempred",
+        "Deep nesting detected at line 1842",
+        "Deep nesting detected at line 2443",
+        "Deep nesting detected at line 2691",
+        "Deep nesting detected at line 3232",
+        "Deep nesting detected at line 3642",
+        "Deep nesting detected at line 4195",
+        "Deep nesting detected at line 4950",
+        "Deep nesting detected at line 5437",
+        "Deep nesting detected at line 5613",
+        "Deep nesting detected at line 7205",
+        "Deep nesting detected at line 8655",
+        "Deep nesting detected at line 9533",
+        "Deep nesting detected at line 10536",
+        "Deep nesting detected at line 10977",
+        "Deep nesting detected at line 11625",
+        "Deep nesting detected at line 11701",
+        "Deep nesting detected at line 12355",
+        "Deep nesting detected at line 12502",
+        "Deep nesting detected at line 13102",
+        "Deep nesting detected at line 1848",
+        "Deep nesting detected at line 2448",
+        "Deep nesting detected at line 2701",
+        "Deep nesting detected at line 3244",
+        "Deep nesting detected at line 3648",
+        "Deep nesting detected at line 4201",
+        "Deep nesting detected at line 4956",
+        "Deep nesting detected at line 5449",
+        "Deep nesting detected at line 8665",
+        "Deep nesting detected at line 9539",
+        "Deep nesting detected at line 10542",
+        "Deep nesting detected at line 11630",
+        "Deep nesting detected at line 11702",
+        "Deep nesting detected at line 12365",
+        "Deep nesting detected at line 12508",
+        "Deep nesting detected at line 1856",
+        "Deep nesting detected at line 2453",
+        "Deep nesting detected at line 2713",
+        "Deep nesting detected at line 3258",
+        "Deep nesting detected at line 3656",
+        "Deep nesting detected at line 4207",
+        "Deep nesting detected at line 5463",
+        "Deep nesting detected at line 8671",
+        "Deep nesting detected at line 9549",
+        "Deep nesting detected at line 10550",
+        "Deep nesting detected at line 11637",
+        "Deep nesting detected at line 11709",
+        "Deep nesting detected at line 12516",
+        "Deep nesting detected at line 3272",
+        "Deep nesting detected at line 4213",
+        "Deep nesting detected at line 8679",
+        "Deep nesting detected at line 9561",
+        "Deep nesting detected at line 10560",
+        "Deep nesting detected at line 11648",
+        "Deep nesting detected at line 11722",
+        "Deep nesting detected at line 3288",
+        "Deep nesting detected at line 9571",
+        "Deep nesting detected at line 11735",
+        "Deep nesting detected at line 3302",
+        "Deep nesting detected at line 9583",
+        "Deep nesting detected at line 11748",
+        "Deep nesting detected at line 3318",
+        "Deep nesting detected at line 9597",
+        "Deep nesting detected at line 11761",
+        "Deep nesting detected at line 3334",
+        "Deep nesting detected at line 9607",
+        "Deep nesting detected at line 11774",
+        "Deep nesting detected at line 3352",
+        "Deep nesting detected at line 9621",
+        "Deep nesting detected at line 11787",
+        "Deep nesting detected at line 3366",
+        "Deep nesting detected at line 9631",
+        "Deep nesting detected at line 11800",
+        "Deep nesting detected at line 3382",
+        "Deep nesting detected at line 9641",
+        "Deep nesting detected at line 11813",
+        "Deep nesting detected at line 9653",
+        "Deep nesting detected at line 11826",
+        "Deep nesting detected at line 9665",
+        "Deep nesting detected at line 11839",
+        "Deep nesting detected at line 9679",
+        "Deep nesting detected at line 11856",
+        "Deep nesting detected at line 9691",
+        "Deep nesting detected at line 11869",
+        "Deep nesting detected at line 9705",
+        "Deep nesting detected at line 11882",
+        "Deep nesting detected at line 9719",
+        "Deep nesting detected at line 11897",
+        "Deep nesting detected at line 9735",
+        "Deep nesting detected at line 11910",
+        "Deep nesting detected at line 9745",
+        "Deep nesting detected at line 9753",
+        "Deep nesting detected at line 9763",
+        "Deep nesting detected at line 9773",
+        "Deep nesting detected at line 9781"
+      ],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 13537,
+      "comment_lines": 2,
+      "comment_ratio": 0.0001477432222796779,
+      "avg_line_length": 47.16340400384132,
+      "max_line_length": 925
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:18.287804",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/java/JavaParser.py",
+    "results": {
+      "file_size": 547472,
+      "line_count": 14486,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 1591,
+      "class_count": 202,
+      "imports": [
+        "antlr4",
+        "io",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors",
+        "antlr4.error.Errors"
+      ],
+      "complexity": 1214,
+      "maintainability": {
+        "score": 0.0,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [
+        "Long method detected: expression_sempred",
+        "Deep nesting detected at line 5806",
+        "Deep nesting detected at line 6918",
+        "Deep nesting detected at line 7545",
+        "Deep nesting detected at line 7959",
+        "Deep nesting detected at line 9014",
+        "Deep nesting detected at line 9767",
+        "Deep nesting detected at line 10509",
+        "Deep nesting detected at line 11976",
+        "Deep nesting detected at line 12097",
+        "Deep nesting detected at line 12975",
+        "Deep nesting detected at line 13998",
+        "Deep nesting detected at line 5811",
+        "Deep nesting detected at line 6924",
+        "Deep nesting detected at line 7551",
+        "Deep nesting detected at line 10515",
+        "Deep nesting detected at line 11981",
+        "Deep nesting detected at line 12098",
+        "Deep nesting detected at line 12985",
+        "Deep nesting detected at line 14003",
+        "Deep nesting detected at line 5816",
+        "Deep nesting detected at line 6930",
+        "Deep nesting detected at line 10535",
+        "Deep nesting detected at line 11988",
+        "Deep nesting detected at line 12105",
+        "Deep nesting detected at line 12991",
+        "Deep nesting detected at line 14008",
+        "Deep nesting detected at line 6936",
+        "Deep nesting detected at line 10555",
+        "Deep nesting detected at line 11999",
+        "Deep nesting detected at line 12118",
+        "Deep nesting detected at line 12997",
+        "Deep nesting detected at line 10569",
+        "Deep nesting detected at line 12006",
+        "Deep nesting detected at line 12131",
+        "Deep nesting detected at line 10579",
+        "Deep nesting detected at line 12013",
+        "Deep nesting detected at line 12144",
+        "Deep nesting detected at line 10593",
+        "Deep nesting detected at line 12020",
+        "Deep nesting detected at line 12157",
+        "Deep nesting detected at line 10633",
+        "Deep nesting detected at line 12027",
+        "Deep nesting detected at line 12170",
+        "Deep nesting detected at line 10661",
+        "Deep nesting detected at line 12208",
+        "Deep nesting detected at line 10694",
+        "Deep nesting detected at line 12221",
+        "Deep nesting detected at line 10704",
+        "Deep nesting detected at line 12234",
+        "Deep nesting detected at line 10720",
+        "Deep nesting detected at line 12247",
+        "Deep nesting detected at line 12260",
+        "Deep nesting detected at line 12273",
+        "Deep nesting detected at line 12286",
+        "Deep nesting detected at line 12299",
+        "Deep nesting detected at line 12312",
+        "Deep nesting detected at line 12325",
+        "Deep nesting detected at line 12338",
+        "Deep nesting detected at line 12351",
+        "Deep nesting detected at line 12368",
+        "Deep nesting detected at line 12381",
+        "Deep nesting detected at line 12394",
+        "Deep nesting detected at line 12407",
+        "Deep nesting detected at line 12420",
+        "Deep nesting detected at line 12433",
+        "Deep nesting detected at line 12446",
+        "Deep nesting detected at line 12459",
+        "Deep nesting detected at line 12472",
+        "Deep nesting detected at line 12485",
+        "Deep nesting detected at line 12498",
+        "Deep nesting detected at line 12511",
+        "Deep nesting detected at line 12524",
+        "Deep nesting detected at line 12573",
+        "Deep nesting detected at line 12588"
+      ],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 10971,
+      "comment_lines": 2,
+      "comment_ratio": 0.0001822987877130617,
+      "avg_line_length": 48.548628201622456,
+      "max_line_length": 1723
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:18.330059",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/java/JavaParserModifiedListener.py",
+    "results": {
+      "file_size": 71297,
+      "line_count": 2035,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 450,
+      "class_count": 1,
+      "imports": [
+        "antlr4",
+        "JavaParserModified",
+        "JavaParserModified"
+      ],
+      "complexity": 3,
+      "maintainability": {
+        "score": 0.0,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 1358,
+      "comment_lines": 452,
+      "comment_ratio": 0.3328424153166421,
+      "avg_line_length": 51.00294550810015,
+      "max_line_length": 118
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:17:18.366596",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp90o1h1bo/concode-master/java/JavaParserListener.py",
+    "results": {
+      "file_size": 59343,
+      "line_count": 1819,
+      "file_type": "text/x-script.python",
+      "extension": ".py",
+      "language": "python",
+      "function_count": 402,
+      "class_count": 1,
+      "imports": [
+        "antlr4",
+        "JavaParser",
+        "JavaParser"
+      ],
+      "complexity": 3,
+      "maintainability": {
+        "score": 1.129511811104958,
+        "issues": [
+          "Low maintainability score - consider refactoring"
+        ]
+      },
+      "code_smells": [],
+      "performance": {
+        "score": 100,
+        "issues": []
+      },
+      "non_empty_lines": 1214,
+      "comment_lines": 404,
+      "comment_ratio": 0.33278418451400327,
+      "avg_line_length": 47.3838550247117,
+      "max_line_length": 110
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.663304",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/BigAddition.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/BigAddition.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.669411",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Addition.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Addition.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.673461",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Util.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Util.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.677981",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Multiplication.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Multiplication.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.686887",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/GameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/GameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.694017",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Enemy.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Enemy.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.705033",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/World.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/World.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.709447",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/BigMultiplication.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/BigMultiplication.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.713716",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Subtraction.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Subtraction.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.719027",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Player.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Player.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.723897",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/MathHero.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/MathHero.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.729505",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Level.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Level.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.734382",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Division.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/Division.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.742734",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/ListeningGameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/MathHero/src/ListeningGameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.753884",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Tetris/src/TetrisBlock.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Tetris/src/TetrisBlock.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.762198",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Tetris/src/TetrisComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Tetris/src/TetrisComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.768437",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Tetris/src/PlayTetris.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Tetris/src/PlayTetris.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.780435",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Tetris/src/TetrisGrid.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Tetris/src/TetrisGrid.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.790679",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Tetris/src/BlockGrid.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Tetris/src/BlockGrid.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.798746",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Craps/src/CrapsComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Craps/src/CrapsComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.808084",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Craps/src/CrapsGame.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Craps/src/CrapsGame.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.816066",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Craps/src/CrapsState.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Craps/src/CrapsState.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.825006",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Craps/src/PlayCraps.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Craps/src/PlayCraps.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.839663",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Craps/src/Dice.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Craps/src/Dice.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.847719",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Craps/src/CrapsEngine.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Craps/src/CrapsEngine.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.856496",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/GameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/GameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.862224",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/MakeGame.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/MakeGame.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.872942",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/Pong.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/Pong.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.880265",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/Paddle.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/Paddle.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.887262",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/PongUpdate.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/PongUpdate.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.896628",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/Ball.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/Ball.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.903708",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/JoinGame.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/JoinGame.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.914364",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/ListeningGameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/PongServer/src/ListeningGameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.929500",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/Play.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/Play.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.940568",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/Planet.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/Planet.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.955540",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/Field.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/Field.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.966642",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/Goal.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/Goal.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.979313",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/Comet.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/Comet.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.989053",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/GravitySoccer.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/GravitySoccer.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:03.995889",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/Direction.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/Direction.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.005966",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/gameutil/GameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/gameutil/GameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.016100",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/gameutil/ListeningGameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/gameutil/ListeningGameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.026245",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/gameutil/ImageLoader.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Comet/src/gameutil/ImageLoader.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.035921",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Pong/src/PongComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Pong/src/PongComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.044231",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Pong/src/PlayPong.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Pong/src/PlayPong.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.055302",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Pong/src/Paddle.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Pong/src/Paddle.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.066878",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Pong/src/PongEnvironment.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Pong/src/PongEnvironment.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.076182",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Pong/src/Ball.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Pong/src/Ball.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.088185",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/Blackjack.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/Blackjack.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.097588",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/Card.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/Card.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.105929",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/BlackjackHand.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/BlackjackHand.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.116332",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/Deck.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/Deck.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.127840",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/ioutil/WavePlayer.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/ioutil/WavePlayer.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.137184",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/ioutil/SerializableImage.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/ioutil/SerializableImage.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.152205",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/ioutil/FileEncrypter.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/ioutil/FileEncrypter.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.161716",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/ioutil/ImageSaver.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/ioutil/ImageSaver.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.169479",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/ioutil/IOable.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/ioutil/IOable.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.181606",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/ioutil/AePlayWave.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/ioutil/AePlayWave.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.192107",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/gameutil/GameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/gameutil/GameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.204620",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/gameutil/ListeningGameComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/gameutil/ListeningGameComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.215222",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/gameutil/ImageLoader.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Blackjack/src/gameutil/ImageLoader.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.225498",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/Cronometro.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/Cronometro.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.231876",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/Frogger.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/Frogger.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.241187",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/FroggerLevelEngine.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/FroggerLevelEngine.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.252064",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/Frog.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/Frog.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.260617",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/FroggerState.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/FroggerState.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.275546",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/TrafficPattern.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/TrafficPattern.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.282588",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/FroggerLevel.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/FroggerLevel.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.290345",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/PlayFrogger.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/PlayFrogger.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.301886",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/Car.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/Car.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.322965",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/FroggerComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Frogger/src/FroggerComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.333416",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Catch/src/CatchEngine.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Catch/src/CatchEngine.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.344639",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Catch/src/CatchComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Catch/src/CatchComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.353077",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Catch/src/PlayCatch.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Catch/src/PlayCatch.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.362298",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Catch/src/Ball.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Catch/src/Ball.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.371273",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Catch/src/Bucket.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/Catch/src/Bucket.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.377817",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/FallDown/src/PlayFallDown.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/FallDown/src/PlayFallDown.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.385978",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/FallDown/src/Ball.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/FallDown/src/Ball.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.393742",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/FallDown/src/Brick.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/FallDown/src/Brick.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.400929",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/FallDown/src/FallDownComponent.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/FallDown/src/FallDownComponent.java"
+    }
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.413803",
+    "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/FallDown/src/FallDownEngine.java",
+    "results": {
+      "error": "'CodeAnalyzer' object has no attribute 'logger'",
+      "file_path": "/var/folders/wn/wfsv6t3147v_ws0nlb6qfms40000gr/T/tmp7hmc5zxb/Java-Games-master/FallDown/src/FallDownEngine.java"
+    }
+  }
+]
