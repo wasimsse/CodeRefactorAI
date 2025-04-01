@@ -22,6 +22,7 @@ from file_manager import FileManager
 from project_analyzer import ProjectAnalyzer
 from visualization_manager import VisualizationManager
 from dataset_analyzer import DatasetAnalyzer
+from stats_manager import StatsManager
 
 # Load environment variables
 load_dotenv()
@@ -134,6 +135,10 @@ config = {
     'max_complexity': 10,
     'min_comment_ratio': 0.1
 }
+
+# Initialize the stats manager
+if 'stats_manager' not in st.session_state:
+    st.session_state.stats_manager = StatsManager()
 
 def init_session_state():
     """Initialize or reset session state variables."""
@@ -291,26 +296,7 @@ def main():
         """, unsafe_allow_html=True)
 
         # Key statistics section
-        st.markdown("""
-            <div class="stats-container">
-                <div class="stat-card">
-                    <div class="stat-number">99%</div>
-                    <div class="stat-label">Analysis Accuracy</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">50+</div>
-                    <div class="stat-label">Code Metrics</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">1000+</div>
-                    <div class="stat-label">Projects Analyzed</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">Availability</div>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
+        display_landing_stats()
 
         # Upload section with improved styling
         st.markdown("""
@@ -909,6 +895,12 @@ def handle_file_upload(uploaded_file):
             st.session_state.uploaded_files = {str(file_path): file_metrics}
             st.session_state.current_file = str(file_path)
             
+            # Update statistics after analysis
+            st.session_state.stats_manager.update_file_analysis(
+                uploaded_file.name,
+                file_metrics
+            )
+            
             return True
         except Exception as e:
             st.error(f"Error processing file: {str(e)}")
@@ -999,6 +991,11 @@ def handle_zip_upload(uploaded_zip):
             st.session_state.uploaded_files = uploaded_files
             st.session_state.project_analysis = total_metrics
             
+            # Update statistics
+            st.session_state.stats_manager.update_project_analysis()
+            for file_path, metrics in uploaded_files.items():
+                st.session_state.stats_manager.update_file_analysis(file_path, metrics)
+            
             return True
             
         except Exception as e:
@@ -1034,6 +1031,11 @@ def handle_github_upload(repo_url):
         with st.spinner("Analyzing project..."):
             st.session_state.project_analysis = st.session_state.project_analyzer.analyze_project(str(repo_dir))
             display_project_analysis()
+            
+            # Update statistics
+            st.session_state.stats_manager.update_project_analysis()
+            for file_path, metrics in st.session_state.uploaded_files.items():
+                st.session_state.stats_manager.update_file_analysis(file_path, metrics)
     except Exception as e:
         st.error(f"Error cloning repository: {str(e)}")
 
@@ -1092,6 +1094,100 @@ def display_directory_analysis(dir_path: str):
     
     # Display directory structure
     viz_manager.display_project_structure(analysis['structure'])
+
+def display_landing_stats():
+    """Display dynamic statistics on the landing page."""
+    stats = st.session_state.stats_manager.get_display_stats()
+    
+    # Create a container with a gradient background for stats
+    st.markdown("""
+        <div style='
+            background: linear-gradient(120deg, #1E88E5 0%, #42A5F5 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        '>
+            <h2 style='
+                color: white;
+                text-align: center;
+                margin-bottom: 2rem;
+                font-size: 2em;
+            '>
+                Empowering Better Code Quality
+            </h2>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # Display key metrics in a 4-column layout
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.markdown("""
+            <div style='text-align: center;'>
+                <h1 style='color: #1E88E5; font-size: 2.5em; margin: 0;'>
+                    {}
+                </h1>
+                <p style='color: #666; font-size: 1.1em;'>Analysis Accuracy</p>
+            </div>
+        """.format(stats["analysis_accuracy"]), unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+            <div style='text-align: center;'>
+                <h1 style='color: #1E88E5; font-size: 2.5em; margin: 0;'>
+                    {}
+                </h1>
+                <p style='color: #666; font-size: 1.1em;'>Code Metrics</p>
+            </div>
+        """.format(stats["code_metrics"]), unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+            <div style='text-align: center;'>
+                <h1 style='color: #1E88E5; font-size: 2.5em; margin: 0;'>
+                    {}
+                </h1>
+                <p style='color: #666; font-size: 1.1em;'>Projects Analyzed</p>
+            </div>
+        """.format(stats["projects_analyzed"]), unsafe_allow_html=True)
+    
+    with col4:
+        st.markdown("""
+            <div style='text-align: center;'>
+                <h1 style='color: #1E88E5; font-size: 2.5em; margin: 0;'>
+                    {}
+                </h1>
+                <p style='color: #666; font-size: 1.1em;'>Availability</p>
+            </div>
+        """.format(stats["availability"]), unsafe_allow_html=True)
+    
+    # Display detailed statistics
+    st.markdown("### Project Impact")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.metric("Total Files Analyzed", stats["total_files"])
+        st.metric("Total Lines of Code", f"{stats['total_lines']:,}")
+        st.metric("Issues Identified", stats["issues_found"])
+    
+    with col2:
+        # Language distribution
+        st.subheader("Language Distribution")
+        lang_data = stats["languages"]
+        st.bar_chart(lang_data)
+    
+    # Quality improvements
+    st.markdown("### Quality Improvements")
+    improvements = stats["improvements"]
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.metric("Complexity Reduced", improvements["complexity_reduced"])
+    with col2:
+        st.metric("Maintainability Improved", improvements["maintainability_improved"])
+    with col3:
+        st.metric("Bugs Fixed", improvements["bugs_fixed"])
 
 if __name__ == "__main__":
     main() 
