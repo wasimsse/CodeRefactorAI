@@ -35,7 +35,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS
+# Custom CSS with fixed escape sequences
 st.markdown("""
     <style>
     .stApp {
@@ -133,7 +133,49 @@ config = {
     'max_line_length': 100,
     'max_function_length': 50,
     'max_complexity': 10,
-    'min_comment_ratio': 0.1
+    'min_comment_ratio': 0.1,
+    'supported_languages': {
+        'python': {
+            'extensions': ['.py'],
+            'name': 'Python',
+            'icon': '🐍'
+        },
+        'java': {
+            'extensions': ['.java'],
+            'name': 'Java',
+            'icon': '☕'
+        },
+        'cpp': {
+            'extensions': ['.cpp', '.hpp', '.cc', '.h'],
+            'name': 'C++',
+            'icon': '⚡'
+        },
+        'csharp': {
+            'extensions': ['.cs'],
+            'name': 'C#',
+            'icon': '🔷'
+        },
+        'javascript': {
+            'extensions': ['.js', '.jsx', '.ts', '.tsx'],
+            'name': 'JavaScript/TypeScript',
+            'icon': '🟨'
+        },
+        'go': {
+            'extensions': ['.go'],
+            'name': 'Go',
+            'icon': '🔵'
+        },
+        'ruby': {
+            'extensions': ['.rb'],
+            'name': 'Ruby',
+            'icon': '💎'
+        },
+        'rust': {
+            'extensions': ['.rs'],
+            'name': 'Rust',
+            'icon': '🦀'
+        }
+    }
 }
 
 # Initialize the stats manager
@@ -298,134 +340,161 @@ def main():
         # Key statistics section
         display_landing_stats()
 
-        # Upload section with improved styling
+        # Upload section with improved styling and logical order
         st.markdown("""
-            <div style='margin: 2rem 0;'>
-                <h2 style='color: #1E88E5; font-size: 1.8em; margin-bottom: 1rem; font-weight: 500;'>
-                    Start Your Analysis
-                </h2>
-                <p style='color: #666; margin-bottom: 2rem; font-size: 1.1em;'>
-                    Choose your preferred method to analyze your code
-                </p>
+            <div class="upload-section">
+                <h2 class="section-title">Start Your Analysis</h2>
+                <p class="section-description">Choose your preferred method to analyze your code. Our intelligent system will guide you through the process.</p>
             </div>
         """, unsafe_allow_html=True)
 
-        # Create three columns for upload methods with improved styling
+        # Create three columns for upload methods
         col1, col2, col3 = st.columns(3)
 
         with col1:
             st.markdown("""
                 <div class="feature-card">
-                    <div style='text-align: center; margin-bottom: 1.5rem;'>
-                        <span style='font-size: 3.5em; color: #1E88E5;'>📄</span>
-                    </div>
-                    <h3 style='color: #1E88E5; margin-bottom: 1rem; text-align: center; font-size: 1.3em;'>
-                        Single File
-                    </h3>
-                    <p style='color: #666; margin-bottom: 1.5rem; text-align: center; font-size: 0.95em; line-height: 1.5;'>
-                        Quick analysis of individual Python files with instant feedback and recommendations
-                    </p>
-                    <div style='background-color: #f8f9fa; padding: 1.2rem; border-radius: 10px; margin-bottom: 1rem;'>
-                        <p style='color: #666; font-size: 0.9em; margin-bottom: 0.5rem;'>✓ Instant analysis</p>
-                        <p style='color: #666; font-size: 0.9em; margin-bottom: 0.5rem;'>✓ Detailed metrics</p>
-                        <p style='color: #666; font-size: 0.9em;'>✓ Quick recommendations</p>
+                    <div class="icon-container">📄</div>
+                    <h3>Single File</h3>
+                    <p>Quick analysis of individual source files</p>
+                    <div class="supported-languages">
+                        <p style="font-size: 0.9em; color: #666; margin-bottom: 0.5rem;">Supported Languages:</p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            {supported_langs_html}
+                        </div>
                     </div>
                 </div>
-            """, unsafe_allow_html=True)
-            uploaded_file = st.file_uploader("Choose a Python file", type=['py'], key="single_file")
+            """.format(
+                supported_langs_html=''.join([
+                    f'<span style="padding: 0.2rem 0.5rem; background: #f8f9fa; border-radius: 4px; font-size: 0.8em;">{lang["icon"]} {lang["name"]}</span>'
+                    for lang in config['supported_languages'].values()
+                ])
+            ), unsafe_allow_html=True)
+            
+            # Update file uploader to accept all supported extensions
+            supported_extensions = []
+            for lang in config['supported_languages'].values():
+                supported_extensions.extend([ext[1:] for ext in lang['extensions']])  # Remove the dot from extensions
+            
+            uploaded_file = st.file_uploader(
+                "Choose a source file",
+                type=supported_extensions,
+                key="single_file",
+                help=f"Supported file types: {', '.join(supported_extensions)}"
+            )
             if uploaded_file:
                 with st.spinner("🔍 Analyzing your code..."):
                     if handle_file_upload(uploaded_file):
-                        st.markdown("""
-                            <div style='background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); 
-                                      padding: 1rem; border-radius: 10px; margin-top: 1rem; text-align: center;
-                                      box-shadow: 0 2px 4px rgba(46,125,50,0.1);'>
-                                <p style='color: #2e7d32; margin: 0; font-weight: 500; font-size: 1.1em;'>
-                                    ✅ Analysis Complete!
-                                </p>
-                                <p style='color: #2e7d32; margin: 0.5rem 0 0 0; font-size: 0.9em;'>
-                                    View detailed results in the File Explorer tab →
-                                </p>
-                            </div>
-                        """, unsafe_allow_html=True)
+                        st.success("✅ Analysis Complete! View results in the File Explorer tab.")
 
         with col2:
             st.markdown("""
                 <div class="feature-card">
-                    <div style='text-align: center; margin-bottom: 1.5rem;'>
-                        <span style='font-size: 3.5em; color: #1E88E5;'>📦</span>
-                    </div>
-                    <h3 style='color: #1E88E5; margin-bottom: 1rem; text-align: center; font-size: 1.3em;'>
-                        Project Archive
-                    </h3>
-                    <p style='color: #666; margin-bottom: 1.5rem; text-align: center; font-size: 0.95em; line-height: 1.5;'>
-                        Comprehensive analysis of multiple files with project-wide insights
-                    </p>
-                    <div style='background-color: #f8f9fa; padding: 1.2rem; border-radius: 10px; margin-bottom: 1rem;'>
-                        <p style='color: #666; font-size: 0.9em; margin-bottom: 0.5rem;'>✓ Multi-file analysis</p>
-                        <p style='color: #666; font-size: 0.9em; margin-bottom: 0.5rem;'>✓ Project overview</p>
-                        <p style='color: #666; font-size: 0.9em;'>✓ Dependency scanning</p>
-                    </div>
+                    <div class="icon-container">📦</div>
+                    <h3>Project Archive</h3>
+                    <p>Comprehensive analysis of multiple files with project-wide insights</p>
+                    <ul class="feature-list">
+                        <li>✓ Multi-file analysis</li>
+                        <li>✓ Project overview</li>
+                        <li>✓ Dependency scanning</li>
+                    </ul>
                 </div>
             """, unsafe_allow_html=True)
             uploaded_zip = st.file_uploader("Choose a ZIP file", type=['zip'], key="zip_file")
             if uploaded_zip:
                 with st.spinner("📊 Processing your project..."):
                     if handle_zip_upload(uploaded_zip):
-                        st.markdown("""
-                            <div style='background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); 
-                                      padding: 1rem; border-radius: 10px; margin-top: 1rem; text-align: center;
-                                      box-shadow: 0 2px 4px rgba(46,125,50,0.1);'>
-                                <p style='color: #2e7d32; margin: 0; font-weight: 500; font-size: 1.1em;'>
-                                    ✅ Project Analysis Complete!
-                                </p>
-                                <p style='color: #2e7d32; margin: 0.5rem 0 0 0; font-size: 0.9em;'>
-                                    View project overview in the File Explorer tab →
-                                </p>
-                            </div>
-                        """, unsafe_allow_html=True)
+                        st.success("✅ Project Analysis Complete! View results in the File Explorer tab.")
 
         with col3:
             st.markdown("""
                 <div class="feature-card">
-                    <div style='text-align: center; margin-bottom: 1.5rem;'>
-                        <span style='font-size: 3.5em; color: #1E88E5;'>🔗</span>
-                    </div>
-                    <h3 style='color: #1E88E5; margin-bottom: 1rem; text-align: center; font-size: 1.3em;'>
-                        GitHub Repository
-                    </h3>
-                    <p style='color: #666; margin-bottom: 1.5rem; text-align: center; font-size: 0.95em; line-height: 1.5;'>
-                        Direct analysis from your GitHub repositories with branch support
-                    </p>
-                    <div style='background-color: #f8f9fa; padding: 1.2rem; border-radius: 10px; margin-bottom: 1rem;'>
-                        <p style='color: #666; font-size: 0.9em; margin-bottom: 0.5rem;'>✓ Repository integration</p>
-                        <p style='color: #666; font-size: 0.9em; margin-bottom: 0.5rem;'>✓ Branch analysis</p>
-                        <p style='color: #666; font-size: 0.9em;'>✓ Commit history review</p>
-                    </div>
+                    <div class="icon-container">🔗</div>
+                    <h3>GitHub Repository</h3>
+                    <p>Direct analysis from your GitHub repositories with branch support</p>
+                    <ul class="feature-list">
+                        <li>✓ Repository integration</li>
+                        <li>✓ Branch analysis</li>
+                        <li>✓ Commit history review</li>
+                    </ul>
                 </div>
             """, unsafe_allow_html=True)
             repo_url = st.text_input("Enter repository URL", 
                 placeholder="https://github.com/username/repository",
                 help="Enter the URL of a public GitHub repository")
             
-            col_btn1, col_btn2 = st.columns([2, 3])
-            with col_btn2:
-                if repo_url:
-                    if st.button("🚀 Start Analysis", type="primary", use_container_width=True):
-                        with st.spinner("🔍 Cloning and analyzing repository..."):
-                            handle_github_upload(repo_url)
-                            st.markdown("""
-                                <div style='background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); 
-                                          padding: 1rem; border-radius: 10px; margin-top: 1rem; text-align: center;
-                                          box-shadow: 0 2px 4px rgba(46,125,50,0.1);'>
-                                    <p style='color: #2e7d32; margin: 0; font-weight: 500; font-size: 1.1em;'>
-                                        ✅ Repository Analysis Complete!
-                                    </p>
-                                    <p style='color: #2e7d32; margin: 0.5rem 0 0 0; font-size: 0.9em;'>
-                                        View repository analysis in the File Explorer tab →
-                                    </p>
-                                </div>
-                            """, unsafe_allow_html=True)
+            if repo_url:
+                if st.button("🚀 Start Analysis", type="primary", use_container_width=True):
+                    with st.spinner("🔍 Cloning and analyzing repository..."):
+                        handle_github_upload(repo_url)
+                        st.success("✅ Repository Analysis Complete! View results in the File Explorer tab.")
+
+        # Add custom CSS for the upload section
+        st.markdown("""
+            <style>
+            .upload-section {
+                margin: 2rem 0;
+            }
+            .section-title {
+                color: #1E88E5;
+                font-size: 2.2em;
+                margin-bottom: 1rem;
+                font-weight: 600;
+            }
+            .section-description {
+                color: #424242;
+                margin-bottom: 1.5rem;
+                font-size: 1.1em;
+                line-height: 1.6;
+            }
+            .feature-card {
+                background: white;
+                padding: 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+                margin: 1rem 0;
+                transition: transform 0.2s;
+            }
+            .feature-card:hover {
+                transform: translateY(-5px);
+            }
+            .icon-container {
+                text-align: center;
+                font-size: 3em;
+                color: #1E88E5;
+                margin-bottom: 1rem;
+            }
+            .feature-card h3 {
+                color: #1E88E5;
+                text-align: center;
+                font-size: 1.4em;
+                margin-bottom: 1rem;
+            }
+            .feature-card p {
+                color: #424242;
+                text-align: center;
+                font-size: 1em;
+                line-height: 1.5;
+                margin-bottom: 1rem;
+            }
+            .feature-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                background: #f8f9fa;
+                border-radius: 8px;
+                padding: 1rem;
+            }
+            .feature-list li {
+                color: #666;
+                font-size: 0.9em;
+                margin-bottom: 0.5rem;
+            }
+            .feature-list li:last-child {
+                margin-bottom: 0;
+            }
+            </style>
+        """, unsafe_allow_html=True)
 
         # Enhanced features section
         st.markdown("""
@@ -729,54 +798,7 @@ def main():
                             )
                     
                     with metrics_tab:
-                        if st.session_state.current_file in st.session_state.uploaded_files:
-                            file_metrics = st.session_state.uploaded_files[st.session_state.current_file]
-                            raw_metrics = file_metrics.get('raw_metrics', {})
-                            
-                            # Display raw metrics using Streamlit's native components
-                            st.subheader("Code Statistics")
-                            metrics_data = pd.DataFrame({
-                                'Metric': [
-                                    'Total Lines',
-                                    'Code Lines',
-                                    'Comment Lines',
-                                    'Blank Lines',
-                                    'Average Method Length',
-                                    'Comment Ratio'
-                                ],
-                                'Value': [
-                                    raw_metrics.get('loc', 0),
-                                    raw_metrics.get('sloc', 0),
-                                    raw_metrics.get('comments', 0) + raw_metrics.get('multi', 0),
-                                    raw_metrics.get('blank', 0),
-                                    raw_metrics.get('average_method_length', 0),
-                                    f"{raw_metrics.get('comment_ratio', 0) * 100:.1f}%"
-                                ]
-                            })
-                            st.dataframe(
-                                metrics_data,
-                                hide_index=True,
-                                use_container_width=True
-                            )
-                            
-                            # Add visualizations
-                            st.subheader("Code Composition")
-                            composition_data = {
-                                'Category': ['Code', 'Comments', 'Blank'],
-                                'Lines': [
-                                    raw_metrics.get('sloc', 0),
-                                    raw_metrics.get('comments', 0) + raw_metrics.get('multi', 0),
-                                    raw_metrics.get('blank', 0)
-                                ]
-                            }
-                            fig = px.pie(
-                                composition_data,
-                                values='Lines',
-                                names='Category',
-                                title='Code Composition',
-                                color_discrete_sequence=['#1E88E5', '#43A047', '#FB8C00']
-                            )
-                            st.plotly_chart(fig, use_container_width=True)
+                        display_metrics_tab(file_metrics)
                     
                     with issues_tab:
                         if st.session_state.current_file in st.session_state.uploaded_files:
@@ -878,6 +900,16 @@ def handle_file_upload(uploaded_file):
     """Handle single file upload."""
     if uploaded_file is not None:
         try:
+            # Check file extension
+            file_ext = Path(uploaded_file.name).suffix.lower()
+            supported_extensions = []
+            for lang in config['supported_languages'].values():
+                supported_extensions.extend(lang['extensions'])
+            
+            if file_ext not in supported_extensions:
+                st.error(f"Unsupported file type. Supported extensions: {', '.join(supported_extensions)}")
+                return False
+            
             # Create temp directory if it doesn't exist
             temp_dir = Path("temp_analysis")
             temp_dir.mkdir(exist_ok=True)
@@ -891,8 +923,10 @@ def handle_file_upload(uploaded_file):
             analyzer = CodeAnalyzer(config)
             file_metrics = analyzer.analyze_file(str(file_path))
             
-            # Update session state
-            st.session_state.uploaded_files = {str(file_path): file_metrics}
+            # Update session state with the new file
+            if 'uploaded_files' not in st.session_state:
+                st.session_state.uploaded_files = {}
+            st.session_state.uploaded_files[str(file_path)] = file_metrics
             st.session_state.current_file = str(file_path)
             
             # Update statistics after analysis
@@ -920,81 +954,53 @@ def handle_zip_upload(uploaded_zip):
                 f.write(uploaded_zip.getbuffer())
             
             # Extract ZIP contents
+            extract_dir = temp_dir / Path(uploaded_zip.name).stem
             with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-                zip_ref.extractall(temp_dir)
+                zip_ref.extractall(extract_dir)
             
             # Initialize analyzer with config
             analyzer = CodeAnalyzer(config)
-            uploaded_files = {}
-            total_metrics = {
-                'complexity': {'score': 0, 'issues': []},
-                'maintainability': {'score': 0, 'issues': []},
-                'code_smells': [],
-                'raw_metrics': {
-                    'loc': 0, 'lloc': 0, 'sloc': 0,
-                    'comments': 0, 'multi': 0, 'blank': 0,
-                    'classes': 0, 'functions': 0,
-                    'average_method_length': 0,
-                    'max_complexity': 0,
-                    'comment_ratio': 0
-                }
-            }
             
-            file_count = 0
+            # Reset uploaded files for new ZIP
+            st.session_state.uploaded_files = {}
             
-            # Analyze all Python files
-            for root, _, files in os.walk(temp_dir):
+            # Get all supported extensions
+            supported_extensions = []
+            for lang in config['supported_languages'].values():
+                supported_extensions.extend(lang['extensions'])
+            
+            # Analyze all supported files
+            files_found = False
+            for root, _, files in os.walk(extract_dir):
                 for file in files:
-                    if file.endswith('.py'):
-                        file_path = os.path.join(root, file)
+                    file_ext = Path(file).suffix.lower()
+                    if file_ext in supported_extensions:
+                        files_found = True
+                        file_path = Path(root) / file
                         try:
                             # Analyze individual file
-                            file_metrics = analyzer.analyze_file(file_path)
-                            uploaded_files[file_path] = file_metrics
+                            file_metrics = analyzer.analyze_file(str(file_path))
+                            st.session_state.uploaded_files[str(file_path)] = file_metrics
                             
-                            # Aggregate metrics for project-level analysis
-                            file_count += 1
-                            total_metrics['complexity']['score'] += file_metrics.get('complexity', {}).get('score', 0)
-                            total_metrics['complexity']['issues'].extend(file_metrics.get('complexity', {}).get('issues', []))
-                            total_metrics['maintainability']['score'] += file_metrics.get('maintainability', {}).get('score', 0)
-                            total_metrics['maintainability']['issues'].extend(file_metrics.get('maintainability', {}).get('issues', []))
-                            total_metrics['code_smells'].extend(file_metrics.get('code_smells', []))
-                            
-                            # Aggregate raw metrics
-                            raw = file_metrics.get('raw_metrics', {})
-                            for key in total_metrics['raw_metrics'].keys():
-                                if key in raw:
-                                    total_metrics['raw_metrics'][key] += raw[key]
-                            
-                            # Update max complexity
-                            total_metrics['raw_metrics']['max_complexity'] = max(
-                                total_metrics['raw_metrics']['max_complexity'],
-                                raw.get('max_complexity', 0)
+                            # Update statistics
+                            st.session_state.stats_manager.update_file_analysis(
+                                file,
+                                file_metrics
                             )
-                            
                         except Exception as e:
                             st.warning(f"Error analyzing {file}: {str(e)}")
             
-            # Calculate averages for project-level metrics
-            if file_count > 0:
-                total_metrics['complexity']['score'] /= file_count
-                total_metrics['maintainability']['score'] /= file_count
-                total_metrics['raw_metrics']['average_method_length'] = (
-                    total_metrics['raw_metrics']['average_method_length'] / file_count
-                )
-                total_metrics['raw_metrics']['comment_ratio'] = (
-                    (total_metrics['raw_metrics']['comments'] + total_metrics['raw_metrics']['multi']) /
-                    total_metrics['raw_metrics']['loc'] if total_metrics['raw_metrics']['loc'] > 0 else 0
-                )
+            if not files_found:
+                st.warning(f"No supported files found in the ZIP archive. Supported extensions: {', '.join(supported_extensions)}")
+                return False
             
-            # Update session state
-            st.session_state.uploaded_files = uploaded_files
-            st.session_state.project_analysis = total_metrics
+            # Set the first file as current
+            st.session_state.current_file = next(iter(st.session_state.uploaded_files))
             
-            # Update statistics
+            # Update project analysis
+            project_metrics = analyzer.analyze_project(str(extract_dir))
+            st.session_state.project_analysis = project_metrics
             st.session_state.stats_manager.update_project_analysis()
-            for file_path, metrics in uploaded_files.items():
-                st.session_state.stats_manager.update_file_analysis(file_path, metrics)
             
             return True
             
@@ -1004,40 +1010,64 @@ def handle_zip_upload(uploaded_zip):
 
 def handle_github_upload(repo_url):
     """Handle GitHub repository upload."""
-    clear_analysis_state()  # This will also clean up the upload directory
-    
     try:
         # Create a unique directory for this repository
         repo_name = repo_url.split('/')[-1].replace('.git', '')
-        repo_dir = config.UPLOAD_DIR / f"{repo_name}_{os.urandom(6).hex()}"
+        repo_dir = Path("temp_analysis") / f"{repo_name}_{os.urandom(6).hex()}"
+        repo_dir.mkdir(parents=True, exist_ok=True)
         
         # Clone the repository
         git.Repo.clone_from(repo_url, repo_dir)
         
-        # Only process supported file types
-        supported_extensions = {'.py', '.java', '.cpp', '.js', '.cs'}
+        # Reset uploaded files for new repository
+        st.session_state.uploaded_files = {}
+        
+        # Initialize analyzer
+        analyzer = CodeAnalyzer(config)
+        
+        # Get all supported extensions
+        supported_extensions = []
+        for lang in config['supported_languages'].values():
+            supported_extensions.extend(lang['extensions'])
+        
+        # Process all supported files
+        files_found = False
         for root, _, files in os.walk(repo_dir):
             for file in files:
-                if any(file.lower().endswith(ext) for ext in supported_extensions):
-                    file_path = os.path.join(root, file)
-                    rel_path = os.path.relpath(file_path, repo_dir)
-                    st.session_state.uploaded_files[rel_path] = file_path
+                file_ext = Path(file).suffix.lower()
+                if file_ext in supported_extensions:
+                    files_found = True
+                    file_path = Path(root) / file
+                    try:
+                        # Analyze file
+                        file_metrics = analyzer.analyze_file(str(file_path))
+                        st.session_state.uploaded_files[str(file_path)] = file_metrics
+                        
+                        # Update statistics
+                        st.session_state.stats_manager.update_file_analysis(
+                            file,
+                            file_metrics
+                        )
+                    except Exception as e:
+                        st.warning(f"Error analyzing {file}: {str(e)}")
         
-        if not st.session_state.uploaded_files:
-            st.warning("No supported code files found in the repository.")
-            return
+        if not files_found:
+            st.warning(f"No supported files found in the repository. Supported extensions: {', '.join(supported_extensions)}")
+            return False
         
-        # Analyze the project
-        with st.spinner("Analyzing project..."):
-            st.session_state.project_analysis = st.session_state.project_analyzer.analyze_project(str(repo_dir))
-            display_project_analysis()
-            
-            # Update statistics
-            st.session_state.stats_manager.update_project_analysis()
-            for file_path, metrics in st.session_state.uploaded_files.items():
-                st.session_state.stats_manager.update_file_analysis(file_path, metrics)
+        # Set the first file as current
+        st.session_state.current_file = next(iter(st.session_state.uploaded_files))
+        
+        # Update project analysis
+        project_metrics = analyzer.analyze_project(str(repo_dir))
+        st.session_state.project_analysis = project_metrics
+        st.session_state.stats_manager.update_project_analysis()
+        
+        return True
+        
     except Exception as e:
         st.error(f"Error cloning repository: {str(e)}")
+        return False
 
 def display_refactoring_options():
     """Display refactoring options and interface."""
@@ -1101,19 +1131,19 @@ def display_landing_stats():
     
     # Create a container with a gradient background for stats
     st.markdown("""
-        <div style='
+        <div style="
             background: linear-gradient(120deg, #1E88E5 0%, #42A5F5 100%);
             padding: 2rem;
             border-radius: 20px;
             margin: 2rem 0;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        '>
-            <h2 style='
+        ">
+            <h2 style="
                 color: white;
                 text-align: center;
                 margin-bottom: 2rem;
                 font-size: 2em;
-            '>
+            ">
                 Empowering Better Code Quality
             </h2>
         </div>
@@ -1123,44 +1153,32 @@ def display_landing_stats():
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.markdown("""
-            <div style='text-align: center;'>
-                <h1 style='color: #1E88E5; font-size: 2.5em; margin: 0;'>
-                    {}
-                </h1>
-                <p style='color: #666; font-size: 1.1em;'>Analysis Accuracy</p>
-            </div>
-        """.format(stats["analysis_accuracy"]), unsafe_allow_html=True)
+        st.metric(
+            "Analysis Accuracy",
+            f"{stats['analysis_accuracy']}%",
+            help="Overall analysis accuracy"
+        )
     
     with col2:
-        st.markdown("""
-            <div style='text-align: center;'>
-                <h1 style='color: #1E88E5; font-size: 2.5em; margin: 0;'>
-                    {}
-                </h1>
-                <p style='color: #666; font-size: 1.1em;'>Code Metrics</p>
-            </div>
-        """.format(stats["code_metrics"]), unsafe_allow_html=True)
+        st.metric(
+            "Code Metrics",
+            f"{stats['code_metrics']}+",
+            help="Available code quality metrics"
+        )
     
     with col3:
-        st.markdown("""
-            <div style='text-align: center;'>
-                <h1 style='color: #1E88E5; font-size: 2.5em; margin: 0;'>
-                    {}
-                </h1>
-                <p style='color: #666; font-size: 1.1em;'>Projects Analyzed</p>
-            </div>
-        """.format(stats["projects_analyzed"]), unsafe_allow_html=True)
+        st.metric(
+            "Projects Analyzed",
+            stats['projects_analyzed'],
+            help="Total projects analyzed"
+        )
     
     with col4:
-        st.markdown("""
-            <div style='text-align: center;'>
-                <h1 style='color: #1E88E5; font-size: 2.5em; margin: 0;'>
-                    {}
-                </h1>
-                <p style='color: #666; font-size: 1.1em;'>Availability</p>
-            </div>
-        """.format(stats["availability"]), unsafe_allow_html=True)
+        st.metric(
+            "Availability",
+            stats['availability'],
+            help="System availability"
+        )
     
     # Display detailed statistics
     st.markdown("### Project Impact")
@@ -1174,8 +1192,34 @@ def display_landing_stats():
     with col2:
         # Language distribution
         st.subheader("Language Distribution")
-        lang_data = stats["languages"]
-        st.bar_chart(lang_data)
+        languages = stats.get("languages", {})
+        if languages:
+            # Create a proper DataFrame for language distribution
+            lang_data = pd.DataFrame(
+                data={
+                    'Language': list(languages.keys()),
+                    'Count': list(languages.values())
+                }
+            ).sort_values('Count', ascending=False)
+            
+            # Create a bar chart using Plotly
+            fig = px.bar(
+                lang_data,
+                x='Language',
+                y='Count',
+                title='Language Distribution',
+                color='Count',
+                color_continuous_scale='Blues'
+            )
+            fig.update_layout(
+                showlegend=False,
+                xaxis_title="",
+                yaxis_title="Files",
+                plot_bgcolor='white'
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("No language statistics available yet")
     
     # Quality improvements
     st.markdown("### Quality Improvements")
@@ -1183,11 +1227,77 @@ def display_landing_stats():
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.metric("Complexity Reduced", improvements["complexity_reduced"])
+        st.metric(
+            "Complexity Reduced",
+            f"{improvements.get('complexity_reduced', 0)}%",
+            help="Reduction in code complexity"
+        )
     with col2:
-        st.metric("Maintainability Improved", improvements["maintainability_improved"])
+        st.metric(
+            "Maintainability Improved",
+            f"{improvements.get('maintainability_improved', 0)}%",
+            help="Improvement in code maintainability"
+        )
     with col3:
-        st.metric("Bugs Fixed", improvements["bugs_fixed"])
+        st.metric(
+            "Bugs Fixed",
+            improvements.get("bugs_fixed", 0),
+            help="Number of potential bugs identified and fixed"
+        )
+
+def display_metrics_tab(file_metrics):
+    """Display metrics in a formatted tab."""
+    if not file_metrics:
+        st.info("No metrics available for this file.")
+        return
+        
+    raw_metrics = file_metrics.get('raw_metrics', {})
+    
+    # Create metrics DataFrame with proper typing
+    metrics_data = pd.DataFrame({
+        'Metric': [
+            'Total Lines',
+            'Code Lines',
+            'Comment Lines',
+            'Blank Lines',
+            'Average Method Length',
+            'Comment Ratio'
+        ],
+        'Value': [
+            str(raw_metrics.get('loc', 0)),
+            str(raw_metrics.get('sloc', 0)),
+            str(raw_metrics.get('comments', 0) + raw_metrics.get('multi', 0)),
+            str(raw_metrics.get('blank', 0)),
+            str(raw_metrics.get('average_method_length', 0)),
+            f"{raw_metrics.get('comment_ratio', 0) * 100:.1f}%"
+        ]
+    })
+    
+    st.dataframe(
+        metrics_data,
+        hide_index=True,
+        use_container_width=True
+    )
+    
+    # Add visualizations
+    st.subheader("Code Composition")
+    composition_data = pd.DataFrame({
+        'Category': ['Code', 'Comments', 'Blank'],
+        'Lines': [
+            raw_metrics.get('sloc', 0),
+            raw_metrics.get('comments', 0) + raw_metrics.get('multi', 0),
+            raw_metrics.get('blank', 0)
+        ]
+    })
+    
+    fig = px.pie(
+        composition_data,
+        values='Lines',
+        names='Category',
+        title='Code Composition',
+        color_discrete_sequence=['#1E88E5', '#43A047', '#FB8C00']
+    )
+    st.plotly_chart(fig, use_container_width=True)
 
 if __name__ == "__main__":
     main() 
