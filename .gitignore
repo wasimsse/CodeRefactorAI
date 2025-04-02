@@ -22,19 +22,35 @@ wheels/
 
 # Virtual Environment
 venv/
-env/
 ENV/
+env/
 
 # IDE
 .idea/
 .vscode/
 *.swp
 *.swo
+
+# Local development
+.env
+.env.local
+.env.*.local
+
+# Local TODO list
+TODO.md
+
+# Data directory
+data/
+
+# Logs
+*.log
+
+# System files
 .DS_Store
+Thumbs.db
 
 # Project specific
 temp_analysis/
-.env
 *.log
 uploads/
 analysis_results/
