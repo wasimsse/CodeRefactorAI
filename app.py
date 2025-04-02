@@ -128,12 +128,19 @@ if 'project_analysis' not in st.session_state:
 if 'current_file' not in st.session_state:
     st.session_state.current_file = None
 
-# Initialize configuration
+# Configuration for supported programming languages and their analysis settings
 config = {
+    # Basic analysis configuration
     'max_line_length': 100,
     'max_function_length': 50,
     'max_complexity': 10,
     'min_comment_ratio': 0.1,
+    
+    # Supported programming languages configuration
+    # Each language includes:
+    # - extensions: List of file extensions
+    # - name: Display name
+    # - icon: Emoji icon for UI
     'supported_languages': {
         'python': {
             'extensions': ['.py'],
@@ -897,10 +904,26 @@ def main():
             st.info("Select a file from the File Explorer to start refactoring.")
 
 def handle_file_upload(uploaded_file):
-    """Handle single file upload."""
+    """
+    Handle single file upload and analysis.
+    
+    This function processes individual source code files in any supported language.
+    It performs the following steps:
+    1. Validates file extension against supported languages
+    2. Saves the file to a temporary directory
+    3. Analyzes the file using the CodeAnalyzer
+    4. Updates session state with analysis results
+    5. Updates statistics for the analyzed file
+    
+    Args:
+        uploaded_file: StreamlitUploadedFile object containing the source code
+        
+    Returns:
+        bool: True if analysis was successful, False otherwise
+    """
     if uploaded_file is not None:
         try:
-            # Check file extension
+            # Validate file extension
             file_ext = Path(uploaded_file.name).suffix.lower()
             supported_extensions = []
             for lang in config['supported_languages'].values():
@@ -910,26 +933,24 @@ def handle_file_upload(uploaded_file):
                 st.error(f"Unsupported file type. Supported extensions: {', '.join(supported_extensions)}")
                 return False
             
-            # Create temp directory if it doesn't exist
+            # Process and analyze file
             temp_dir = Path("temp_analysis")
             temp_dir.mkdir(exist_ok=True)
             
-            # Save uploaded file
             file_path = temp_dir / uploaded_file.name
             with open(file_path, "wb") as f:
                 f.write(uploaded_file.getbuffer())
             
-            # Analyze file
             analyzer = CodeAnalyzer(config)
             file_metrics = analyzer.analyze_file(str(file_path))
             
-            # Update session state with the new file
+            # Update session state
             if 'uploaded_files' not in st.session_state:
                 st.session_state.uploaded_files = {}
             st.session_state.uploaded_files[str(file_path)] = file_metrics
             st.session_state.current_file = str(file_path)
             
-            # Update statistics after analysis
+            # Update statistics
             st.session_state.stats_manager.update_file_analysis(
                 uploaded_file.name,
                 file_metrics
@@ -941,35 +962,47 @@ def handle_file_upload(uploaded_file):
             return False
 
 def handle_zip_upload(uploaded_zip):
-    """Handle ZIP file upload."""
+    """
+    Handle ZIP file upload and project analysis.
+    
+    This function processes ZIP archives containing multiple source files.
+    It supports all configured programming languages and performs:
+    1. Extracts ZIP contents to a temporary directory
+    2. Recursively analyzes all supported source files
+    3. Updates session state with analysis results
+    4. Generates project-wide statistics
+    
+    Args:
+        uploaded_zip: StreamlitUploadedFile object containing the ZIP archive
+        
+    Returns:
+        bool: True if analysis was successful, False otherwise
+    """
     if uploaded_zip is not None:
         try:
-            # Create temp directory
+            # Setup temporary directories
             temp_dir = Path("temp_analysis")
             temp_dir.mkdir(exist_ok=True)
             
-            # Save and extract ZIP file
+            # Extract ZIP contents
             zip_path = temp_dir / uploaded_zip.name
             with open(zip_path, "wb") as f:
                 f.write(uploaded_zip.getbuffer())
             
-            # Extract ZIP contents
             extract_dir = temp_dir / Path(uploaded_zip.name).stem
             with zipfile.ZipFile(zip_path, 'r') as zip_ref:
                 zip_ref.extractall(extract_dir)
             
-            # Initialize analyzer with config
+            # Initialize analysis
             analyzer = CodeAnalyzer(config)
-            
-            # Reset uploaded files for new ZIP
             st.session_state.uploaded_files = {}
             
-            # Get all supported extensions
+            # Get supported file extensions
             supported_extensions = []
             for lang in config['supported_languages'].values():
                 supported_extensions.extend(lang['extensions'])
             
-            # Analyze all supported files
+            # Process all supported files
             files_found = False
             for root, _, files in os.walk(extract_dir):
                 for file in files:
@@ -994,10 +1027,10 @@ def handle_zip_upload(uploaded_zip):
                 st.warning(f"No supported files found in the ZIP archive. Supported extensions: {', '.join(supported_extensions)}")
                 return False
             
-            # Set the first file as current
+            # Set initial file selection
             st.session_state.current_file = next(iter(st.session_state.uploaded_files))
             
-            # Update project analysis
+            # Generate and update project analysis
             project_metrics = analyzer.analyze_project(str(extract_dir))
             st.session_state.project_analysis = project_metrics
             st.session_state.stats_manager.update_project_analysis()
@@ -1009,23 +1042,38 @@ def handle_zip_upload(uploaded_zip):
             return False
 
 def handle_github_upload(repo_url):
-    """Handle GitHub repository upload."""
+    """
+    Handle GitHub repository analysis.
+    
+    This function clones and analyzes GitHub repositories:
+    1. Creates a unique directory for the repository
+    2. Clones the repository using git
+    3. Analyzes all supported source files
+    4. Generates project-wide metrics and statistics
+    
+    Supports all configured programming languages and maintains
+    proper file organization for multi-language projects.
+    
+    Args:
+        repo_url: String URL of the GitHub repository
+        
+    Returns:
+        bool: True if analysis was successful, False otherwise
+    """
     try:
-        # Create a unique directory for this repository
+        # Setup repository directory
         repo_name = repo_url.split('/')[-1].replace('.git', '')
         repo_dir = Path("temp_analysis") / f"{repo_name}_{os.urandom(6).hex()}"
         repo_dir.mkdir(parents=True, exist_ok=True)
         
-        # Clone the repository
+        # Clone repository
         git.Repo.clone_from(repo_url, repo_dir)
         
-        # Reset uploaded files for new repository
+        # Initialize analysis
         st.session_state.uploaded_files = {}
-        
-        # Initialize analyzer
         analyzer = CodeAnalyzer(config)
         
-        # Get all supported extensions
+        # Get supported file extensions
         supported_extensions = []
         for lang in config['supported_languages'].values():
             supported_extensions.extend(lang['extensions'])
@@ -1055,10 +1103,10 @@ def handle_github_upload(repo_url):
             st.warning(f"No supported files found in the repository. Supported extensions: {', '.join(supported_extensions)}")
             return False
         
-        # Set the first file as current
+        # Set initial file selection
         st.session_state.current_file = next(iter(st.session_state.uploaded_files))
         
-        # Update project analysis
+        # Generate and update project analysis
         project_metrics = analyzer.analyze_project(str(repo_dir))
         st.session_state.project_analysis = project_metrics
         st.session_state.stats_manager.update_project_analysis()
@@ -1246,14 +1294,26 @@ def display_landing_stats():
         )
 
 def display_metrics_tab(file_metrics):
-    """Display metrics in a formatted tab."""
+    """
+    Display code metrics in a formatted tab view.
+    
+    This function creates a visual representation of code metrics including:
+    - Basic statistics (lines of code, comments, etc.)
+    - Code composition pie chart
+    - Quality metrics
+    
+    All numeric values are properly formatted as strings to avoid Arrow conversion issues.
+    
+    Args:
+        file_metrics: Dictionary containing the analysis results for a file
+    """
     if not file_metrics:
         st.info("No metrics available for this file.")
         return
         
     raw_metrics = file_metrics.get('raw_metrics', {})
     
-    # Create metrics DataFrame with proper typing
+    # Create metrics DataFrame with proper string typing to avoid Arrow conversion issues
     metrics_data = pd.DataFrame({
         'Metric': [
             'Total Lines',
@@ -1279,7 +1339,7 @@ def display_metrics_tab(file_metrics):
         use_container_width=True
     )
     
-    # Add visualizations
+    # Visualize code composition
     st.subheader("Code Composition")
     composition_data = pd.DataFrame({
         'Category': ['Code', 'Comments', 'Blank'],
