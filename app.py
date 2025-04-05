@@ -23,6 +23,7 @@ from project_analyzer import ProjectAnalyzer
 from visualization_manager import VisualizationManager
 from dataset_analyzer import DatasetAnalyzer
 from stats_manager import StatsManager
+from datetime import datetime
 
 # Load environment variables
 load_dotenv()
@@ -1118,30 +1119,393 @@ def handle_github_upload(repo_url):
         return False
 
 def display_refactoring_options():
-    """Display refactoring options and interface."""
-    st.subheader("Refactoring Options")
+    """Display the refactoring interface with enhanced UI and features."""
+    # Initialize session state variables if they don't exist
+    if 'current_metrics' not in st.session_state:
+        st.session_state.current_metrics = {}
+    if 'current_file' not in st.session_state:
+        st.session_state.current_file = None
+    if 'refactoring_history' not in st.session_state:
+        st.session_state.refactoring_history = []
+    if 'current_code' not in st.session_state:
+        st.session_state.current_code = ""
+    if 'refactored_code' not in st.session_state:
+        st.session_state.refactored_code = ""
+    if 'selected_tab' not in st.session_state:
+        st.session_state.selected_tab = "🔍 Analysis & Selection"
+    if 'refactoring_suggestions' not in st.session_state:
+        st.session_state.refactoring_suggestions = []
+    if 'refactoring_model' not in st.session_state:
+        st.session_state.refactoring_model = "GPT-4"
+    if 'refactoring_goals' not in st.session_state:
+        st.session_state.refactoring_goals = []
+    if 'refactoring_constraints' not in st.session_state:
+        st.session_state.refactoring_constraints = []
     
-    # Model selection
-    model_provider = st.selectbox(
-        "Select AI Model Provider",
-        ["OpenAI", "Anthropic", "Google", "Cohere"]
-    )
+    # Check if files are available
+    if 'uploaded_files' not in st.session_state or not st.session_state.uploaded_files:
+        st.warning("Please upload or select files to refactor first.")
+        return
+        
+    files = list(st.session_state.uploaded_files.keys())
+    if not files:
+        st.warning("No files available for refactoring.")
+        return
     
-    model = st.selectbox(
-        "Select Model",
-        ["gpt-4", "gpt-3.5-turbo", "claude-3-opus-20240229", "claude-3-sonnet-20240229", "gemini-pro", "command"]
-    )
+    # Header with gradient background
+    st.markdown("""
+        <div style="
+            background: linear-gradient(120deg, #1E88E5 0%, #42A5F5 100%);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        ">
+            <h2 style="
+                color: white;
+                text-align: center;
+                margin-bottom: 1rem;
+                font-size: 1.8em;
+            ">
+                Code Refactoring Assistant
+            </h2>
+        </div>
+    """, unsafe_allow_html=True)
     
-    # Refactoring options
-    st.checkbox("Improve code structure")
-    st.checkbox("Add proper documentation")
-    st.checkbox("Implement error handling")
-    st.checkbox("Apply SOLID principles")
-    
-    if st.button("Start Refactoring"):
-        with st.spinner("Refactoring in progress..."):
-            # Placeholder for actual refactoring
-            st.success("Refactoring completed!")
+    # Main layout with sidebar and content area
+    with st.container():
+        # File selection in a compact format at the top
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            selected_file = st.selectbox(
+                "Select file to refactor",
+                files,
+                index=files.index(st.session_state.current_file) if st.session_state.current_file in files else 0,
+                key="file_selector"
+            )
+        with col2:
+            if st.button("📋 Show File Info", use_container_width=True):
+                st.session_state.selected_tab = "🔍 Analysis & Selection"
+        
+        # Update session state when file selection changes
+        if selected_file != st.session_state.current_file:
+            st.session_state.current_file = selected_file
+            st.session_state.current_metrics = st.session_state.uploaded_files[selected_file]
+            if st.session_state.current_metrics:
+                st.session_state.current_code = st.session_state.current_metrics.get('content', '')
+                # Automatically switch to code editor tab
+                st.session_state.selected_tab = "✏️ Code Editor"
+        
+        # Create tabs for different aspects of refactoring
+        tab1, tab2, tab3, tab4 = st.tabs([
+            "🔍 Analysis & Selection",
+            "✏️ Code Editor",
+            "🎯 Refactoring Options",
+            "👀 Preview & Impact"
+        ])
+        
+        # Display the selected tab content
+        if st.session_state.selected_tab == "🔍 Analysis & Selection":
+            with tab1:
+                col1, col2 = st.columns([2, 1])
+                
+                with col1:
+                    st.markdown("#### Current Code")
+                    with st.expander("View Code", expanded=True):
+                        if st.session_state.current_metrics:
+                            st.code(st.session_state.current_metrics.get('content', ''), language='python')
+                        else:
+                            st.info("No code content available for the selected file.")
+                
+                with col2:
+                    st.markdown("#### Code Analysis")
+                    if st.session_state.current_metrics:
+                        metrics = st.session_state.current_metrics.get('metrics', {})
+                        
+                        # Quality metrics
+                        st.metric("Maintainability", f"{metrics.get('maintainability', 0):.1f}")
+                        st.metric("Complexity", f"{metrics.get('complexity', 0):.1f}")
+                        
+                        # Code smells
+                        smells = metrics.get('code_smells', [])
+                        if smells:
+                            st.markdown("**Detected Issues:**")
+                            for smell in smells:
+                                st.warning(smell)
+                        else:
+                            st.success("No code smells detected")
+                        
+                        # Language detection
+                        file_ext = os.path.splitext(st.session_state.current_file)[1].lower()
+                        language = "Unknown"
+                        for lang, info in config['supported_languages'].items():
+                            if file_ext in info['extensions']:
+                                language = info['name']
+                                break
+                        
+                        st.markdown(f"**Language:** {language}")
+                        
+                        # File size
+                        file_size = os.path.getsize(st.session_state.current_file)
+                        st.markdown(f"**File Size:** {file_size / 1024:.1f} KB")
+                    else:
+                        st.info("No metrics available for the selected file.")
+        
+        elif st.session_state.selected_tab == "✏️ Code Editor":
+            with tab2:
+                st.markdown("#### Code Editor")
+                
+                if st.session_state.current_code:
+                    # Editor options in a compact format
+                    col1, col2, col3 = st.columns([2, 1, 1])
+                    with col1:
+                        editor_options = st.radio(
+                            "Editor Options",
+                            ["Syntax Highlighting", "Line Numbers", "Auto-indent"],
+                            horizontal=True
+                        )
+                    with col2:
+                        if st.button("💾 Save", use_container_width=True):
+                            try:
+                                with open(st.session_state.current_file, 'w') as f:
+                                    f.write(st.session_state.current_code)
+                                st.success("Changes saved successfully!")
+                            except Exception as e:
+                                st.error(f"Error saving changes: {str(e)}")
+                    with col3:
+                        if st.button("↺ Reset", use_container_width=True):
+                            st.session_state.current_code = st.session_state.uploaded_files[st.session_state.current_file].get('content', '')
+                            st.experimental_rerun()
+                    
+                    # Code editor with session state
+                    edited_code = st.text_area(
+                        "Edit Code",
+                        value=st.session_state.current_code,
+                        height=400,
+                        key="code_editor"
+                    )
+                    
+                    # Update session state with edited code
+                    if edited_code != st.session_state.current_code:
+                        st.session_state.current_code = edited_code
+                else:
+                    st.info("No code available to edit. Please select a file first.")
+        
+        elif st.session_state.selected_tab == "🎯 Refactoring Options":
+            with tab3:
+                # Refactoring configuration
+                col1, col2 = st.columns([1, 1])
+                
+                with col1:
+                    st.markdown("#### Model Selection")
+                    model = st.selectbox(
+                        "Select AI Model",
+                        ["GPT-4", "Claude", "Local Model"],
+                        help="Choose the AI model for refactoring",
+                        key="model_selector"
+                    )
+                    st.session_state.refactoring_model = model
+                    
+                    st.markdown("#### Scope")
+                    scope = st.radio(
+                        "Select refactoring scope",
+                        ["File", "Function", "Class", "Module"],
+                        horizontal=True
+                    )
+                    
+                    st.markdown("#### Primary Goals")
+                    goals = st.multiselect(
+                        "Select refactoring goals",
+                        [
+                            "Improve Code Structure",
+                            "Enhance Readability",
+                            "Reduce Complexity",
+                            "Apply SOLID Principles",
+                            "Optimize Performance",
+                            "Add Documentation",
+                            "Fix Code Smells"
+                        ],
+                        key="goals_selector"
+                    )
+                    st.session_state.refactoring_goals = goals
+                
+                with col2:
+                    st.markdown("#### Constraints")
+                    constraints = st.multiselect(
+                        "Select constraints",
+                        [
+                            "Maintain Backward Compatibility",
+                            "Preserve Function Signatures",
+                            "Keep Existing Comments",
+                            "Follow PEP 8",
+                            "Minimize Changes"
+                        ],
+                        key="constraints_selector"
+                    )
+                    st.session_state.refactoring_constraints = constraints
+                    
+                    st.markdown("#### Advanced Settings")
+                    with st.expander("Configure Advanced Settings"):
+                        st.slider("Max Changes", 0, 100, 50, help="Maximum percentage of code to change")
+                        st.slider("Complexity Threshold", 0, 100, 70, help="Maximum allowed complexity")
+                        st.checkbox("Preserve Variable Names", value=True)
+                        st.checkbox("Add Type Hints", value=False)
+                        
+                        # Additional advanced options
+                        st.markdown("##### Code Style")
+                        st.selectbox(
+                            "Indentation Style",
+                            ["Spaces (4)", "Spaces (2)", "Tabs"],
+                            help="Select indentation style for refactored code"
+                        )
+                        
+                        st.selectbox(
+                            "Line Length",
+                            ["80", "100", "120", "No Limit"],
+                            help="Maximum line length for refactored code"
+                        )
+                        
+                        st.checkbox("Sort Imports", value=True, help="Sort import statements")
+                        st.checkbox("Remove Unused Imports", value=True, help="Remove unused import statements")
+                
+                # Generate button at the bottom
+                if st.button("Generate Refactoring Suggestions", type="primary", use_container_width=True):
+                    if not st.session_state.current_metrics:
+                        st.warning("Please select a file to refactor first.")
+                    else:
+                        with st.spinner("Analyzing code and generating suggestions..."):
+                            # Placeholder for actual refactoring suggestions
+                            st.session_state.refactoring_suggestions = [
+                                {
+                                    'title': 'Improve Function Structure',
+                                    'description': 'This refactoring improves the structure of the main function by breaking it down into smaller, more focused functions.',
+                                    'before': st.session_state.current_code,
+                                    'after': st.session_state.current_code.replace('def main():', 'def main():\n    """Main function that orchestrates the application flow."""'),
+                                    'impact': {
+                                        'complexity_reduction': 15,
+                                        'maintainability_improvement': 20,
+                                        'lines_changed': 5
+                                    }
+                                },
+                                {
+                                    'title': 'Add Type Hints',
+                                    'description': 'This refactoring adds type hints to function parameters and return values to improve code readability and enable better static analysis.',
+                                    'before': st.session_state.current_code,
+                                    'after': st.session_state.current_code.replace('def process_data(data):', 'def process_data(data: Dict[str, Any]) -> Dict[str, Any]:'),
+                                    'impact': {
+                                        'complexity_reduction': 5,
+                                        'maintainability_improvement': 25,
+                                        'lines_changed': 3
+                                    }
+                                }
+                            ]
+                            st.session_state.selected_tab = "👀 Preview & Impact"
+                            st.experimental_rerun()
+        
+        elif st.session_state.selected_tab == "👀 Preview & Impact":
+            with tab4:
+                if st.session_state.refactoring_suggestions:
+                    for i, suggestion in enumerate(st.session_state.refactoring_suggestions, 1):
+                        with st.expander(f"Suggestion {i}: {suggestion['title']}", expanded=True):
+                            st.markdown(suggestion['description'])
+                            
+                            # Before/After comparison
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                st.markdown("**Before:**")
+                                st.code(suggestion['before'], language='python')
+                            with col2:
+                                st.markdown("**After:**")
+                                st.code(suggestion['after'], language='python')
+                            
+                            # Impact metrics
+                            st.markdown("#### Impact Analysis")
+                            impact = suggestion.get('impact', {})
+                            imp_col1, imp_col2, imp_col3 = st.columns(3)
+                            
+                            with imp_col1:
+                                st.metric(
+                                    "Complexity Reduction",
+                                    f"{impact.get('complexity_reduction', 0)}%",
+                                    help="Reduction in code complexity"
+                                )
+                            with imp_col2:
+                                st.metric(
+                                    "Maintainability Improvement",
+                                    f"{impact.get('maintainability_improvement', 0)}%",
+                                    help="Improvement in code maintainability"
+                                )
+                            with imp_col3:
+                                st.metric(
+                                    "Lines Changed",
+                                    impact.get('lines_changed', 0),
+                                    help="Number of lines modified"
+                                )
+                            
+                            # Apply button
+                            if st.button(f"Apply Suggestion {i}", key=f"apply_{i}"):
+                                # Update session state with refactored code
+                                st.session_state.refactored_code = suggestion['after']
+                                st.session_state.current_code = suggestion['after']
+                                
+                                # Add to refactoring history
+                                st.session_state.refactoring_history.append({
+                                    'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                    'file': st.session_state.current_file,
+                                    'suggestion': suggestion['title'],
+                                    'impact': impact
+                                })
+                                
+                                # Save changes to file
+                                try:
+                                    with open(st.session_state.current_file, 'w') as f:
+                                        f.write(st.session_state.current_code)
+                                    st.success("Changes applied successfully!")
+                                except Exception as e:
+                                    st.error(f"Error saving changes: {str(e)}")
+                                
+                                # Show updated metrics
+                                st.markdown("#### Updated Metrics")
+                                new_metrics = {
+                                    'maintainability': 85.0,
+                                    'maintainability_delta': 20.0,
+                                    'complexity': 45.0,
+                                    'complexity_delta': -15.0
+                                }
+                                metric_col1, metric_col2 = st.columns(2)
+                                
+                                with metric_col1:
+                                    st.metric(
+                                        "New Maintainability",
+                                        f"{new_metrics.get('maintainability', 0):.1f}",
+                                        delta=f"{new_metrics.get('maintainability_delta', 0):.1f}"
+                                    )
+                                with metric_col2:
+                                    st.metric(
+                                        "New Complexity",
+                                        f"{new_metrics.get('complexity', 0):.1f}",
+                                        delta=f"{new_metrics.get('complexity_delta', 0):.1f}"
+                                    )
+                else:
+                    st.info("No refactoring suggestions available. Generate suggestions from the Refactoring Options tab.")
+                    if st.button("Go to Refactoring Options", use_container_width=True):
+                        st.session_state.selected_tab = "🎯 Refactoring Options"
+                        st.experimental_rerun()
+            
+            # Display refactoring history
+            if st.session_state.refactoring_history:
+                st.markdown("#### Refactoring History")
+                history_df = pd.DataFrame(st.session_state.refactoring_history)
+                st.dataframe(
+                    history_df,
+                    column_config={
+                        "timestamp": "Time",
+                        "file": "File",
+                        "suggestion": "Suggestion",
+                        "impact": "Impact"
+                    },
+                    hide_index=True
+                )
 
 def display_project_analysis():
     """Display project analysis results."""
