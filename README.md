@@ -1,21 +1,39 @@
-# RefactoringAI 🔄
+# CodeRefactorAI
 
-A powerful AI-powered code analysis and refactoring tool built with Streamlit.
+A powerful code analysis and refactoring tool built with Streamlit that helps developers improve code quality, maintainability, and complexity.
 
-## Features 🌟
+## Features
 
-- **Code Quality Analysis**: Comprehensive analysis of code complexity, maintainability, and best practices
-- **Multi-Format Support**: Analyze single files, project archives, or GitHub repositories
-- **Interactive Visualizations**: Visual representation of code metrics and quality indicators
-- **Smart Recommendations**: AI-powered suggestions for code improvements
-- **Project-Level Insights**: Aggregate analysis of entire codebases
+- **Code Analysis**: Analyze code files to identify complexity, maintainability issues, and code smells
+- **Refactoring Suggestions**: Get AI-powered suggestions for improving your code
+- **Metrics Visualization**: View detailed metrics about your codebase
+- **Project-wide Analysis**: Analyze entire projects to get comprehensive insights
+- **Binary File Handling**: Properly handles binary files during analysis
 
-## Installation 🛠️
+## Recent Improvements
+
+### Binary File Handling
+- Added detection of binary files based on file extensions and MIME types
+- Implemented skipping of binary files during analysis to prevent errors
+- Added proper error handling for unsupported encodings
+
+### Code Analysis Enhancements
+- Improved AST parsing for better code metrics
+- Enhanced complexity and maintainability scoring algorithms
+- Added detection of code smells and refactoring opportunities
+- Implemented detailed metrics for classes, methods, functions, and imports
+
+### UI Improvements
+- Fixed indentation issues throughout the codebase
+- Improved error handling and user feedback
+- Enhanced visualization of analysis results
+
+## Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/RefactoringAI.git
-cd RefactoringAI
+git clone https://github.com/yourusername/CodeRefactorAI.git
+cd CodeRefactorAI
 ```
 
 2. Create and activate a virtual environment:
@@ -29,26 +47,22 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## Usage 🚀
-
-1. Start the application:
+4. Run the application:
 ```bash
 streamlit run app.py
 ```
 
-2. Open your browser and navigate to:
-- Local: http://localhost:8501
-- Network: http://192.168.0.19:8501
+## Usage
 
-3. Choose your analysis method:
-- Upload a single Python file
-- Upload a project archive (ZIP)
-- Analyze a GitHub repository
+1. Upload code files or select a project directory
+2. View analysis results in the dashboard
+3. Explore refactoring suggestions
+4. Apply suggested improvements to your code
 
-## Project Structure 📁
+## Project Structure
 
 ```
-RefactoringAI/
+CodeRefactorAI/
 ├── app.py                 # Main Streamlit application
 ├── code_analyzer.py       # Code analysis logic
 ├── file_manager.py        # File handling utilities

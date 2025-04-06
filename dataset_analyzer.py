@@ -11,6 +11,8 @@ import time
 
 class DatasetAnalyzer:
     def __init__(self):
+        """Initialize DatasetAnalyzer."""
+        self.data = None
         self.benchmark_repos = {
             'Python': {
                 'Flask': {
@@ -62,6 +64,47 @@ class DatasetAnalyzer:
             }
         }
         
+    def load_data(self, data: pd.DataFrame):
+        """Load data for analysis."""
+        self.data = data
+    
+    def get_basic_stats(self) -> Dict[str, Any]:
+        """Get basic statistics about the dataset."""
+        if self.data is None:
+            return {}
+        
+        return {
+            'rows': len(self.data),
+            'columns': len(self.data.columns),
+            'missing_values': self.data.isnull().sum().to_dict(),
+            'dtypes': self.data.dtypes.astype(str).to_dict()
+        }
+    
+    def get_column_stats(self, column: str) -> Dict[str, Any]:
+        """Get statistics for a specific column."""
+        if self.data is None or column not in self.data.columns:
+            return {}
+        
+        stats = {}
+        series = self.data[column]
+        
+        if pd.api.types.is_numeric_dtype(series):
+            stats.update({
+                'mean': series.mean(),
+                'median': series.median(),
+                'std': series.std(),
+                'min': series.min(),
+                'max': series.max()
+            })
+        
+        stats.update({
+            'unique_values': series.nunique(),
+            'missing_values': series.isnull().sum(),
+            'dtype': str(series.dtype)
+        })
+        
+        return stats
+
     def clone_repository(self, url: str, temp_dir: str) -> str:
         """Clone a repository to a temporary directory."""
         try:
@@ -217,4 +260,7 @@ class DatasetAnalyzer:
             df_metrics = pd.DataFrame(metrics_data)
             st.dataframe(df_metrics)
         else:
-            st.warning("No detailed metrics available.") 
+            st.warning("No detailed metrics available.")
+
+# Create a default dataset analyzer instance
+dataset_analyzer = DatasetAnalyzer() 

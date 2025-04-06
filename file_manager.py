@@ -11,14 +11,15 @@ import mimetypes
 from datetime import datetime
 
 class FileManager:
-    def __init__(self, config):
-        """Initialize FileManager with configuration."""
-        self.config = config
-        self.upload_dir = Path(config.UPLOAD_DIR)
-        self.cache_dir = Path(config.CACHE_DIR)
+    def __init__(self, base_dir: Optional[str] = None):
+        """Initialize FileManager with a base directory."""
+        self.base_dir = base_dir or tempfile.mkdtemp()
+        self.files: Dict[str, str] = {}
         
         # Create necessary directories
+        self.upload_dir = Path(self.base_dir) / "uploads"
         self.upload_dir.mkdir(exist_ok=True)
+        self.cache_dir = Path(self.base_dir) / "cache"
         self.cache_dir.mkdir(exist_ok=True)
         
         # Initialize MIME type detector
@@ -35,13 +36,16 @@ class FileManager:
         else:
             return [self._handle_single_file_upload(uploaded_file)]
 
-    def read_file(self, file_path: str) -> str:
-        """Read and return the contents of a file."""
+    def read_file(self, file_path: str) -> Optional[str]:
+        """Read and return the content of a file."""
+        full_path = self.files.get(file_path) or os.path.join(self.base_dir, file_path)
+        
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(full_path, 'r', encoding='utf-8') as f:
                 return f.read()
         except Exception as e:
-            raise Exception(f"Error reading file {file_path}: {str(e)}")
+            print(f"Error reading file {file_path}: {str(e)}")
+            return None
 
     def _handle_zip_upload(self, zip_file) -> List[str]:
         """Extract and process ZIP archive."""
@@ -121,6 +125,8 @@ class FileManager:
                 shutil.rmtree(self.cache_dir)
                 self.cache_dir.mkdir(exist_ok=True)
                 
+            # Clear managed files
+            self.files.clear()
         except Exception as e:
             raise Exception(f"Error during cleanup: {str(e)}")
 
@@ -268,7 +274,7 @@ class FileManager:
         # Create unique filename
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"{timestamp}_{uploaded_file.name}"
-        file_path = self.config.UPLOAD_DIR / filename
+        file_path = self.upload_dir / filename
         
         # Check file size
         if uploaded_file.size > self.config.MAX_FILE_SIZE:
@@ -411,4 +417,35 @@ class FileManager:
         with open(file_path, "rb") as f:
             for chunk in iter(lambda: f.read(4096), b""):
                 hash_md5.update(chunk)
-        return hash_md5.hexdigest() 
+        return hash_md5.hexdigest()
+
+    def save_file(self, file_path: str, content: str) -> str:
+        """Save a file with given content and return its path."""
+        full_path = os.path.join(self.base_dir, file_path)
+        os.makedirs(os.path.dirname(full_path), exist_ok=True)
+        
+        with open(full_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+        
+        self.files[file_path] = full_path
+        return full_path
+
+    def list_files(self) -> List[str]:
+        """Return a list of all managed files."""
+        return list(self.files.keys())
+    
+    def get_file_tree(self) -> Dict:
+        """Return a tree structure of all files."""
+        tree = {}
+        for file_path in self.files:
+            parts = file_path.split(os.sep)
+            current = tree
+            for part in parts[:-1]:
+                if part not in current:
+                    current[part] = {}
+                current = current[part]
+            current[parts[-1]] = file_path
+        return tree
+
+# Create a default file manager instance
+file_manager = FileManager() 

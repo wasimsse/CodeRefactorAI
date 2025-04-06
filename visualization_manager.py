@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-from typing import Dict
+from typing import Dict, List, Any
 import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
@@ -1433,4 +1433,7 @@ class VisualizationManager:
             st.markdown("""
             > 📚 Reference: This refactoring pattern is from Martin Fowler's Refactoring Catalog.
             > For more details, visit [refactoring.com/catalog](https://refactoring.com/catalog/)
-            """) 
+            """)
+
+# Create a default visualization manager instance
+visualization_manager = VisualizationManager() 

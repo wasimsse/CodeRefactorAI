@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Dict, Any
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
@@ -48,3 +48,18 @@ class Config(BaseModel):
         self.ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
         self.DEBUG = os.getenv("DEBUG", "false").lower() == "true"
         self.LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+
+    def get(self, key: str, default: Any = None) -> Any:
+        """Get a configuration value by key."""
+        return self.settings.get(key, default)
+    
+    def set(self, key: str, value: Any) -> None:
+        """Set a configuration value."""
+        self.settings[key] = value
+    
+    def update(self, updates: Dict[str, Any]) -> None:
+        """Update multiple configuration values."""
+        self.settings.update(updates)
+
+# Create a config instance that can be imported
+config = Config()
