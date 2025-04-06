@@ -1,42 +1,50 @@
-# CodeRefactorAI
+# RefactoringAI
 
-A powerful code analysis and refactoring tool built with Streamlit that helps developers improve code quality, maintainability, and complexity.
+A powerful AI-powered code refactoring and analysis tool that helps developers improve code quality, detect code smells, and suggest refactoring opportunities.
 
 ## Features
 
-- **Code Analysis**: Analyze code files to identify complexity, maintainability issues, and code smells
-- **Refactoring Suggestions**: Get AI-powered suggestions for improving your code
-- **Metrics Visualization**: View detailed metrics about your codebase
-- **Project-wide Analysis**: Analyze entire projects to get comprehensive insights
-- **Binary File Handling**: Properly handles binary files during analysis
+### Code Analysis
+- Basic code metrics (lines of code, complexity, etc.)
+- Advanced complexity analysis
+  - Cyclomatic complexity
+  - Cognitive complexity
+  - Halstead metrics
+- Code smell detection
+  - Bloaters
+  - Object-oriented abusers
+  - Change preventers
+  - Dispensables
+  - Couplers
+- Technical debt estimation
+- Refactoring suggestions
 
-## Recent Improvements
+### Advanced Analysis
+- Detailed complexity metrics visualization
+- Code smell categorization and severity assessment
+- Impact-based refactoring opportunities
+- Technical debt cost estimation
+- Project-wide analysis capabilities
 
-### Binary File Handling
-- Added detection of binary files based on file extensions and MIME types
-- Implemented skipping of binary files during analysis to prevent errors
-- Added proper error handling for unsupported encodings
-
-### Code Analysis Enhancements
-- Improved AST parsing for better code metrics
-- Enhanced complexity and maintainability scoring algorithms
-- Added detection of code smells and refactoring opportunities
-- Implemented detailed metrics for classes, methods, functions, and imports
-
-### UI Improvements
-- Fixed indentation issues throughout the codebase
-- Improved error handling and user feedback
-- Enhanced visualization of analysis results
+### Supported Languages
+- Python
+- Java
+- C++
+- C#
+- JavaScript/TypeScript
+- Go
+- Ruby
+- Rust
 
 ## Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/CodeRefactorAI.git
-cd CodeRefactorAI
+git clone https://github.com/yourusername/refactoringai.git
+cd refactoringai
 ```
 
-2. Create and activate a virtual environment:
+2. Create a virtual environment:
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
@@ -47,22 +55,64 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Run the application:
+## Usage
+
+1. Start the application:
 ```bash
 streamlit run app.py
 ```
 
-## Usage
+2. Access the web interface at `http://localhost:8501`
 
-1. Upload code files or select a project directory
-2. View analysis results in the dashboard
-3. Explore refactoring suggestions
-4. Apply suggested improvements to your code
+3. Upload your code files or connect to a GitHub repository
+
+4. Use the various tabs to:
+   - Upload and manage files
+   - View basic code analysis
+   - Access advanced analysis features
+   - Get refactoring suggestions
+
+## Advanced Analysis Features
+
+### Complexity Metrics
+- View detailed complexity metrics for each file
+- Compare different complexity measures
+- Identify highly complex code sections
+
+### Code Smells
+- Categorized code smell detection
+- Severity assessment
+- Detailed descriptions and suggestions
+- Visual representation of smell distribution
+
+### Refactoring Opportunities
+- Impact-based refactoring suggestions
+- Prioritized recommendations
+- Detailed refactoring steps
+- Cost-benefit analysis
+
+### Technical Debt
+- Hour-based technical debt estimation
+- Cost estimation
+- Distribution analysis
+- Project-wide debt assessment
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Project Structure
 
 ```
-CodeRefactorAI/
+RefactoringAI/
 ├── app.py                 # Main Streamlit application
 ├── code_analyzer.py       # Code analysis logic
 ├── file_manager.py        # File handling utilities

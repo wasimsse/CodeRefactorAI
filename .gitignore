@@ -31,6 +31,29 @@ env/
 *.swp
 *.swo
 
+# Models and large files
+models/
+*.model
+*.bin
+*.h5
+*.pkl
+*.joblib
+
+# Logs and databases
+*.log
+*.sqlite
+logs/
+*.db
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
 # Local development
 .env
 .env.local
@@ -41,13 +64,6 @@ TODO.md
 
 # Data directory
 data/
-
-# Logs
-*.log
-
-# System files
-.DS_Store
-Thumbs.db
 
 # Project specific
 temp_analysis/

@@ -158,11 +158,67 @@ def display_refactoring_options():
     
     with col1:
         st.markdown("#### Model Selection")
-        st.selectbox(
-            "Select model",
-            ["gpt-3.5-turbo", "gpt-4"],
-            key="refactoring_model"
+        
+        # Model type selector
+        model_type = st.radio(
+            "Model Type",
+            ["Cloud Models", "Local Models"],
+            key="model_type",
+            horizontal=True
         )
+        
+        if model_type == "Cloud Models":
+            model = st.selectbox(
+                "Select Cloud Model",
+                ["gpt-3.5-turbo", "gpt-4", "claude-3-opus"],
+                key="refactoring_model",
+                help="Cloud-based language models (requires API key)"
+            )
+        else:
+            model = st.selectbox(
+                "Select Local Model",
+                [
+                    "deepseek-coder-6.7b-instruct",
+                    "codellama-7b-instruct",
+                    "phi-2"
+                ],
+                key="refactoring_model",
+                help="Local models running on your machine (no API key required)"
+            )
+            
+            # Show model info
+            if model:
+                model_info = {
+                    "deepseek-coder-6.7b-instruct": {
+                        "Size": "6.7B parameters",
+                        "Type": "Code-specialized",
+                        "Context": "4096 tokens",
+                        "Description": "Optimized for code understanding and generation"
+                    },
+                    "codellama-7b-instruct": {
+                        "Size": "7B parameters",
+                        "Type": "Code-specialized",
+                        "Context": "4096 tokens",
+                        "Description": "Meta's code-specialized model with instruction tuning"
+                    },
+                    "phi-2": {
+                        "Size": "2.7B parameters",
+                        "Type": "General-purpose",
+                        "Context": "2048 tokens",
+                        "Description": "Microsoft's compact but powerful model"
+                    }
+                }
+                
+                st.markdown("##### Model Information")
+                info = model_info.get(model, {})
+                st.info(
+                    f"""
+                    **Size:** {info.get('Size')}  
+                    **Type:** {info.get('Type')}  
+                    **Context Length:** {info.get('Context')}  
+                    **Description:** {info.get('Description')}
+                    """
+                )
         
         st.markdown("#### Scope")
         st.radio(

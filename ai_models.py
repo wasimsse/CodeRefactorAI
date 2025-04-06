@@ -5,17 +5,20 @@ import anthropic
 import google.generativeai as genai
 import cohere
 from dotenv import load_dotenv
+from local_llm import LocalLLMManager
 
 load_dotenv()
 
 class AIModelManager:
     def __init__(self):
         """Initialize AI model manager."""
+        self.local_llm = LocalLLMManager()
         self.models = {
             'GPT-4': self._call_gpt4,
             'GPT-3.5': self._call_gpt35,
             'Claude': self._call_claude,
-            'PaLM': self._call_palm
+            'PaLM': self._call_palm,
+            **{model: self._call_local_llm for model in self.local_llm.get_available_models()}
         }
         self._initialize_api_keys()
         self._initialize_clients()
@@ -53,7 +56,7 @@ class AIModelManager:
         
         # Call model
         try:
-            refactored_code = await model_func(prompt)
+            refactored_code = await model_func(prompt, model)
             return refactored_code
         except Exception as e:
             raise Exception(f"Error during refactoring with {model}: {str(e)}")
@@ -75,7 +78,7 @@ class AIModelManager:
         prompt += ":\n\n```\n" + code + "\n```"
         return prompt
 
-    async def _call_gpt4(self, prompt: str) -> str:
+    async def _call_gpt4(self, prompt: str, _: str) -> str:
         """Call GPT-4 model."""
         try:
             response = await openai.ChatCompletion.acreate(
@@ -89,7 +92,7 @@ class AIModelManager:
         except Exception as e:
             raise Exception(f"GPT-4 API error: {str(e)}")
 
-    async def _call_gpt35(self, prompt: str) -> str:
+    async def _call_gpt35(self, prompt: str, _: str) -> str:
         """Call GPT-3.5 model."""
         try:
             response = await openai.ChatCompletion.acreate(
@@ -103,7 +106,7 @@ class AIModelManager:
         except Exception as e:
             raise Exception(f"GPT-3.5 API error: {str(e)}")
 
-    async def _call_claude(self, prompt: str) -> str:
+    async def _call_claude(self, prompt: str, _: str) -> str:
         """Call Claude model."""
         try:
             client = anthropic.Client()
@@ -116,7 +119,7 @@ class AIModelManager:
         except Exception as e:
             raise Exception(f"Claude API error: {str(e)}")
 
-    async def _call_palm(self, prompt: str) -> str:
+    async def _call_palm(self, prompt: str, _: str) -> str:
         """Call PaLM model."""
         try:
             response = genai.generate_text(prompt=prompt)
@@ -124,11 +127,19 @@ class AIModelManager:
         except Exception as e:
             raise Exception(f"PaLM API error: {str(e)}")
 
+    async def _call_local_llm(self, prompt: str, model: str) -> str:
+        """Call local LLM model."""
+        try:
+            return await self.local_llm.generate_refactoring(prompt, model, {})
+        except Exception as e:
+            raise Exception(f"Local LLM error: {str(e)}")
+
     def validate_api_keys(self) -> Dict[str, bool]:
         """Validate that all necessary API keys are present."""
         return {
             'GPT-4': bool(openai.api_key),
             'GPT-3.5': bool(openai.api_key),
             'Claude': bool(anthropic.api_key),
-            'PaLM': bool(genai.configure)
+            'PaLM': bool(genai.configure),
+            **{model: True for model in self.local_llm.get_available_models()}
         } 
