@@ -115,90 +115,489 @@ class CodeAnalyzer:
             with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
 
-            # For Python files, use Python-specific analysis
-            if ext == '.py':
-                tree = ast.parse(content)
-                
-                # Get basic metrics
-                basic_metrics = self._get_basic_metrics(content)
-                
-                # Get Python-specific analysis
-                python_analysis = self._analyze_python(content)
-                
-                # Calculate cyclomatic complexity
-                complexity_visitor = ComplexityVisitor.from_code(content)
-                total_complexity = sum(item.complexity for item in complexity_visitor.functions)
-                
-                # Calculate maintainability index
-                mi_score = radon_metrics.mi_visit(content, multi=True)
-                maintainability_score = min(100, max(0, mi_score))
-                
-                # Calculate raw metrics
-                raw_metrics = analyze(content)
-                
-                return {
-                    'file_path': file_path,
-                    'complexity': {
-                        'score': max(0, min(100, 100 - (total_complexity * 5))),
-                        'issues': python_analysis.get('code_smells', [])
-                    },
-                    'maintainability': {
-                        'score': maintainability_score,
-                        'issues': []
-                    },
-                    'code_smells': python_analysis.get('code_smells', []),
-                    'performance': {
-                        'score': 75,
-                        'issues': []
-                    },
-                    'raw_metrics': {
-                        'loc': raw_metrics.loc,
-                        'lloc': raw_metrics.lloc,
-                        'sloc': raw_metrics.sloc,
-                        'comments': raw_metrics.comments,
-                        'multi': raw_metrics.multi,
-                        'blank': raw_metrics.blank,
-                        'classes': python_analysis.get('class_count', 0),
-                        'functions': python_analysis.get('function_count', 0),
-                        'average_method_length': basic_metrics['average_line_length'],
-                        'max_complexity': total_complexity,
-                        'comment_ratio': (raw_metrics.comments + raw_metrics.multi) / raw_metrics.loc if raw_metrics.loc > 0 else 0
-                    },
-                    'halstead_metrics': python_analysis.get('halstead_metrics', self._get_default_halstead_metrics())
-                }
-            else:
-                # Use generic analysis for other file types
-                return self._analyze_generic(content)
-                
-        except Exception as e:
-            print(f"Error analyzing file: {str(e)}")
-            return {
+            # Initialize metrics dictionary with default values
+            metrics = {
                 'file_path': file_path,
-                'complexity': {'score': 50, 'issues': [f"Error analyzing complexity: {str(e)}"]},
-                'maintainability': {'score': 50, 'issues': [f"Error analyzing maintainability: {str(e)}"]},
-                'code_smells': [f"Error detecting code smells: {str(e)}"],
-                'performance': {'score': 50, 'issues': [f"Error analyzing performance: {str(e)}"]},
                 'raw_metrics': {
-                    'loc': 0, 'lloc': 0, 'sloc': 0,
-                    'comments': 0, 'multi': 0, 'blank': 0,
-                    'classes': 0, 'functions': 0,
+                    'loc': len(content.splitlines()),
+                    'sloc': 0,
+                    'comments': 0,
+                    'javadoc': 0,
+                    'multi': 0,
+                    'blank': 0,
+                    'classes': 0,
+                    'methods': 0,
+                    'functions': 0,
+                    'imports': 0,
+                    'packages': 0,
                     'average_method_length': 0,
-                    'max_complexity': 0,
                     'comment_ratio': 0
                 },
-                'halstead_metrics': self._get_default_halstead_metrics()
+                'declared_packages': [],
+                'imported_packages': [],
+                'complexity': {'score': 0, 'issues': []},
+                'maintainability': {'score': 0, 'issues': []},
+                'code_smells': [],
+                'refactoring_opportunities': []
             }
 
-    def _get_basic_metrics(self, content: str) -> Dict[str, Any]:
-        """Get basic code metrics."""
-        lines = content.split('\n')
-        non_empty_lines = [line for line in lines if line.strip()]
+            if ext == '.java':
+                try:
+                    # Initialize fresh metrics dictionary for each file
+                    metrics = {
+                        'file_path': file_path,
+                        'raw_metrics': {
+                            'loc': len(content.splitlines()),
+                            'sloc': 0,
+                            'comments': 0,
+                            'javadoc': 0,
+                            'multi': 0,
+                            'blank': 0,
+                            'classes': 0,
+                            'methods': 0,
+                            'functions': 0,
+                            'imports': 0,
+                            'packages': 0,
+                            'average_method_length': 0,
+                            'comment_ratio': 0
+                        },
+                        'declared_packages': [],
+                        'imported_packages': [],
+                        'complexity': {'score': 0, 'issues': []},
+                        'maintainability': {'score': 0, 'issues': []},
+                        'code_smells': [],
+                        'refactoring_opportunities': []
+                    }
+
+                    # Reset all counters and collections for fresh analysis
+                    lines = content.splitlines()
+                    total_lines = len(lines)
+                    comment_lines = set()  # Use set to avoid duplicates
+                    javadoc_blocks = []
+                    method_lengths = []
+                    method_complexities = []
+                    
+                    # First pass: Count comments and blank lines
+                    i = 0
+                    in_javadoc = False
+                    in_multi_comment = False
+                    current_javadoc = []
+                    total_comments = 0
+                    
+                    while i < total_lines:
+                        line = lines[i].strip()
+                        
+                        # Skip blank lines
+                        if not line:
+                            metrics['raw_metrics']['blank'] += 1
+                            i += 1
+                            continue
+                        
+                        # Handle Javadoc comments
+                        if line.startswith('/**'):
+                            in_javadoc = True
+                            current_javadoc = [line]
+                            comment_lines.add(i)
+                            total_comments += 1
+                            i += 1
+                            continue
+                            
+                        if in_javadoc:
+                            comment_lines.add(i)
+                            current_javadoc.append(line)
+                            total_comments += 1
+                            if line.endswith('*/'):
+                                in_javadoc = False
+                                if len(current_javadoc) > 1:  # More than just /** */
+                                    javadoc_blocks.append('\n'.join(current_javadoc))
+                                    metrics['raw_metrics']['javadoc'] += 1
+                                current_javadoc = []
+                            i += 1
+                            continue
+                        
+                        # Handle regular multi-line comments
+                        if line.startswith('/*'):
+                            in_multi_comment = True
+                            comment_lines.add(i)
+                            total_comments += 1
+                            i += 1
+                            while i < total_lines and '*/' not in lines[i].strip():
+                                comment_lines.add(i)
+                                total_comments += 1
+                                i += 1
+                            if i < total_lines:
+                                comment_lines.add(i)
+                                total_comments += 1
+                                metrics['raw_metrics']['multi'] += 1
+                                in_multi_comment = False
+                            i += 1
+                            continue
+                        
+                        # Handle single-line comments
+                        if line.startswith('//'):
+                            metrics['raw_metrics']['comments'] += 1
+                            comment_lines.add(i)
+                            total_comments += 1
+                            i += 1
+                            continue
+                        
+                        i += 1
+                    
+                    # Calculate SLOC (Source Lines of Code)
+                    metrics['raw_metrics']['sloc'] = total_lines - len(comment_lines) - metrics['raw_metrics']['blank']
+                    
+                    # Calculate comment ratio as percentage
+                    metrics['raw_metrics']['comments'] = total_comments  # Update total comments
+                    metrics['raw_metrics']['comment_ratio'] = (total_comments / total_lines * 100) if total_lines > 0 else 0
+                    
+                    # Second pass: Parse Java code structure
+                    tree = javalang.parse.parse(content)
+                    
+                    # Track package
+                    if tree.package:
+                        metrics['declared_packages'].append(tree.package.name)
+                        metrics['raw_metrics']['packages'] += 1
+                    
+                    # Track imports (only count actual imports)
+                    metrics['raw_metrics']['imports'] = len([imp for imp in tree.imports if imp.path])
+                    
+                    # Count classes and methods
+                    for path, node in tree.filter(javalang.tree.ClassDeclaration):
+                        metrics['raw_metrics']['classes'] += 1
+                        
+                        # Count constructors
+                        if hasattr(node, 'constructors'):
+                            metrics['raw_metrics']['methods'] += len(node.constructors)
+                            for constructor in node.constructors:
+                                if constructor.body:
+                                    method_lengths.append(len(str(constructor.body).splitlines()))
+                                    complexity = 1
+                                    for stmt in constructor.body:
+                                        if isinstance(stmt, (javalang.tree.IfStatement, javalang.tree.WhileStatement,
+                                                          javalang.tree.ForStatement, javalang.tree.DoStatement,
+                                                          javalang.tree.SwitchStatement)):
+                                            complexity += 1
+                                    method_complexities.append(complexity)
+                        
+                        # Count methods
+                        if hasattr(node, 'methods'):
+                            metrics['raw_metrics']['methods'] += len(node.methods)
+                            for method in node.methods:
+                                if method.body:
+                                    method_lengths.append(len(str(method.body).splitlines()))
+                                    complexity = 1
+                                    for stmt in method.body:
+                                        if isinstance(stmt, (javalang.tree.IfStatement, javalang.tree.WhileStatement,
+                                                          javalang.tree.ForStatement, javalang.tree.DoStatement,
+                                                          javalang.tree.SwitchStatement)):
+                                            complexity += 1
+                                    method_complexities.append(complexity)
+                    
+                    # Calculate averages
+                    avg_method_length = sum(method_lengths) / len(method_lengths) if method_lengths else 0
+                    avg_method_complexity = sum(method_complexities) / len(method_complexities) if method_complexities else 1
+                    
+                    # Calculate maintainability index with proper comment weighting
+                    length_score = 100 - min(100, (avg_method_length / 30) * 100)
+                    complexity_score = 100 - min(100, (avg_method_complexity / 5) * 100)
+                    comment_score = min(100, (metrics['raw_metrics']['comment_ratio'] * 2))  # Double weight for comments
+                    javadoc_coverage = (metrics['raw_metrics']['javadoc'] / metrics['raw_metrics']['methods'] * 100) if metrics['raw_metrics']['methods'] > 0 else 0
+                    
+                    maintainability_score = (
+                        (length_score * 0.3) +
+                        (complexity_score * 0.3) +
+                        (comment_score * 0.2) +
+                        (javadoc_coverage * 0.2)
+                    )
+                    
+                    metrics['maintainability']['score'] = round(maintainability_score, 1)
+                    
+                    # Calculate code quality score with proper documentation weight
+                    organization_score = 100 if metrics['raw_metrics']['packages'] > 0 else 75
+                    method_design_score = 100
+                    if avg_method_length > 30: method_design_score -= 25
+                    if avg_method_complexity > 5: method_design_score -= 25
+                    
+                    documentation_score = (javadoc_coverage * 0.6) + (comment_score * 0.4)  # Weight Javadoc more heavily
+                    error_handling_score = 100
+                    try_catch_count = len([node for path, node in tree.filter(javalang.tree.TryStatement)])
+                    if try_catch_count == 0 and metrics['raw_metrics']['methods'] > 5:
+                        error_handling_score = 85
+                    
+                    quality_score = (
+                        (organization_score * 0.25) +
+                        (method_design_score * 0.25) +
+                        (documentation_score * 0.25) +
+                        (error_handling_score * 0.25)
+                    )
+                    
+                    metrics['complexity']['score'] = round(quality_score, 1)
+                    
+                    return metrics
+                    
+                except Exception as e:
+                    print(f"Error analyzing Java file {file_path}: {str(e)}")
+                    return metrics  # Return initialized metrics on error
+            
+            elif ext == '.py':
+                tree = ast.parse(content)
+                
+                # Count Python comments
+                metrics['raw_metrics']['comments'] = len([l for l in content.splitlines() if l.strip().startswith('#')])
+                
+                # Count classes and methods
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.ClassDef):
+                        metrics['raw_metrics']['classes'] += 1
+                        class_size = len(node.body)
+                        if class_size > 300:
+                            metrics['code_smells'].append(f"Large class '{node.name}' ({class_size} lines)")
+                            metrics['refactoring_opportunities'].append(f"Consider splitting class '{node.name}' into smaller classes")
+                    
+                    elif isinstance(node, ast.FunctionDef):
+                        if isinstance(node.parent, ast.ClassDef):
+                            metrics['raw_metrics']['methods'] += 1
+                        else:
+                            metrics['raw_metrics']['functions'] += 1
+                        
+                        # Calculate function complexity
+                        func_complexity = self._calculate_function_complexity(node)
+                        if func_complexity > 10:
+                            metrics['code_smells'].append(f"Complex function '{node.name}' (complexity: {func_complexity})")
+                            metrics['refactoring_opportunities'].append(f"Consider breaking down function '{node.name}' into smaller functions")
+                
+                # Calculate complexity score
+                total_complexity = sum(self._calculate_function_complexity(node) for node in ast.walk(tree) if isinstance(node, ast.FunctionDef))
+                num_functions = metrics['raw_metrics']['methods'] + metrics['raw_metrics']['functions']
+                if num_functions > 0:
+                    avg_complexity = total_complexity / num_functions
+                    metrics['complexity']['score'] = max(0, min(100, 100 - (avg_complexity * 5)))
+                else:
+                    metrics['complexity']['score'] = 100
+                
+                # Calculate maintainability score
+                metrics['maintainability']['score'] = self._calculate_maintainability_score(metrics['raw_metrics'])
+                
+            else:
+                # Generic analysis for other file types
+                metrics['complexity']['score'] = 50
+                metrics['maintainability']['score'] = 50
+                metrics['complexity']['issues'].append("Language not fully supported for detailed analysis")
+                metrics['maintainability']['issues'].append("Language not fully supported for detailed analysis")
+
+            # Calculate common metrics
+            if metrics['raw_metrics']['loc'] > 0:
+                metrics['raw_metrics']['comment_ratio'] = (metrics['raw_metrics']['comments'] + metrics['raw_metrics']['multi']) / metrics['raw_metrics']['loc']
+            
+            # Calculate average method length
+            total_methods = metrics['raw_metrics']['methods'] + metrics['raw_metrics']['functions']
+            if total_methods > 0:
+                metrics['raw_metrics']['average_method_length'] = metrics['raw_metrics']['sloc'] / total_methods
+
+            return metrics
+            
+        except Exception as e:
+            print(f"Error analyzing file {file_path}: {str(e)}")
+            return {
+                'file_path': file_path,
+                'raw_metrics': {
+                    'loc': 0, 'sloc': 0, 'comments': 0, 'multi': 0, 'blank': 0,
+                    'classes': 0, 'methods': 0, 'functions': 0,
+                    'average_method_length': 0, 'comment_ratio': 0
+                },
+                'complexity': {'score': 0, 'issues': [f"Error analyzing file: {str(e)}"]},
+                'maintainability': {'score': 0, 'issues': [f"Error analyzing file: {str(e)}"]},
+                'code_smells': [f"Error analyzing file: {str(e)}"],
+                'refactoring_opportunities': []
+            }
+
+    def _calculate_function_complexity(self, node: ast.AST) -> int:
+        """Calculate cyclomatic complexity of a function."""
+        complexity = 1  # Base complexity
+        for child in ast.walk(node):
+            if isinstance(child, (ast.If, ast.While, ast.For, ast.ExceptHandler)):
+                complexity += 1
+            elif isinstance(child, ast.BoolOp):
+                complexity += len(child.values) - 1
+        return complexity
+
+    def _calculate_maintainability_score(self, metrics: Dict) -> float:
+        """Calculate maintainability score based on various metrics."""
+        score = 100
+        
+        # Penalize for large files
+        if metrics['loc'] > 1000:
+            score -= 20
+        elif metrics['loc'] > 500:
+            score -= 10
+        
+        # Penalize for low comment ratio
+        comment_ratio = (metrics['comments'] + metrics['multi']) / max(metrics['loc'], 1)
+        if comment_ratio < 0.1:
+            score -= 20
+        elif comment_ratio < 0.2:
+            score -= 10
+        
+        # Penalize for too many classes or methods
+        if metrics['classes'] > 10:
+            score -= 10
+        if metrics['methods'] + metrics['functions'] > 20:
+            score -= 10
+        elif metrics['methods'] + metrics['functions'] > 10:
+            score -= 5
+        
+        # Penalize for large average method length
+        if metrics['average_method_length'] > 50:
+            score -= 20
+        elif metrics['average_method_length'] > 30:
+            score -= 10
+        
+        return max(0, min(100, score))
+
+    def _calculate_basic_metrics(self, content: str) -> Dict[str, Any]:
+        """Calculate basic metrics when detailed parsing fails."""
+        lines = content.splitlines()
+        non_empty_lines = [l for l in lines if l.strip()]
+        
+        # Count basic metrics
+        total_lines = len(lines)
+        source_lines = len(non_empty_lines)
+        blank_lines = total_lines - source_lines
+        
+        # Count comments
+        single_comments = 0
+        multi_comments = 0
+        javadoc_comments = 0
+        in_multi_comment = False
+        in_javadoc = False
+        
+        # Track packages and imports
+        declared_packages = []
+        imported_packages = set()
+        import_count = 0
+        
+        # Track methods and functions
+        class_count = 0
+        method_count = 0
+        function_count = 0  # For anonymous methods and lambda expressions
+        method_lines = []  # Track method lengths
+        current_method_lines = 0
+        in_method = False
+        brace_count = 0
+        
+        i = 0
+        while i < len(lines):
+            line = lines[i].strip()
+            
+            # Skip empty lines
+            if not line:
+                i += 1
+                continue
+            
+            # Handle Javadoc comments
+            if line.startswith('/**'):
+                in_javadoc = True
+                javadoc_comments += 1
+                while i < len(lines) and '*/' not in lines[i]:
+                    javadoc_comments += 1
+                    i += 1
+                if i < len(lines):  # Count the closing line
+                    javadoc_comments += 1
+                in_javadoc = False
+            
+            # Handle regular multi-line comments
+            elif line.startswith('/*'):
+                in_multi_comment = True
+                multi_comments += 1
+                while i < len(lines) and '*/' not in lines[i]:
+                    multi_comments += 1
+                    i += 1
+                if i < len(lines):  # Count the closing line
+                    multi_comments += 1
+                in_multi_comment = False
+            
+            # Handle single-line comments
+            elif line.startswith('//'):
+                single_comments += 1
+            
+            # Track packages and imports
+            elif line.startswith('package '):
+                package_name = line[8:].rstrip(';').strip()
+                if package_name:
+                    declared_packages.append(package_name)
+            
+            elif line.startswith('import '):
+                import_count += 1
+                # Extract base package name from import
+                import_path = line[7:].rstrip(';').strip()
+                if import_path:
+                    package_parts = import_path.split('.')
+                    base_package = package_parts[0]
+                    if len(package_parts) > 1:
+                        imported_packages.add(base_package)
+            
+            # Count classes
+            elif 'class ' in line and '{' in line:
+                class_count += 1
+            
+            # Count methods and track their lengths
+            elif any(modifier + ' ' in line for modifier in ['public', 'private', 'protected']) and '(' in line and ')' in line:
+                if '{' in line:  # Method declaration with opening brace
+                    in_method = True
+                    brace_count = 1
+                    current_method_lines = 1
+                    if not any(c in line for c in ['class', 'interface', 'enum']):  # Ensure it's not a class/interface declaration
+                        method_count += 1
+                elif not any(c in line for c in ['class', 'interface', 'enum']):  # Method declaration without opening brace
+                    method_count += 1
+            
+            # Track method bodies
+            elif in_method:
+                current_method_lines += 1
+                brace_count += line.count('{') - line.count('}')
+                if brace_count == 0:
+                    in_method = False
+                    method_lines.append(current_method_lines)
+                    current_method_lines = 0
+            
+            # Count anonymous functions and lambda expressions
+            elif ('->' in line or 'new ' in line) and '{' in line:
+                function_count += 1
+            
+            i += 1
+        
+        # Calculate average method length
+        avg_method_length = sum(method_lines) / len(method_lines) if method_lines else 0
         
         return {
-            'total_lines': len(lines),
-            'non_empty_lines': len(non_empty_lines),
-            'average_line_length': sum(len(line) for line in non_empty_lines) / len(non_empty_lines) if non_empty_lines else 0,
-            'max_line_length': max(len(line) for line in lines) if lines else 0
+            'file_path': 'unknown',
+            'raw_metrics': {
+                'loc': total_lines,
+                'sloc': source_lines,
+                'comments': single_comments,
+                'javadoc': javadoc_comments,
+                'multi': multi_comments,
+                'blank': blank_lines,
+                'classes': class_count,
+                'methods': method_count,
+                'functions': function_count,
+                'imports': import_count,
+                'packages': len(declared_packages),
+                'average_method_length': avg_method_length,
+                'comment_ratio': (single_comments + multi_comments + javadoc_comments) / max(total_lines, 1)
+            },
+            'declared_packages': declared_packages,
+            'imported_packages': sorted(list(imported_packages)),
+            'complexity': {
+                'score': 75,  # Default moderate score when detailed analysis fails
+                'issues': ["Detailed complexity analysis not available"]
+            },
+            'maintainability': {
+                'score': 75,  # Default moderate score when detailed analysis fails
+                'issues': ["Detailed maintainability analysis not available"]
+            },
+            'code_smells': [],
+            'refactoring_opportunities': []
         }
 
     def _analyze_python(self, content: str) -> Dict[str, Any]:
@@ -269,7 +668,12 @@ class CodeAnalyzer:
                     "sloc": raw_metrics.sloc,
                     "comments": raw_metrics.comments,
                     "multi": raw_metrics.multi,
-                    "blank": raw_metrics.blank
+                    "blank": raw_metrics.blank,
+                    "classes": len(classes),
+                    "functions": len(functions),
+                    "average_method_length": self._get_basic_metrics(content)['average_line_length'],
+                    "max_complexity": complexity,
+                    "comment_ratio": (raw_metrics.comments + raw_metrics.multi) / raw_metrics.loc if raw_metrics.loc > 0 else 0
                 },
                 "halstead_metrics": {
                     "h1": halstead.h1,
