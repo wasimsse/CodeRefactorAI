@@ -112,44 +112,68 @@ class ProjectAnalyzer:
                 'High': 0,
                 'Medium': 0,
                 'Low': 0
+            },
+            'language_stats': {
+                'Java': {'files': 0, 'errors': 0},
+                'Python': {'files': 0, 'errors': 0},
+                'JavaScript': {'files': 0, 'errors': 0},
+                'C++': {'files': 0, 'errors': 0},
+                'C#': {'files': 0, 'errors': 0}
             }
         }
         
         total_files = 0
         for root, _, files in os.walk(project_path):
             for file in files:
-                if file.endswith(('.py', '.java', '.cpp', '.js', '.cs')):
-                    file_path = Path(root) / file
-                    try:
-                        file_metrics = self.code_analyzer.analyze_file(str(file_path))
-                        
-                        # Store complexity score
-                        rel_path = file_path.relative_to(project_path)
-                        metrics['complexity_by_file'][str(rel_path)] = file_metrics['complexity']['score']
-                        
-                        # Store quality metrics
-                        metrics['quality_metrics']['Maintainability'].append(
-                            file_metrics['maintainability']['score']
-                        )
-                        metrics['quality_metrics']['Complexity'].append(
-                            file_metrics['complexity']['score']
-                        )
-                        
-                        # Count issues by severity
-                        self._categorize_issues(file_metrics, metrics['issues_by_severity'])
-                        
-                        total_files += 1
-                    except Exception:
-                        continue
+                file_path = Path(root) / file
+                file_ext = file_path.suffix.lower()
+                
+                # Skip non-source files
+                if file_ext not in ['.py', '.java', '.cpp', '.js', '.cs']:
+                    continue
+                    
+                try:
+                    # Determine language
+                    language = {
+                        '.py': 'Python',
+                        '.java': 'Java',
+                        '.cpp': 'C++',
+                        '.js': 'JavaScript',
+                        '.cs': 'C#'
+                    }.get(file_ext, 'Unknown')
+                    
+                    # Update language stats
+                    metrics['language_stats'][language]['files'] += 1
+                    
+                    # Analyze file
+                    file_metrics = self.code_analyzer.analyze_file(str(file_path))
+                    
+                    # Store complexity score
+                    rel_path = file_path.relative_to(project_path)
+                    metrics['complexity_by_file'][str(rel_path)] = file_metrics.get('complexity', {}).get('score', 0)
+                    
+                    # Store quality metrics
+                    metrics['quality_metrics']['Maintainability'].append(
+                        file_metrics.get('maintainability', {}).get('score', 0)
+                    )
+                    metrics['quality_metrics']['Complexity'].append(
+                        file_metrics.get('complexity', {}).get('score', 0)
+                    )
+                    
+                    # Count issues by severity
+                    self._categorize_issues(file_metrics, metrics['issues_by_severity'])
+                    
+                    total_files += 1
+                    
+                except Exception as e:
+                    # Log error and update language stats
+                    metrics['language_stats'][language]['errors'] += 1
+                    print(f"Error analyzing {file_path}: {str(e)}")
+                    continue
         
         # Calculate overall score
         if total_files > 0:
-            maintainability_avg = sum(metrics['quality_metrics']['Maintainability']) / total_files
-            complexity_avg = sum(metrics['quality_metrics']['Complexity']) / total_files
-            metrics['overall_score'] = (maintainability_avg + complexity_avg) / 2
-        
-        # Convert quality metrics to DataFrame format
-        metrics['quality_metrics'] = pd.DataFrame(metrics['quality_metrics'])
+            metrics['overall_score'] = sum(metrics['quality_metrics']['Maintainability']) / total_files
         
         return metrics
     
@@ -208,20 +232,42 @@ class ProjectAnalyzer:
         
         return metrics
     
-    def _categorize_issues(self, file_metrics: Dict[str, Any], issues_count: Dict[str, int]):
-        """Categorize issues by severity."""
-        # Complexity issues are high severity
-        if file_metrics['complexity']['score'] < 40:
-            issues_count['High'] += 1
-        elif file_metrics['complexity']['score'] < 70:
-            issues_count['Medium'] += 1
-        
-        # Code smells are medium severity
-        issues_count['Medium'] += len(file_metrics['code_smells'])
-        
-        # Performance issues are low severity
-        if 'performance' in file_metrics and 'issues' in file_metrics['performance']:
-            issues_count['Low'] += len(file_metrics['performance']['issues'])
+    def _categorize_issues(self, file_metrics: Dict, issues_by_severity: Dict) -> None:
+        """Categorize issues by severity with improved handling."""
+        try:
+            # Handle code smells
+            for smell in file_metrics.get('code_smells', []):
+                if any(keyword in smell.lower() for keyword in ['critical', 'severe', 'error']):
+                    issues_by_severity['High'] += 1
+                elif any(keyword in smell.lower() for keyword in ['warning', 'caution']):
+                    issues_by_severity['Medium'] += 1
+                else:
+                    issues_by_severity['Low'] += 1
+            
+            # Handle complexity issues
+            complexity_issues = file_metrics.get('complexity', {}).get('issues', [])
+            for issue in complexity_issues:
+                if 'high' in issue.lower() or 'critical' in issue.lower():
+                    issues_by_severity['High'] += 1
+                elif 'medium' in issue.lower() or 'moderate' in issue.lower():
+                    issues_by_severity['Medium'] += 1
+                else:
+                    issues_by_severity['Low'] += 1
+            
+            # Handle maintainability issues
+            maintainability_issues = file_metrics.get('maintainability', {}).get('issues', [])
+            for issue in maintainability_issues:
+                if 'high' in issue.lower() or 'critical' in issue.lower():
+                    issues_by_severity['High'] += 1
+                elif 'medium' in issue.lower() or 'moderate' in issue.lower():
+                    issues_by_severity['Medium'] += 1
+                else:
+                    issues_by_severity['Low'] += 1
+                
+        except Exception as e:
+            print(f"Error categorizing issues: {str(e)}")
+            # Default to medium severity if categorization fails
+            issues_by_severity['Medium'] += 1
     
     def _get_default_structure(self) -> Dict[str, Any]:
         """Get default project structure."""
