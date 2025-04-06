@@ -888,7 +888,8 @@ class CodeAnalyzer:
                     smells.append(f"Long method detected: {method.name}")
 
             # Check for large classes
-            for path, class_decl in tree.filter(javalang.tree.ClassDeclaration):
+            for path, class_decl in tree.filter(
+                    javalang.tree.ClassDeclaration):
                 if len(list(class_decl.methods)) > 10:
                     smells.append(f"Large class detected: {class_decl.name}")
 
@@ -896,18 +897,24 @@ class CodeAnalyzer:
             for path, node in tree.filter(javalang.tree.IfStatement):
                 nesting_level = self._calculate_nesting_level(node)
                 if nesting_level > 4:
-                    smells.append(f"Deep nesting detected at line {node.position.line}")
+                    smells.append(
+                        f"Deep nesting detected at line {
+                            node.position.line}")
 
             # Check for complex conditionals
             for path, node in tree.filter(javalang.tree.IfStatement):
                 if isinstance(node.condition, javalang.tree.BinaryOperation):
                     if self._count_operators(node.condition) > 3:
-                        smells.append(f"Complex conditional detected at line {node.position.line}")
+                        smells.append(
+                            f"Complex conditional detected at line {
+                                node.position.line}")
 
             # Check for long parameter lists
             for path, method in tree.filter(javalang.tree.MethodDeclaration):
                 if len(method.parameters) > 5:
-                    smells.append(f"Long parameter list in method: {method.name}")
+                    smells.append(
+                        f"Long parameter list in method: {
+                            method.name}")
 
         except Exception as e:
             smells.append(f"Error detecting code smells: {str(e)}")
