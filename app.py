@@ -24,6 +24,7 @@ from visualization_manager import VisualizationManager
 from dataset_analyzer import DatasetAnalyzer
 from stats_manager import StatsManager
 from datetime import datetime
+import numpy as np
 
 # Load environment variables
 load_dotenv()
@@ -2014,155 +2015,325 @@ def display_file_explorer():
                 if st.session_state.current_metrics:
                     metrics = st.session_state.current_metrics
                     
-                    # Quality Metrics Radar Chart
-                    st.subheader("🎯 Quality Metrics Overview")
-                    
-                    # Prepare quality metrics data
-                    maintainability = metrics.get('maintainability', {})
-                    maintainability_score = (
-                        maintainability.get('score', 0) 
-                        if isinstance(maintainability, dict) 
-                        else float(maintainability or 0)
+                    # Add chart type selector
+                    chart_type = st.selectbox(
+                        "Select Visualization Type",
+                        ["Quality Overview", "Size Analysis", "Composition", "Issues", "Trends"],
+                        key="chart_selector"
                     )
                     
-                    complexity = metrics.get('complexity', {})
-                    complexity_score = (
-                        complexity.get('score', 0) 
-                        if isinstance(complexity, dict) 
-                        else float(complexity or 0)
-                    )
+                    # Add interactive features
+                    enable_animations = st.checkbox("Enable Animations", value=True)
+                    show_details = st.checkbox("Show Detailed Information", value=True)
                     
-                    cognitive_score = float(metrics.get('cognitive_complexity', 0) or 0)
-                    coverage_score = float(metrics.get('code_coverage', 0) or 0)
-                    
-                    # Create radar chart for quality metrics
-                    quality_metrics = {
-                        'Metric': ['Maintainability', 'Code Quality', 'Cognitive Complexity', 'Code Coverage'],
-                        'Score': [maintainability_score, 100 - complexity_score, 100 - cognitive_score, coverage_score]
+                    # Common chart configurations
+                    chart_config = {
+                        "displayModeBar": True,
+                        "scrollZoom": True,
+                        "displaylogo": False,
+                        "responsive": True
                     }
                     
-                    fig_radar = go.Figure()
-                    fig_radar.add_trace(go.Scatterpolar(
-                        r=quality_metrics['Score'],
-                        theta=quality_metrics['Metric'],
-                        fill='toself',
-                        name='Quality Metrics'
-                    ))
-                    
-                    fig_radar.update_layout(
-                        polar=dict(
-                            radialaxis=dict(
-                                visible=True,
-                                range=[0, 100]
-                            )
-                        ),
-                        showlegend=False,
-                        title="Code Quality Metrics Radar"
-                    )
-                    st.plotly_chart(fig_radar, use_container_width=True)
-                    
-                    # Size Metrics Bar Chart
-                    st.subheader("📏 Code Size Analysis")
-                    raw_metrics = metrics.get('raw_metrics', {})
-                    
-                    size_metrics = {
-                        'Metric': ['Lines of Code', 'Comment Lines', 'Blank Lines', 'Functions', 'Classes'],
-                        'Count': [
-                            int(raw_metrics.get('loc', 0)),
-                            int(raw_metrics.get('comments', 0)) + int(raw_metrics.get('multi', 0)),
-                            int(raw_metrics.get('blank', 0)),
-                            int(raw_metrics.get('functions', 0)) + int(raw_metrics.get('methods', 0)),
-                            int(raw_metrics.get('classes', 0))
-                        ]
-                    }
-                    
-                    fig_size = px.bar(
-                        size_metrics,
-                        x='Metric',
-                        y='Count',
-                        title='Code Size Distribution',
-                        color='Count',
-                        color_continuous_scale='Viridis'
-                    )
-                    
-                    fig_size.update_layout(
-                        xaxis_title="",
-                        yaxis_title="Count",
-                        showlegend=False
-                    )
-                    st.plotly_chart(fig_size, use_container_width=True)
-                    
-                    # Code Composition Pie Chart
-                    st.subheader("🔄 Code Composition")
-                    composition_data = {
-                        'Component': ['Source Code', 'Comments', 'Blank Lines'],
-                        'Lines': [
-                            int(raw_metrics.get('sloc', 0)),
-                            int(raw_metrics.get('comments', 0)) + int(raw_metrics.get('multi', 0)),
-                            int(raw_metrics.get('blank', 0))
-                        ]
-                    }
-                    
-                    fig_composition = px.pie(
-                        composition_data,
-                        values='Lines',
-                        names='Component',
-                        title='Code Composition Distribution',
-                        color_discrete_sequence=px.colors.qualitative.Set3
-                    )
-                    
-                    fig_composition.update_traces(textposition='inside', textinfo='percent+label')
-                    st.plotly_chart(fig_composition, use_container_width=True)
-                    
-                    # Issues Overview
-                    st.subheader("⚠️ Issues Overview")
-                    
-                    issues_data = {
-                        'Category': ['Design Issues', 'Code Smells', 'Performance Issues', 'Security Issues'],
-                        'Count': [
-                            len(metrics.get('design_issues', [])),
-                            len(metrics.get('code_smells', [])),
-                            len(metrics.get('performance_issues', [])),
-                            len(metrics.get('security_issues', []))
-                        ]
-                    }
-                    
-                    fig_issues = px.bar(
-                        issues_data,
-                        x='Category',
-                        y='Count',
-                        title='Code Issues Distribution',
-                        color='Category',
-                        color_discrete_sequence=['#FFA07A', '#98FB98', '#87CEFA', '#DDA0DD']
-                    )
-                    
-                    fig_issues.update_layout(
-                        xaxis_title="",
-                        yaxis_title="Number of Issues",
-                        showlegend=False
-                    )
-                    st.plotly_chart(fig_issues, use_container_width=True)
-                    
-                    # Complexity Trends (if available)
-                    if 'complexity_trends' in metrics:
-                        st.subheader("📈 Complexity Trends")
-                        trends = metrics['complexity_trends']
+                    if chart_type == "Quality Overview":
+                        st.subheader("🎯 Quality Metrics Overview")
                         
-                        fig_trends = go.Figure()
-                        fig_trends.add_trace(go.Scatter(
-                            x=list(range(len(trends))),
-                            y=trends,
-                            mode='lines+markers',
-                            name='Complexity Trend'
+                        # Prepare quality metrics data with error handling
+                        maintainability = metrics.get('maintainability', {})
+                        maintainability_score = (
+                            maintainability.get('score', 0) if isinstance(maintainability, dict)
+                            else float(maintainability or 0)
+                        )
+                        
+                        complexity = metrics.get('complexity', {})
+                        complexity_score = (
+                            complexity.get('score', 0) if isinstance(complexity, dict)
+                            else float(complexity or 0)
+                        )
+                        
+                        cognitive_score = float(metrics.get('cognitive_complexity', 0) or 0)
+                        coverage_score = float(metrics.get('code_coverage', 0) or 0)
+                        
+                        # Enhanced radar chart
+                        quality_metrics = {
+                            'Metric': ['Maintainability', 'Code Quality', 'Cognitive Complexity', 'Code Coverage'],
+                            'Score': [maintainability_score, 100 - complexity_score, 100 - cognitive_score, coverage_score],
+                            'Description': [
+                                f"Maintainability Index: {maintainability_score:.1f}/100",
+                                f"Code Quality Score: {100 - complexity_score:.1f}/100",
+                                f"Cognitive Load: {100 - cognitive_score:.1f}/100",
+                                f"Test Coverage: {coverage_score:.1f}%"
+                            ]
+                        }
+                        
+                        fig_radar = go.Figure()
+                        fig_radar.add_trace(go.Scatterpolar(
+                            r=quality_metrics['Score'],
+                            theta=quality_metrics['Metric'],
+                            fill='toself',
+                            name='Quality Metrics',
+                            hovertemplate="<b>%{theta}</b><br>" +
+                                        "Score: %{r:.1f}<br>" +
+                                        "<extra>%{customdata}</extra>",
+                            customdata=quality_metrics['Description']
                         ))
                         
-                        fig_trends.update_layout(
-                            title="Code Complexity Trend",
-                            xaxis_title="Time",
-                            yaxis_title="Complexity Score"
+                        fig_radar.update_layout(
+                            polar=dict(
+                                radialaxis=dict(
+                                    visible=True,
+                                    range=[0, 100],
+                                    tickfont=dict(size=10),
+                                    gridcolor="rgba(0,0,0,0.1)"
+                                ),
+                                angularaxis=dict(
+                                    tickfont=dict(size=12),
+                                    gridcolor="rgba(0,0,0,0.1)"
+                                )
+                            ),
+                            showlegend=False,
+                            title=dict(
+                                text="Code Quality Metrics Radar",
+                                x=0.5,
+                                y=0.95
+                            ),
+                            paper_bgcolor='rgba(0,0,0,0)',
+                            plot_bgcolor='rgba(0,0,0,0)',
+                            margin=dict(l=80, r=80, t=100, b=80)
                         )
-                        st.plotly_chart(fig_trends, use_container_width=True)
+                        
+                        st.plotly_chart(fig_radar, use_container_width=True, config=chart_config)
+                        
+                        if show_details:
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                st.metric("Overall Quality Score", 
+                                         f"{(maintainability_score + (100-complexity_score) + (100-cognitive_score) + coverage_score)/4:.1f}/100")
+                            with col2:
+                                st.metric("Quality Grade", 
+                                         "A" if maintainability_score > 80 else "B" if maintainability_score > 60 else "C")
                     
+                    elif chart_type == "Size Analysis":
+                        st.subheader("📏 Code Size Analysis")
+                        raw_metrics = metrics.get('raw_metrics', {})
+                        
+                        # Enhanced size metrics visualization
+                        size_metrics = {
+                            'Metric': ['Lines of Code', 'Comment Lines', 'Blank Lines', 'Functions', 'Classes'],
+                            'Count': [
+                                int(raw_metrics.get('loc', 0)),
+                                int(raw_metrics.get('comments', 0)) + int(raw_metrics.get('multi', 0)),
+                                int(raw_metrics.get('blank', 0)),
+                                int(raw_metrics.get('functions', 0)) + int(raw_metrics.get('methods', 0)),
+                                int(raw_metrics.get('classes', 0))
+                            ]
+                        }
+                        
+                        fig_size = px.bar(
+                            size_metrics,
+                            x='Metric',
+                            y='Count',
+                            title='Code Size Distribution',
+                            color='Count',
+                            color_continuous_scale='Viridis',
+                            custom_data=['Metric', 'Count']
+                        )
+                        
+                        fig_size.update_traces(
+                            hovertemplate="<b>%{customdata[0]}</b><br>" +
+                                        "Count: %{customdata[1]}<br>" +
+                                        "<extra></extra>"
+                        )
+                        
+                        fig_size.update_layout(
+                            xaxis_title="",
+                            yaxis_title="Count",
+                            showlegend=False,
+                            paper_bgcolor='rgba(0,0,0,0)',
+                            plot_bgcolor='rgba(0,0,0,0.02)',
+                            margin=dict(l=60, r=40, t=80, b=60)
+                        )
+                        
+                        st.plotly_chart(fig_size, use_container_width=True, config=chart_config)
+                        
+                        if show_details:
+                            st.markdown("#### Size Metrics Details")
+                            col1, col2, col3 = st.columns(3)
+                            with col1:
+                                st.metric("Total Lines", sum(size_metrics['Count']))
+                            with col2:
+                                st.metric("Code to Comment Ratio", 
+                                         f"{size_metrics['Count'][0]/max(size_metrics['Count'][1], 1):.1f}")
+                            with col3:
+                                st.metric("Average Lines per Function", 
+                                         f"{size_metrics['Count'][0]/max(size_metrics['Count'][3], 1):.1f}")
+                    
+                    elif chart_type == "Composition":
+                        st.subheader("🔄 Code Composition")
+                        raw_metrics = metrics.get('raw_metrics', {})
+                        
+                        # Enhanced composition visualization
+                        composition_data = {
+                            'Component': ['Source Code', 'Comments', 'Blank Lines'],
+                            'Lines': [
+                                int(raw_metrics.get('sloc', 0)),
+                                int(raw_metrics.get('comments', 0)) + int(raw_metrics.get('multi', 0)),
+                                int(raw_metrics.get('blank', 0))
+                            ]
+                        }
+                        
+                        total_lines = sum(composition_data['Lines'])
+                        composition_data['Percentage'] = [
+                            f"{(lines/total_lines)*100:.1f}%" for lines in composition_data['Lines']
+                        ]
+                        
+                        fig_composition = px.pie(
+                            composition_data,
+                            values='Lines',
+                            names='Component',
+                            title='Code Composition Distribution',
+                            color_discrete_sequence=px.colors.qualitative.Set3,
+                            custom_data=['Component', 'Lines', 'Percentage']
+                        )
+                        
+                        fig_composition.update_traces(
+                            textposition='inside',
+                            textinfo='percent+label',
+                            hovertemplate="<b>%{customdata[0]}</b><br>" +
+                                        "Lines: %{customdata[1]}<br>" +
+                                        "Percentage: %{customdata[2]}<br>" +
+                                        "<extra></extra>"
+                        )
+                        
+                        fig_composition.update_layout(
+                            showlegend=True,
+                            legend=dict(
+                                orientation="h",
+                                yanchor="bottom",
+                                y=1.02,
+                                xanchor="right",
+                                x=1
+                            ),
+                            paper_bgcolor='rgba(0,0,0,0)',
+                            margin=dict(l=40, r=40, t=80, b=40)
+                        )
+                        
+                        st.plotly_chart(fig_composition, use_container_width=True, config=chart_config)
+                        
+                        if show_details:
+                            st.markdown("#### Composition Analysis")
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                st.metric("Code Density", 
+                                         f"{(composition_data['Lines'][0]/total_lines)*100:.1f}%",
+                                         help="Percentage of actual code lines")
+                            with col2:
+                                st.metric("Documentation Ratio", 
+                                         f"{(composition_data['Lines'][1]/composition_data['Lines'][0])*100:.1f}%",
+                                         help="Ratio of comments to code lines")
+                    
+                    elif chart_type == "Issues":
+                        st.subheader("⚠️ Issues Overview")
+                        
+                        # Enhanced issues visualization
+                        issues_data = {
+                            'Category': ['Design Issues', 'Code Smells', 'Performance Issues', 'Security Issues'],
+                            'Count': [
+                                len(metrics.get('design_issues', [])),
+                                len(metrics.get('code_smells', [])),
+                                len(metrics.get('performance_issues', [])),
+                                len(metrics.get('security_issues', []))
+                            ]
+                        }
+                        
+                        total_issues = sum(issues_data['Count'])
+                        issues_data['Percentage'] = [
+                            f"{(count/max(total_issues, 1))*100:.1f}%" for count in issues_data['Count']
+                        ]
+                        
+                        fig_issues = px.bar(
+                            issues_data,
+                            x='Category',
+                            y='Count',
+                            title='Code Issues Distribution',
+                            color='Category',
+                            color_discrete_sequence=['#FFA07A', '#98FB98', '#87CEFA', '#DDA0DD'],
+                            custom_data=['Category', 'Count', 'Percentage']
+                        )
+                        
+                        fig_issues.update_traces(
+                            hovertemplate="<b>%{customdata[0]}</b><br>" +
+                                        "Count: %{customdata[1]}<br>" +
+                                        "Percentage: %{customdata[2]}<br>" +
+                                        "<extra></extra>"
+                        )
+                        
+                        fig_issues.update_layout(
+                            xaxis_title="",
+                            yaxis_title="Number of Issues",
+                            showlegend=False,
+                            paper_bgcolor='rgba(0,0,0,0)',
+                            plot_bgcolor='rgba(0,0,0,0.02)',
+                            margin=dict(l=60, r=40, t=80, b=60)
+                        )
+                        
+                        st.plotly_chart(fig_issues, use_container_width=True, config=chart_config)
+                        
+                        if show_details and total_issues > 0:
+                            st.markdown("#### Issue Details")
+                            col1, col2, col3 = st.columns(3)
+                            with col1:
+                                st.metric("Total Issues", total_issues)
+                            with col2:
+                                st.metric("Critical Issues", 
+                                         sum(1 for i in metrics.get('security_issues', []) 
+                                             if i.get('severity') == 'critical'))
+                            with col3:
+                                st.metric("Issue Density", 
+                                         f"{total_issues/max(int(raw_metrics.get('loc', 1)), 1):.3f}",
+                                         help="Issues per line of code")
+                    
+                    elif chart_type == "Trends":
+                        st.subheader("📈 Complexity Trends")
+                        if 'complexity_trends' in metrics:
+                            trends = metrics['complexity_trends']
+                            
+                            fig_trends = go.Figure()
+                            fig_trends.add_trace(go.Scatter(
+                                x=list(range(len(trends))),
+                                y=trends,
+                                mode='lines+markers',
+                                name='Complexity Trend',
+                                line=dict(color='#2E86C1', width=2),
+                                marker=dict(size=8),
+                                hovertemplate="Time Period: %{x}<br>" +
+                                            "Complexity: %{y:.2f}<br>" +
+                                            "<extra></extra>"
+                            ))
+                            
+                            fig_trends.update_layout(
+                                title="Code Complexity Trend",
+                                xaxis_title="Time",
+                                yaxis_title="Complexity Score",
+                                paper_bgcolor='rgba(0,0,0,0)',
+                                plot_bgcolor='rgba(0,0,0,0.02)',
+                                margin=dict(l=60, r=40, t=80, b=60)
+                            )
+                            
+                            st.plotly_chart(fig_trends, use_container_width=True, config=chart_config)
+                            
+                            if show_details:
+                                st.markdown("#### Trend Analysis")
+                                col1, col2 = st.columns(2)
+                                with col1:
+                                    st.metric("Trend Direction", 
+                                             "⬆️ Increasing" if trends[-1] > trends[0] else "⬇️ Decreasing",
+                                             delta=f"{trends[-1] - trends[0]:.2f}")
+                                with col2:
+                                    st.metric("Volatility", 
+                                             f"{np.std(trends):.2f}",
+                                             help="Standard deviation of complexity scores")
+                        else:
+                            st.info("No trend data available for this file.")
                 else:
                     st.info("No metrics available for visualization. Please select a file to analyze.")
         else:
