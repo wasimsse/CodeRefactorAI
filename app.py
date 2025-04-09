@@ -1132,64 +1132,88 @@ def display_refactoring_options():
                         with col1:
                             st.markdown("##### 📊 Quality Metrics")
                             
-                            # Get metrics directly from current_metrics
+                            # Get metrics with proper type handling
                             metrics = st.session_state.current_metrics
                             
-                            # Handle maintainability (always a dict with score)
+                            # Handle maintainability index
                             maintainability = metrics.get('maintainability', {})
-                            maintainability_score = maintainability.get('score', 0) if isinstance(maintainability, dict) else maintainability
+                            if isinstance(maintainability, dict):
+                                maintainability_score = maintainability.get('score', 0)
+                            else:
+                                maintainability_score = float(maintainability)
                             
-                            # Handle complexity (direct integer)
+                            # Handle cyclomatic complexity
                             complexity = metrics.get('complexity', {})
-                            complexity_score = complexity.get('score', 0) if isinstance(complexity, dict) else complexity
+                            if isinstance(complexity, dict):
+                                complexity_score = complexity.get('score', 0)
+                            else:
+                                complexity_score = float(complexity)
                             
-                            # Handle cognitive complexity (direct integer)
-                            cognitive_score = metrics.get('cognitive_complexity', 0)
+                            # Handle cognitive complexity
+                            cognitive_score = float(metrics.get('cognitive_complexity', 0))
                             
-                            # Handle code coverage (direct integer)
-                            code_coverage = metrics.get('code_coverage', 0)
+                            # Handle code coverage
+                            code_coverage = float(metrics.get('code_coverage', 0))
                             
-                            st.metric("Maintainability Index", 
+                            # Display metrics with proper formatting
+                            st.metric(
+                                "Maintainability Index",
                                 f"{maintainability_score:.1f}/100",
-                                help="Score from 0-100. Higher is better. Based on code structure, complexity, and documentation")
-                            st.metric("Cyclomatic Complexity", 
+                                help="Score from 0-100. Higher is better. Based on code structure, complexity, and documentation"
+                            )
+                            st.metric(
+                                "Cyclomatic Complexity",
                                 f"{complexity_score:.1f}",
-                                help="Number of linearly independent paths through the code")
-                            st.metric("Cognitive Complexity",
+                                help="Number of linearly independent paths through the code"
+                            )
+                            st.metric(
+                                "Cognitive Complexity",
                                 f"{cognitive_score:.1f}",
-                                help="How difficult it is to understand the code's control flow")
-                            st.metric("Code Coverage",
-                                f"{code_coverage}%",
-                                help="Percentage of code covered by tests")
+                                help="How difficult it is to understand the code's control flow"
+                            )
+                            st.metric(
+                                "Code Coverage",
+                                f"{code_coverage:.1f}%",
+                                help="Percentage of code covered by tests"
+                            )
                         
                         with col2:
                             st.markdown("##### 📏 Size Metrics")
-                            raw_metrics = metrics.get('raw_metrics', {})
                             
                             # Get raw metrics with safe defaults
-                            loc = raw_metrics.get('loc', 0)
-                            comments = raw_metrics.get('comments', 0)
-                            multi_comments = raw_metrics.get('multi', 0)
+                            raw_metrics = metrics.get('raw_metrics', {})
+                            loc = int(raw_metrics.get('loc', 0))
+                            comments = int(raw_metrics.get('comments', 0))
+                            multi_comments = int(raw_metrics.get('multi', 0))
                             total_comments = comments + multi_comments
-                            functions = raw_metrics.get('functions', 0)
-                            methods = raw_metrics.get('methods', 0)
-                            classes = raw_metrics.get('classes', 0)
+                            functions = int(raw_metrics.get('functions', 0))
+                            methods = int(raw_metrics.get('methods', 0))
+                            classes = int(raw_metrics.get('classes', 0))
                             
-                            # Calculate comment density
+                            # Calculate comment density with safe division
                             comment_density = (total_comments / max(loc, 1)) * 100 if loc > 0 else 0
                             
-                            st.metric("Lines of Code", 
-                                f"{loc:,}",  # Add thousands separator
-                                help="Total lines of code")
-                            st.metric("Comment Density",
+                            # Display size metrics with proper formatting
+                            st.metric(
+                                "Lines of Code",
+                                f"{loc:,}",
+                                help="Total lines of code"
+                            )
+                            st.metric(
+                                "Comment Density",
                                 f"{comment_density:.1f}%",
-                                help="Percentage of comments in code")
-                            st.metric("Function Count",
-                                f"{functions + methods:,}",  # Add thousands separator
-                                help="Number of functions/methods")
-                            st.metric("Class Count",
-                                f"{classes:,}",  # Add thousands separator
-                                help="Number of classes")
+                                help="Percentage of comments in code"
+                            )
+                            st.metric(
+                                "Function Count",
+                                f"{functions + methods:,}",
+                                help="Total number of functions and methods"
+                            )
+                            st.metric(
+                                "Class Count",
+                                f"{classes:,}",
+                                help="Total number of classes"
+                            )
 
                         # Code Quality Issues
                         st.markdown("##### 🔍 Code Quality Analysis")
@@ -1861,23 +1885,30 @@ def display_file_explorer():
                     with col1:
                         st.markdown("##### 📊 Quality Metrics")
                         
-                        # Get raw metrics
-                        raw_metrics = st.session_state.current_metrics.get('raw_metrics', {})
+                        # Get metrics with proper type handling
+                        metrics = st.session_state.current_metrics
                         
-                        # Calculate maintainability index
-                        maintainability = st.session_state.current_metrics.get('maintainability', {})
-                        maintainability_score = maintainability.get('score', 0) if isinstance(maintainability, dict) else maintainability
+                        # Handle maintainability index
+                        maintainability = metrics.get('maintainability', {})
+                        if isinstance(maintainability, dict):
+                            maintainability_score = maintainability.get('score', 0)
+                        else:
+                            maintainability_score = float(maintainability)
                         
-                        # Calculate cyclomatic complexity
-                        complexity = st.session_state.current_metrics.get('complexity', {})
-                        complexity_score = complexity.get('score', 0) if isinstance(complexity, dict) else complexity
+                        # Handle cyclomatic complexity
+                        complexity = metrics.get('complexity', {})
+                        if isinstance(complexity, dict):
+                            complexity_score = complexity.get('score', 0)
+                        else:
+                            complexity_score = float(complexity)
                         
-                        # Get cognitive complexity
-                        cognitive_score = st.session_state.current_metrics.get('cognitive_complexity', 0)
+                        # Handle cognitive complexity
+                        cognitive_score = float(metrics.get('cognitive_complexity', 0))
                         
-                        # Get code coverage
-                        code_coverage = st.session_state.current_metrics.get('code_coverage', 0)
+                        # Handle code coverage
+                        code_coverage = float(metrics.get('code_coverage', 0))
                         
+                        # Display metrics with proper formatting
                         st.metric(
                             "Maintainability Index",
                             f"{maintainability_score:.1f}/100",
@@ -1903,17 +1934,19 @@ def display_file_explorer():
                         st.markdown("##### 📏 Size Metrics")
                         
                         # Get raw metrics with safe defaults
-                        loc = raw_metrics.get('loc', 0)
-                        comments = raw_metrics.get('comments', 0)
-                        multi_comments = raw_metrics.get('multi', 0)
+                        raw_metrics = metrics.get('raw_metrics', {})
+                        loc = int(raw_metrics.get('loc', 0))
+                        comments = int(raw_metrics.get('comments', 0))
+                        multi_comments = int(raw_metrics.get('multi', 0))
                         total_comments = comments + multi_comments
-                        functions = raw_metrics.get('functions', 0)
-                        methods = raw_metrics.get('methods', 0)
-                        classes = raw_metrics.get('classes', 0)
+                        functions = int(raw_metrics.get('functions', 0))
+                        methods = int(raw_metrics.get('methods', 0))
+                        classes = int(raw_metrics.get('classes', 0))
                         
-                        # Calculate comment density
+                        # Calculate comment density with safe division
                         comment_density = (total_comments / max(loc, 1)) * 100 if loc > 0 else 0
                         
+                        # Display size metrics with proper formatting
                         st.metric(
                             "Lines of Code",
                             f"{loc:,}",
@@ -1927,12 +1960,12 @@ def display_file_explorer():
                         st.metric(
                             "Function Count",
                             f"{functions + methods:,}",
-                            help="Number of functions/methods"
+                            help="Total number of functions and methods"
                         )
                         st.metric(
                             "Class Count",
                             f"{classes:,}",
-                            help="Number of classes"
+                            help="Total number of classes"
                         )
 
                     # Code Quality Issues
@@ -1940,7 +1973,7 @@ def display_file_explorer():
                     
                     # Design Issues
                     with st.expander("Design Issues", expanded=False):
-                        design_issues = st.session_state.current_metrics.get('design_issues', [])
+                        design_issues = metrics.get('design_issues', [])
                         if design_issues:
                             for issue in design_issues:
                                 st.warning(f"🎨 {issue}")
@@ -1949,7 +1982,7 @@ def display_file_explorer():
 
                     # Code Smells
                     with st.expander("Code Smells", expanded=False):
-                        code_smells = st.session_state.current_metrics.get('code_smells', [])
+                        code_smells = metrics.get('code_smells', [])
                         if code_smells:
                             for smell in code_smells:
                                 st.warning(f"👃 {smell}")
@@ -1958,7 +1991,7 @@ def display_file_explorer():
 
                     # Performance Issues
                     with st.expander("Performance Issues", expanded=False):
-                        perf_issues = st.session_state.current_metrics.get('performance_issues', [])
+                        perf_issues = metrics.get('performance_issues', [])
                         if perf_issues:
                             for issue in perf_issues:
                                 st.warning(f"⚡ {issue}")
@@ -1967,7 +2000,7 @@ def display_file_explorer():
 
                     # Security Issues
                     with st.expander("Security Issues", expanded=False):
-                        security_issues = st.session_state.current_metrics.get('security_issues', [])
+                        security_issues = metrics.get('security_issues', [])
                         if security_issues:
                             for issue in security_issues:
                                 st.error(f"🔒 {issue}")
@@ -1982,10 +2015,10 @@ def display_file_explorer():
                         language = next((info['name'] for lang, info in config['supported_languages'].items() 
                                       if file_ext in info['extensions']), "Unknown")
                         st.markdown(f"**Language:** {language}")
-                        st.markdown(f"**Last Modified:** {st.session_state.current_metrics.get('last_modified', 'Unknown')}")
+                        st.markdown(f"**Last Modified:** {metrics.get('last_modified', 'Unknown')}")
                     with col4:
                         st.markdown(f"**File Size:** {os.path.getsize(st.session_state.current_file) / 1024:.1f} KB")
-                        st.markdown(f"**Encoding:** {st.session_state.current_metrics.get('encoding', 'UTF-8')}")
+                        st.markdown(f"**Encoding:** {metrics.get('encoding', 'UTF-8')}")
                 else:
                     st.info("No metrics available for the selected file.")
         else:

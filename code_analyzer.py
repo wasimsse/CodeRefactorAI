@@ -469,11 +469,13 @@ class CodeAnalyzer:
                 "function_count": len(functions),
                 "class_count": len(classes),
                 "imports": imports,
-                "complexity": complexity,
+                "complexity": {"score": complexity, "issues": []},
                 "maintainability": {
                     "score": maintainability_score,
                     "issues": []},
                 "code_smells": code_smells,
+                "cognitive_complexity": complexity,
+                "code_coverage": 0,
                 "raw_metrics": {
                     "loc": raw_metrics.loc,
                     "lloc": raw_metrics.lloc,
@@ -557,18 +559,64 @@ class CodeAnalyzer:
         """Analyze Java code and return metrics."""
         try:
             tree = javalang.parse.parse(content)
-            metrics = {
-                'classes': len(list(tree.filter(javalang.tree.ClassDeclaration))),
-                'interfaces': len(list(tree.filter(javalang.tree.InterfaceDeclaration))),
-                'methods': len(list(tree.filter(javalang.tree.MethodDeclaration))),
-                'imports': len(list(tree.filter(javalang.tree.Import))),
-                'complexity': self._calculate_java_complexity(tree),
-                'code_smells': self._detect_java_smells(tree)
+            
+            # Count classes and methods
+            classes = list(tree.filter(javalang.tree.ClassDeclaration))
+            methods = list(tree.filter(javalang.tree.MethodDeclaration))
+            imports = list(tree.filter(javalang.tree.Import))
+            
+            # Calculate complexity
+            complexity_score = self._calculate_java_complexity(tree)
+            
+            # Calculate maintainability score (inverse of complexity)
+            maintainability_score = max(0, min(100, 100 - (complexity_score * 2)))
+            
+            # Count lines
+            lines = content.splitlines()
+            loc = len(lines)
+            comments = len([l for l in lines if l.strip().startswith('//')])
+            multi_comments = len([l for l in lines if l.strip().startswith('/*') or l.strip().startswith('*')])
+            
+            return {
+                'language': 'java',
+                'complexity': {'score': complexity_score, 'issues': []},
+                'maintainability': {'score': maintainability_score, 'issues': []},
+                'cognitive_complexity': complexity_score,
+                'code_coverage': 0,
+                'raw_metrics': {
+                    'loc': loc,
+                    'comments': comments,
+                    'multi': multi_comments,
+                    'classes': len(classes),
+                    'methods': len(methods),
+                    'functions': 0,  # Java doesn't have standalone functions
+                },
+                'code_smells': self._detect_java_smells(tree),
+                'design_issues': [],
+                'performance_issues': [],
+                'security_issues': []
             }
-            return metrics
         except Exception as e:
             print(f"Error parsing Java code: {str(e)}")
-            return self._basic_java_analysis(content)
+            return {
+                'language': 'java',
+                'complexity': {'score': 0, 'issues': ['Error analyzing code']},
+                'maintainability': {'score': 0, 'issues': ['Error analyzing code']},
+                'cognitive_complexity': 0,
+                'code_coverage': 0,
+                'raw_metrics': {
+                    'loc': 0,
+                    'comments': 0,
+                    'multi': 0,
+                    'classes': 0,
+                    'methods': 0,
+                    'functions': 0
+                },
+                'code_smells': ['Error analyzing code'],
+                'design_issues': [],
+                'performance_issues': [],
+                'security_issues': []
+            }
 
     def _basic_java_analysis(self, content: str) -> Dict:
         """Perform basic Java code analysis when full parsing fails."""
