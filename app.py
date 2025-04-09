@@ -202,7 +202,27 @@ def init_session_state():
         'selected_directory': None,
         'selected_file': None,
         'analyzer': CodeAnalyzer(config),
-        'project_analyzer': ProjectAnalyzer(config)
+        'project_analyzer': ProjectAnalyzer(config),
+        'current_file': None,
+        'current_metrics': {},
+        'current_code': "",
+        'file_filter': "",
+        'file_type_filter': "all",
+        'sort_by': "name",
+        'sort_order': "asc",
+        'view_mode': "tree",
+        'expanded_dirs': set(),
+        'recent_files': [],
+        'refactoring_history': [],
+        'refactoring_suggestions': [],
+        'refactoring_model': "gpt-4",
+        'refactoring_goals': [],
+        'refactoring_constraints': [],
+        'refactoring_mode': "local",
+        'custom_instructions': "",
+        'show_find': False,
+        'edit_mode': False,
+        'selected_tab': "🔍 Analysis & Selection"
     }
 
     # Initialize any missing session state variables
@@ -1137,23 +1157,27 @@ def display_refactoring_options():
                             
                             # Handle maintainability index
                             maintainability = metrics.get('maintainability', {})
-                            if isinstance(maintainability, dict):
-                                maintainability_score = maintainability.get('score', 0)
-                            else:
-                                maintainability_score = float(maintainability)
+                            maintainability_score = (
+                                maintainability.get('score', 0) 
+                                if isinstance(maintainability, dict) 
+                                else float(maintainability or 0)
+                            )
                             
                             # Handle cyclomatic complexity
                             complexity = metrics.get('complexity', {})
-                            if isinstance(complexity, dict):
-                                complexity_score = complexity.get('score', 0)
-                            else:
-                                complexity_score = float(complexity)
+                            complexity_score = (
+                                complexity.get('score', 0) 
+                                if isinstance(complexity, dict) 
+                                else float(complexity or 0)
+                            )
                             
                             # Handle cognitive complexity
-                            cognitive_score = float(metrics.get('cognitive_complexity', 0))
+                            cognitive_complexity = metrics.get('cognitive_complexity', 0)
+                            cognitive_score = float(cognitive_complexity or 0)
                             
                             # Handle code coverage
-                            code_coverage = float(metrics.get('code_coverage', 0))
+                            code_coverage = metrics.get('code_coverage', 0)
+                            coverage_score = float(code_coverage or 0)
                             
                             # Display metrics with proper formatting
                             st.metric(
@@ -1173,7 +1197,7 @@ def display_refactoring_options():
                             )
                             st.metric(
                                 "Code Coverage",
-                                f"{code_coverage:.1f}%",
+                                f"{coverage_score:.1f}%",
                                 help="Percentage of code covered by tests"
                             )
                         
@@ -1772,51 +1796,9 @@ def display_metrics_tab(metrics):
 
 
 def display_file_explorer():
-    """Display the file explorer interface with enhanced features."""
-    # Initialize session state variables if they don't exist
-    if 'uploaded_files' not in st.session_state:
-        st.session_state.uploaded_files = {}
-    if 'current_file' not in st.session_state:
-        st.session_state.current_file = None
-    if 'current_metrics' not in st.session_state:
-        st.session_state.current_metrics = {}
-    if 'current_code' not in st.session_state:
-        st.session_state.current_code = ""
-    if 'analyzer' not in st.session_state:
-        st.session_state.analyzer = CodeAnalyzer(config)
-    if 'file_filter' not in st.session_state:
-        st.session_state.file_filter = ""
-    if 'expanded_dirs' not in st.session_state:
-        st.session_state.expanded_dirs = set()
-    if 'view_mode' not in st.session_state:
-        st.session_state.view_mode = "tree"
-    if 'sort_by' not in st.session_state:
-        st.session_state.sort_by = "name"
-    if 'sort_order' not in st.session_state:
-        st.session_state.sort_order = "asc"
-    if 'file_type_filter' not in st.session_state:
-        st.session_state.file_type_filter = "all"
+    """Display the file explorer interface."""
     if 'recent_files' not in st.session_state:
         st.session_state.recent_files = []
-
-    # Header with gradient background
-    st.markdown("""
-        <div style="
-            background: linear-gradient(120deg, #1E88E5 0%, #42A5F5 100%);
-            padding: 1.5rem;
-            border-radius: 15px;
-            margin: 1rem 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        ">
-            <h2 style="color: white; text-align: center; margin-bottom: 1rem; font-size: 1.8em;">
-                File Explorer
-            </h2>
-        </div>
-    """, unsafe_allow_html=True)
-
-    if not st.session_state.uploaded_files:
-        st.warning("Please upload or select files to analyze first.")
-        return
 
     # Create columns for file explorer with adjustable width
     explorer_col, content_col = st.columns([1.2, 2.8])
@@ -1864,9 +1846,10 @@ def display_file_explorer():
     with content_col:
         if st.session_state.current_file:
             # Create tabs for different views
-            tab1, tab2 = st.tabs([
+            tab1, tab2, tab3 = st.tabs([
                 "🔍 Analysis & Selection",
-                "📊 Metrics"
+                "📊 Metrics",
+                "📈 Charts"
             ])
 
             with tab1:
@@ -1890,23 +1873,27 @@ def display_file_explorer():
                         
                         # Handle maintainability index
                         maintainability = metrics.get('maintainability', {})
-                        if isinstance(maintainability, dict):
-                            maintainability_score = maintainability.get('score', 0)
-                        else:
-                            maintainability_score = float(maintainability)
+                        maintainability_score = (
+                            maintainability.get('score', 0) 
+                            if isinstance(maintainability, dict) 
+                            else float(maintainability or 0)
+                        )
                         
                         # Handle cyclomatic complexity
                         complexity = metrics.get('complexity', {})
-                        if isinstance(complexity, dict):
-                            complexity_score = complexity.get('score', 0)
-                        else:
-                            complexity_score = float(complexity)
+                        complexity_score = (
+                            complexity.get('score', 0) 
+                            if isinstance(complexity, dict) 
+                            else float(complexity or 0)
+                        )
                         
                         # Handle cognitive complexity
-                        cognitive_score = float(metrics.get('cognitive_complexity', 0))
+                        cognitive_complexity = metrics.get('cognitive_complexity', 0)
+                        cognitive_score = float(cognitive_complexity or 0)
                         
                         # Handle code coverage
-                        code_coverage = float(metrics.get('code_coverage', 0))
+                        code_coverage = metrics.get('code_coverage', 0)
+                        coverage_score = float(code_coverage or 0)
                         
                         # Display metrics with proper formatting
                         st.metric(
@@ -1926,7 +1913,7 @@ def display_file_explorer():
                         )
                         st.metric(
                             "Code Coverage",
-                            f"{code_coverage:.1f}%",
+                            f"{coverage_score:.1f}%",
                             help="Percentage of code covered by tests"
                         )
                     
@@ -2021,6 +2008,163 @@ def display_file_explorer():
                         st.markdown(f"**Encoding:** {metrics.get('encoding', 'UTF-8')}")
                 else:
                     st.info("No metrics available for the selected file.")
+
+            with tab3:
+                st.markdown("#### Interactive Metric Visualizations")
+                if st.session_state.current_metrics:
+                    metrics = st.session_state.current_metrics
+                    
+                    # Quality Metrics Radar Chart
+                    st.subheader("🎯 Quality Metrics Overview")
+                    
+                    # Prepare quality metrics data
+                    maintainability = metrics.get('maintainability', {})
+                    maintainability_score = (
+                        maintainability.get('score', 0) 
+                        if isinstance(maintainability, dict) 
+                        else float(maintainability or 0)
+                    )
+                    
+                    complexity = metrics.get('complexity', {})
+                    complexity_score = (
+                        complexity.get('score', 0) 
+                        if isinstance(complexity, dict) 
+                        else float(complexity or 0)
+                    )
+                    
+                    cognitive_score = float(metrics.get('cognitive_complexity', 0) or 0)
+                    coverage_score = float(metrics.get('code_coverage', 0) or 0)
+                    
+                    # Create radar chart for quality metrics
+                    quality_metrics = {
+                        'Metric': ['Maintainability', 'Code Quality', 'Cognitive Complexity', 'Code Coverage'],
+                        'Score': [maintainability_score, 100 - complexity_score, 100 - cognitive_score, coverage_score]
+                    }
+                    
+                    fig_radar = go.Figure()
+                    fig_radar.add_trace(go.Scatterpolar(
+                        r=quality_metrics['Score'],
+                        theta=quality_metrics['Metric'],
+                        fill='toself',
+                        name='Quality Metrics'
+                    ))
+                    
+                    fig_radar.update_layout(
+                        polar=dict(
+                            radialaxis=dict(
+                                visible=True,
+                                range=[0, 100]
+                            )
+                        ),
+                        showlegend=False,
+                        title="Code Quality Metrics Radar"
+                    )
+                    st.plotly_chart(fig_radar, use_container_width=True)
+                    
+                    # Size Metrics Bar Chart
+                    st.subheader("📏 Code Size Analysis")
+                    raw_metrics = metrics.get('raw_metrics', {})
+                    
+                    size_metrics = {
+                        'Metric': ['Lines of Code', 'Comment Lines', 'Blank Lines', 'Functions', 'Classes'],
+                        'Count': [
+                            int(raw_metrics.get('loc', 0)),
+                            int(raw_metrics.get('comments', 0)) + int(raw_metrics.get('multi', 0)),
+                            int(raw_metrics.get('blank', 0)),
+                            int(raw_metrics.get('functions', 0)) + int(raw_metrics.get('methods', 0)),
+                            int(raw_metrics.get('classes', 0))
+                        ]
+                    }
+                    
+                    fig_size = px.bar(
+                        size_metrics,
+                        x='Metric',
+                        y='Count',
+                        title='Code Size Distribution',
+                        color='Count',
+                        color_continuous_scale='Viridis'
+                    )
+                    
+                    fig_size.update_layout(
+                        xaxis_title="",
+                        yaxis_title="Count",
+                        showlegend=False
+                    )
+                    st.plotly_chart(fig_size, use_container_width=True)
+                    
+                    # Code Composition Pie Chart
+                    st.subheader("🔄 Code Composition")
+                    composition_data = {
+                        'Component': ['Source Code', 'Comments', 'Blank Lines'],
+                        'Lines': [
+                            int(raw_metrics.get('sloc', 0)),
+                            int(raw_metrics.get('comments', 0)) + int(raw_metrics.get('multi', 0)),
+                            int(raw_metrics.get('blank', 0))
+                        ]
+                    }
+                    
+                    fig_composition = px.pie(
+                        composition_data,
+                        values='Lines',
+                        names='Component',
+                        title='Code Composition Distribution',
+                        color_discrete_sequence=px.colors.qualitative.Set3
+                    )
+                    
+                    fig_composition.update_traces(textposition='inside', textinfo='percent+label')
+                    st.plotly_chart(fig_composition, use_container_width=True)
+                    
+                    # Issues Overview
+                    st.subheader("⚠️ Issues Overview")
+                    
+                    issues_data = {
+                        'Category': ['Design Issues', 'Code Smells', 'Performance Issues', 'Security Issues'],
+                        'Count': [
+                            len(metrics.get('design_issues', [])),
+                            len(metrics.get('code_smells', [])),
+                            len(metrics.get('performance_issues', [])),
+                            len(metrics.get('security_issues', []))
+                        ]
+                    }
+                    
+                    fig_issues = px.bar(
+                        issues_data,
+                        x='Category',
+                        y='Count',
+                        title='Code Issues Distribution',
+                        color='Category',
+                        color_discrete_sequence=['#FFA07A', '#98FB98', '#87CEFA', '#DDA0DD']
+                    )
+                    
+                    fig_issues.update_layout(
+                        xaxis_title="",
+                        yaxis_title="Number of Issues",
+                        showlegend=False
+                    )
+                    st.plotly_chart(fig_issues, use_container_width=True)
+                    
+                    # Complexity Trends (if available)
+                    if 'complexity_trends' in metrics:
+                        st.subheader("📈 Complexity Trends")
+                        trends = metrics['complexity_trends']
+                        
+                        fig_trends = go.Figure()
+                        fig_trends.add_trace(go.Scatter(
+                            x=list(range(len(trends))),
+                            y=trends,
+                            mode='lines+markers',
+                            name='Complexity Trend'
+                        ))
+                        
+                        fig_trends.update_layout(
+                            title="Code Complexity Trend",
+                            xaxis_title="Time",
+                            yaxis_title="Complexity Score"
+                        )
+                        st.plotly_chart(fig_trends, use_container_width=True)
+                    
+                else:
+                    st.info("No metrics available for visualization. Please select a file to analyze.")
         else:
             st.info("Select a file from the file explorer to view its analysis.")
 

@@ -1,50 +1,25 @@
-# RefactoringAI
+# CodeRefactorAI
 
-A powerful AI-powered code refactoring and analysis tool that helps developers improve code quality, detect code smells, and suggest refactoring opportunities.
+An AI-powered code analysis and refactoring tool built with Streamlit that helps developers improve code quality, maintainability, and performance.
 
 ## Features
 
-### Code Analysis
-- Basic code metrics (lines of code, complexity, etc.)
-- Advanced complexity analysis
-  - Cyclomatic complexity
-  - Cognitive complexity
-  - Halstead metrics
-- Code smell detection
-  - Bloaters
-  - Object-oriented abusers
-  - Change preventers
-  - Dispensables
-  - Couplers
-- Technical debt estimation
-- Refactoring suggestions
-
-### Advanced Analysis
-- Detailed complexity metrics visualization
-- Code smell categorization and severity assessment
-- Impact-based refactoring opportunities
-- Technical debt cost estimation
-- Project-wide analysis capabilities
-
-### Supported Languages
-- Python
-- Java
-- C++
-- C#
-- JavaScript/TypeScript
-- Go
-- Ruby
-- Rust
+- 📊 **Code Quality Analysis**: Comprehensive analysis of code metrics including maintainability, complexity, and code smells
+- 📈 **Interactive Visualizations**: Beautiful charts and graphs to visualize code metrics
+- 🔍 **Multi-Language Support**: Supports Python, Java, JavaScript, and more
+- 🤖 **AI-Powered Refactoring**: Smart suggestions for code improvements
+- 📁 **Project-Wide Analysis**: Analyze entire projects or single files
+- 🔄 **GitHub Integration**: Direct analysis from GitHub repositories
 
 ## Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/refactoringai.git
-cd refactoringai
+git clone https://github.com/yourusername/CodeRefactorAI.git
+cd CodeRefactorAI
 ```
 
-2. Create a virtual environment:
+2. Create and activate a virtual environment:
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
@@ -55,59 +30,41 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## Usage
-
-1. Start the application:
+4. Run the application:
 ```bash
 streamlit run app.py
 ```
 
-2. Access the web interface at `http://localhost:8501`
+## Usage
 
-3. Upload your code files or connect to a GitHub repository
+1. **Upload Code**: Choose from three options:
+   - Single file upload
+   - Project archive (ZIP)
+   - GitHub repository URL
 
-4. Use the various tabs to:
-   - Upload and manage files
-   - View basic code analysis
-   - Access advanced analysis features
-   - Get refactoring suggestions
+2. **Analyze**: View comprehensive metrics including:
+   - Maintainability Index
+   - Cyclomatic Complexity
+   - Cognitive Complexity
+   - Code Coverage
+   - Size Metrics
+   - Code Quality Issues
 
-## Advanced Analysis Features
+3. **Visualize**: Explore interactive charts:
+   - Quality Metrics Radar
+   - Code Size Analysis
+   - Code Composition
+   - Issues Overview
 
-### Complexity Metrics
-- View detailed complexity metrics for each file
-- Compare different complexity measures
-- Identify highly complex code sections
-
-### Code Smells
-- Categorized code smell detection
-- Severity assessment
-- Detailed descriptions and suggestions
-- Visual representation of smell distribution
-
-### Refactoring Opportunities
-- Impact-based refactoring suggestions
-- Prioritized recommendations
-- Detailed refactoring steps
-- Cost-benefit analysis
-
-### Technical Debt
-- Hour-based technical debt estimation
-- Cost estimation
-- Distribution analysis
-- Project-wide debt assessment
+4. **Refactor**: Get AI-powered suggestions for code improvements
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Project Structure
 

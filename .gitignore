@@ -22,8 +22,8 @@ wheels/
 
 # Virtual Environment
 venv/
-ENV/
 env/
+ENV/
 
 # IDE
 .idea/
@@ -67,6 +67,7 @@ data/
 
 # Project specific
 temp_analysis/
+temp_repo/
 *.log
 uploads/
 analysis_results/
@@ -82,4 +83,8 @@ htmlcov/
 .coverage
 .coverage.*
 coverage.xml
-*.cover 
+*.cover
+
+# OS specific
+.DS_Store
+Thumbs.db 
