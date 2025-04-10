@@ -2479,15 +2479,143 @@ def display_file_explorer():
                         
                         if show_details:
                             st.markdown("#### Size Metrics Details")
-                            col1, col2, col3 = st.columns(3)
+                            
+                            # Create columns for different metric categories
+                            col1, col2 = st.columns(2)
+                            
                             with col1:
-                                st.metric("Total Lines", sum(size_metrics['Count']))
+                                st.markdown("##### 📏 Code Structure")
+                                metrics = st.session_state.current_metrics
+                                raw = metrics.get('raw_metrics', {})
+                                
+                                # Display detailed code structure metrics
+                                structure_metrics = {
+                                    "Total Lines": raw.get('loc', 0),
+                                    "Effective Lines": raw.get('loc', 0) - raw.get('comments', 0) - raw.get('blank_lines', 0),
+                                    "Comment Lines": raw.get('comments', 0),
+                                    "Blank Lines": raw.get('blank_lines', 0),
+                                    "Classes": raw.get('classes', 0),
+                                    "Methods": raw.get('methods', 0),
+                                    "Functions": raw.get('functions', 0),
+                                    "Nested Depth": raw.get('max_nested_depth', 0)
+                                }
+                                
+                                for metric, value in structure_metrics.items():
+                                    st.metric(
+                                        metric,
+                                        f"{value:,}",
+                                        help=f"Number of {metric.lower()}"
+                                    )
+                            
                             with col2:
-                                st.metric("Code to Comment Ratio", 
-                                         f"{size_metrics['Count'][0]/max(size_metrics['Count'][1], 1):.1f}")
-                            with col3:
-                                st.metric("Average Lines per Function", 
-                                         f"{size_metrics['Count'][0]/max(size_metrics['Count'][3], 1):.1f}")
+                                st.markdown("##### 🎯 Complexity Distribution")
+                                
+                                # Calculate complexity distribution
+                                methods = metrics.get('method_metrics', [])
+                                if methods:
+                                    complexities = [m.get('complexity', 0) for m in methods]
+                                    
+                                    complexity_data = {
+                                        'Simple (1-5)': len([c for c in complexities if c <= 5]),
+                                        'Moderate (6-10)': len([c for c in complexities if 5 < c <= 10]),
+                                        'Complex (11-20)': len([c for c in complexities if 10 < c <= 20]),
+                                        'Very Complex (>20)': len([c for c in complexities if c > 20])
+                                    }
+                                    
+                                    # Create a bar chart
+                                    st.bar_chart(complexity_data)
+                            
+                            # Add Refactoring Opportunities section
+                            st.markdown("#### 🔄 Refactoring Opportunities")
+                            
+                            opportunities = []
+                            
+                            # Check for large methods
+                            large_methods = [m for m in methods if m.get('loc', 0) > 30]
+                            if large_methods:
+                                opportunities.append({
+                                    'Type': 'Method Size',
+                                    'Priority': 'High' if len(large_methods) > 5 else 'Medium',
+                                    'Issue': f'Found {len(large_methods)} methods with more than 30 lines',
+                                    'Impact': 'Large methods are harder to understand and maintain',
+                                    'Suggestion': 'Extract related logic into smaller, focused methods'
+                                })
+                            
+                            # Check for deep nesting
+                            if raw.get('max_nested_depth', 0) > 3:
+                                opportunities.append({
+                                    'Type': 'Code Nesting',
+                                    'Priority': 'Medium',
+                                    'Issue': f'Maximum nesting depth of {raw["max_nested_depth"]} levels',
+                                    'Impact': 'Deeply nested code is hard to follow and test',
+                                    'Suggestion': 'Extract nested logic into separate methods or use early returns'
+                                })
+                            
+                            # Check for low cohesion
+                            if raw.get('classes', 0) > 0:
+                                avg_methods = raw.get('methods', 0) / raw.get('classes', 1)
+                                if avg_methods > 15:
+                                    opportunities.append({
+                                        'Type': 'Class Cohesion',
+                                        'Priority': 'High',
+                                        'Issue': f'Classes have an average of {avg_methods:.1f} methods',
+                                        'Impact': 'Large classes may have multiple responsibilities',
+                                        'Suggestion': 'Split large classes into smaller, focused classes'
+                                    })
+                            
+                            # Check for comment ratio
+                            if raw.get('loc', 0) > 0:
+                                comment_ratio = (raw.get('comments', 0) + raw.get('multi', 0)) / raw.get('loc', 1)
+                                if comment_ratio < 0.1:
+                                    opportunities.append({
+                                        'Type': 'Documentation',
+                                        'Priority': 'Medium',
+                                        'Issue': f'Low comment ratio ({comment_ratio:.1%})',
+                                        'Impact': 'Code may be difficult for others to understand',
+                                        'Suggestion': 'Add meaningful comments to explain complex logic and decisions'
+                                    })
+                            
+                            # Display refactoring opportunities
+                            if opportunities:
+                                df = pd.DataFrame(opportunities)
+                                
+                                # Color coding for priority
+                                def color_priority(val):
+                                    colors = {
+                                        'High': 'background-color: #ff6b6b; color: white',
+                                        'Medium': 'background-color: #ffd93d',
+                                        'Low': 'background-color: #95cd41'
+                                    }
+                                    return colors.get(val, '')
+                                
+                                st.dataframe(
+                                    df.style.map(color_priority, subset=['Priority']),
+                                    use_container_width=True,
+                                    height=400
+                                )
+                                
+                                # Add action buttons for each opportunity
+                                selected_opportunity = st.selectbox(
+                                    "Select an opportunity to see detailed refactoring steps",
+                                    df['Type'].tolist()
+                                )
+                                
+                                if selected_opportunity:
+                                    opp = df[df['Type'] == selected_opportunity].iloc[0]
+                                    
+                                    st.markdown("##### Refactoring Steps")
+                                    steps = get_refactoring_steps(selected_opportunity)
+                                    for i, step in enumerate(steps, 1):
+                                        st.markdown(f"{i}. {step}")
+                                    
+                                    if st.button("Generate Refactoring Preview"):
+                                        preview = generate_refactoring_preview(
+                                            selected_opportunity,
+                                            st.session_state.current_metrics.get('content', '')
+                                        )
+                                        st.code(preview, language='python')
+                            else:
+                                st.success("✅ No significant refactoring opportunities detected")
                     
                     elif chart_type == "Composition":
                         st.subheader("🔄 Code Composition")
@@ -3237,6 +3365,75 @@ def analyze_code_quality(code_content):
     metrics['complexity'] = complexity
     
     return metrics
+
+
+def get_refactoring_steps(opportunity_type):
+    """Return detailed steps for each refactoring opportunity"""
+    steps = {
+        'Method Size': [
+            "Identify logical segments within the large method",
+            "Extract each segment into a new method with a descriptive name",
+            "Replace the original code with calls to the new methods",
+            "Pass necessary parameters and return values",
+            "Update documentation to reflect the changes"
+        ],
+        'Code Nesting': [
+            "Identify the deepest nested conditions",
+            "Consider inverting conditions to reduce nesting",
+            "Extract nested blocks into separate methods",
+            "Use guard clauses for early returns",
+            "Consider using pattern matching or lookup tables"
+        ],
+        'Class Cohesion': [
+            "Group related methods and attributes",
+            "Identify distinct responsibilities in the class",
+            "Create new classes for each responsibility",
+            "Move related methods and attributes to new classes",
+            "Update references and maintain necessary relationships"
+        ],
+        'Documentation': [
+            "Add class-level documentation explaining purpose and usage",
+            "Document complex methods with clear explanations",
+            "Add inline comments for non-obvious code segments",
+            "Include examples in docstrings",
+            "Update existing comments to be more descriptive"
+        ]
+    }
+    return steps.get(opportunity_type, ["No specific steps available for this opportunity"])
+
+
+def generate_refactoring_preview(opportunity_type, code_content):
+    """Generate a preview of the refactored code"""
+    if opportunity_type == 'Method Size':
+        # Example preview for method size refactoring
+        return '''def original_large_method(data):
+    """Split into smaller, focused methods"""
+    # Extract data validation
+    validated_data = validate_input_data(data)
+    
+    # Extract data processing
+    processed_data = process_data(validated_data)
+    
+    # Extract result generation
+    return generate_result(processed_data)
+
+def validate_input_data(data):
+    """Validate input data"""
+    # Validation logic here
+    return validated_data
+
+def process_data(data):
+    """Process the validated data"""
+    # Processing logic here
+    return processed_data
+
+def generate_result(data):
+    """Generate the final result"""
+    # Result generation logic here
+    return result'''
+    
+    # Add more preview generators for other opportunity types
+    return "# Refactoring preview not available for this opportunity type"
 
 
 if __name__ == "__main__":
