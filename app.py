@@ -475,14 +475,14 @@ def main():
                 help="Enter the URL of a public GitHub repository")
             
             if repo_url:
-                    if st.button(
-                        "🚀 Analyze GitHub Repository",
-                        type="primary",
-                        use_container_width=True):
+                if st.button(
+                    "🚀 Analyze GitHub Repository",
+                    type="primary",
+                    use_container_width=True):
                     with st.spinner("🔍 Cloning and analyzing repository..."):
                         handle_github_upload(repo_url)
-                            st.success(
-                                "✅ Repository Analysis Complete! View results in the File Explorer tab.")
+                        st.success(
+                            "✅ Repository Analysis Complete! View results in the File Explorer tab.")
             
             with repo_tab2:
                 repo_path = st.text_input(
@@ -1092,28 +1092,28 @@ def display_refactoring_options():
                 elif mode == "Cloud-based":
                     st.info("Cloud mode leverages powerful cloud resources for comprehensive refactoring. Best for large projects.")
                     st.markdown("#### ☁️ Cloud Service Options")
-    model = st.selectbox(
+                    model = st.selectbox(
                         "Select AI Model",
                         ["gpt-4", "gpt-3.5-turbo", "claude-3-opus", "claude-3-sonnet"],
                         index=0,
                         help="Choose the AI model for refactoring"
                     )
-                    st.session_state.refactoring_model = model
+                st.session_state.refactoring_model = model
                     
                     # Cloud provider selection
-                    cloud_provider = st.selectbox(
+                cloud_provider = st.selectbox(
                         "Select Cloud Provider",
                         ["OpenAI", "Anthropic", "Google Cloud", "Azure"],
                         help="Choose the cloud provider for processing"
                     )
                     
                     # API configuration
-                    with st.expander("API Configuration"):
+                with st.expander("API Configuration"):
                         st.text_input("API Key", type="password", help="Enter your API key")
                         st.number_input("Request Timeout (seconds)", min_value=30, max_value=300, value=60)
                         st.checkbox("Enable streaming response", value=True)
 
-                else:  # Hybrid
+        else:  # Hybrid
                     st.info("Hybrid mode combines local and cloud processing for optimal results.")
                     st.markdown("#### 🔄 Hybrid Processing Options")
                     
@@ -1131,57 +1131,65 @@ def display_refactoring_options():
                         st.checkbox("Security Analysis", value=True)
 
                 # Common options for all modes
-                st.markdown("#### 🎯 Refactoring Goals")
-                goals = st.multiselect(
-                    "Select refactoring goals",
-                    [
-                        "Improve readability",
-                        "Enhance maintainability",
-                        "Optimize performance",
-                        "Fix code smells",
-                        "Reduce complexity",
-                        "Improve error handling",
-                        "Add documentation",
-                        "Enhance security",
-                        "Improve test coverage",
-                        "Modernize code style"
-                    ],
-                    default=["Improve readability", "Enhance maintainability"],
-                    key="refactoring_goals"
-                )
-                st.session_state.refactoring_goals = goals
+        st.markdown("#### 🎯 Goals")
+        # Initialize session state for goals if not already set
+        if 'refactoring_goals' not in st.session_state:
+            st.session_state.refactoring_goals = ["Improve readability", "Enhance maintainability"]
+        
+        goals = st.multiselect(
+            "Select goals",
+            [
+                "Improve readability",
+                "Enhance maintainability",
+                "Reduce complexity",
+                "Optimize performance",
+                "Fix code smells",
+                "Enhance security",
+                "Improve test coverage",
+                "Modernize code style"
+            ],
+            default=st.session_state.refactoring_goals,
+            key="refactoring_goals"
+        )
 
-                st.markdown("#### 🎯 Constraints")
-                constraints = st.multiselect(
-                    "Select constraints",
-                    [
-                        "Preserve functionality",
-                        "Maintain backward compatibility",
-                        "Keep existing interfaces",
-                        "Minimize changes",
-                        "Follow style guide",
-                        "Use design patterns",
-                        "Consider performance impact",
-                        "Maintain test coverage",
-                        "Keep memory usage stable",
-                        "Preserve API compatibility"
-                    ],
-                    default=["Preserve functionality"],
-                    key="refactoring_constraints"
-                )
-                st.session_state.refactoring_constraints = constraints
+        st.markdown("#### 🎯 Constraints")
+        # Initialize session state for constraints if not already set
+        if 'refactoring_constraints' not in st.session_state:
+            st.session_state.refactoring_constraints = ["Preserve functionality"]
+        
+        constraints = st.multiselect(
+            "Select constraints",
+            [
+                "Preserve functionality",
+                "Maintain backward compatibility",
+                "Keep existing interfaces",
+                "Minimize changes",
+                "Follow style guide",
+                "Use design patterns",
+                "Consider performance impact",
+                "Maintain test coverage",
+                "Keep memory usage stable",
+                "Preserve API compatibility"
+            ],
+            default=st.session_state.refactoring_constraints,
+            key="refactoring_constraints"
+        )
 
-                st.markdown("#### 📝 Custom Instructions")
-                custom_instructions = st.text_area(
-                    "Add any specific instructions or requirements",
-                    key="custom_instructions",
-                    height=100,
-                    help="Provide any additional context or requirements for the refactoring"
-                )
-                st.session_state.custom_instructions = custom_instructions
+        st.markdown("#### 📝 Custom Instructions")
+        # Initialize session state for custom instructions if not already set
+        if 'custom_instructions' not in st.session_state:
+            st.session_state.custom_instructions = ""
+        
+        custom_instructions = st.text_area(
+            "Add any specific instructions or requirements",
+            value=st.session_state.custom_instructions,
+            key="custom_instructions",
+            height=100,
+            help="Provide any additional context or requirements for the refactoring"
+        )
 
                 # Advanced options expander
-                with st.expander("⚙️ Advanced Options", expanded=False):
+        with st.expander("⚙️ Advanced Options", expanded=False):
                     st.markdown("##### Processing Options")
                     st.checkbox("Deep Analysis", value=False, 
                               help="Perform deeper analysis (slower but more thorough)")
@@ -1199,7 +1207,7 @@ def display_refactoring_options():
                               help="Automatically generate test cases for modified code")
 
                 # Generate button at the bottom
-                if st.button("Generate Refactoring Suggestions", type="primary", use_container_width=True):
+        if st.button("Generate Refactoring Suggestions", type="primary", use_container_width=True):
                     if not st.session_state.current_file:
                         st.warning("Please select a file to refactor first.")
                     elif not goals:
@@ -1645,192 +1653,198 @@ def display_landing_stats():
 
 def display_metrics_tab(metrics):
     """Display metrics tab with visualizations."""
-    if not metrics:
-        st.info("No metrics available for this file.")
-        return
-        
-    st.header("📊 File Statistics")
+    try:
+        if not metrics or not isinstance(metrics, dict):
+            st.warning("No metrics available for visualization. Please select a file to analyze.")
+            return
+            
+        st.header("📊 File Statistics")
 
-    # Create three columns for the metrics
-    col1, col2, col3 = st.columns(3)
+        # Create three columns for the metrics
+        col1, col2, col3 = st.columns(3)
 
-    # Extract metrics from the raw_metrics dictionary
-    raw_metrics = metrics.get('raw_metrics', {})
+        # Extract metrics from the raw_metrics dictionary
+        raw_metrics = metrics.get('raw_metrics', {})
+        if not raw_metrics:
+            st.warning("Raw metrics data is missing. Please reanalyze the file.")
+            return
 
-    with col1:
-        st.metric("Lines of Code", raw_metrics.get('loc', 0))
-        st.metric("Classes", raw_metrics.get('classes', 0))
-        st.metric("Methods", raw_metrics.get('methods', 0))
+        with col1:
+            st.metric("Lines of Code", raw_metrics.get('loc', 0))
+            st.metric("Classes", raw_metrics.get('classes', 0))
+            st.metric("Methods", raw_metrics.get('methods', 0))
 
-    with col2:
-        st.metric("Source Lines", raw_metrics.get('sloc', 0))
-        st.metric("Functions", raw_metrics.get('functions', 0))
-        st.metric("Imports", raw_metrics.get('imports', 0))
+        with col2:
+            st.metric("Source Lines", raw_metrics.get('sloc', 0))
+            st.metric("Functions", raw_metrics.get('functions', 0))
+            st.metric("Imports", raw_metrics.get('imports', 0))
 
-    with col3:
-        comments = raw_metrics.get('comments', 0) + raw_metrics.get('multi', 0)
-        st.metric("Comments", comments)
-        st.metric("Packages", len(metrics.get('imported_packages', [])))
-        comment_ratio = (comments / raw_metrics.get('loc', 1)) * \
-            100 if raw_metrics.get('loc', 0) > 0 else 0
-        st.metric("Comment Ratio", f"{comment_ratio:.1f}%")
+        with col3:
+            comments = raw_metrics.get('comments', 0) + raw_metrics.get('multi', 0)
+            st.metric("Comments", comments)
+            st.metric("Packages", len(metrics.get('imported_packages', [])))
+            comment_ratio = (comments / raw_metrics.get('loc', 1)) * 100 if raw_metrics.get('loc', 0) > 0 else 0
+            st.metric("Comment Ratio", f"{comment_ratio:.1f}%")
 
-    # Code Composition Chart
-    st.header("📈 Code Composition")
+        # Code Composition Chart
+        st.header("📈 Code Composition")
 
-    composition_data = {
-        'Category': ['Source Lines', 'Comments', 'Blank Lines'],
-        'Lines': [
-            raw_metrics.get('sloc', 0),
-            comments,
-            raw_metrics.get('blank', 0)
-        ]
-    }
-    composition_df = pd.DataFrame(composition_data)
+        composition_data = {
+            'Category': ['Source Lines', 'Comments', 'Blank Lines'],
+            'Lines': [
+                raw_metrics.get('sloc', 0),
+                comments,
+                raw_metrics.get('blank', 0)
+            ]
+        }
+        composition_df = pd.DataFrame(composition_data)
 
-    fig_composition = px.bar(
-        composition_df,
-        x='Category',
-        y='Lines',
-        title='Code Composition',
-        color='Category',
-        color_discrete_sequence=['#1f77b4', '#2ca02c', '#d62728']
-    )
-    fig_composition.update_layout(
-        showlegend=True,
-        plot_bgcolor='white',
-        yaxis_title="Number of Lines",
-        xaxis_title=""
-    )
-    st.plotly_chart(fig_composition, use_container_width=True)
+        fig_composition = px.bar(
+            composition_df,
+            x='Category',
+            y='Lines',
+            title='Code Composition',
+            color='Category',
+            color_discrete_sequence=['#1f77b4', '#2ca02c', '#d62728']
+        )
+        fig_composition.update_layout(
+            showlegend=True,
+            plot_bgcolor='white',
+            yaxis_title="Number of Lines",
+            xaxis_title=""
+        )
+        st.plotly_chart(fig_composition, use_container_width=True)
 
-    # Quality Metrics Charts
-    st.header("🎯 Quality Metrics")
+        # Quality Metrics Charts
+        st.header("🎯 Quality Metrics")
 
-    # Maintainability Index Gauge
-    maintainability = metrics.get('maintainability', {}).get('score', 0)
-    fig_maintainability = go.Figure(go.Indicator(
-        mode="gauge+number",
-        value=maintainability,
-        title={'text': "Maintainability Index"},
-        domain={'x': [0, 1], 'y': [0, 1]},
-        gauge={
-            'axis': {'range': [0, 100]},
-            'bar': {'color': "#1f77b4"},
-            'steps': [
-                {'range': [0, 40], 'color': "#ff7f0e"},
-                {'range': [40, 70], 'color': "#2ca02c"},
-                {'range': [70, 100], 'color': "#1f77b4"}
-            ],
-            'threshold': {
-                'line': {'color': "red", 'width': 4},
-                'thickness': 0.75,
-                'value': 40
+        # Maintainability Index Gauge
+        maintainability = metrics.get('maintainability', {}).get('score', 0)
+        fig_maintainability = go.Figure(go.Indicator(
+            mode="gauge+number",
+            value=maintainability,
+            title={'text': "Maintainability Index"},
+            domain={'x': [0, 1], 'y': [0, 1]},
+            gauge={
+                'axis': {'range': [0, 100]},
+                'bar': {'color': "#1f77b4"},
+                'steps': [
+                    {'range': [0, 40], 'color': "#ff7f0e"},
+                    {'range': [40, 70], 'color': "#2ca02c"},
+                    {'range': [70, 100], 'color': "#1f77b4"}
+                ],
+                'threshold': {
+                    'line': {'color': "red", 'width': 4},
+                    'thickness': 0.75,
+                    'value': 40
+                }
             }
-        }
-    ))
-    fig_maintainability.update_layout(height=300)
-    st.plotly_chart(fig_maintainability, use_container_width=True)
+        ))
+        fig_maintainability.update_layout(height=300)
+        st.plotly_chart(fig_maintainability, use_container_width=True)
 
-    # Code Quality Score Gauge
-    quality_score = metrics.get('complexity', {}).get('score', 0)
-    fig_quality = go.Figure(go.Indicator(
-        mode="gauge+number",
-        value=quality_score,
-        title={'text': "Code Quality Score"},
-        domain={'x': [0, 1], 'y': [0, 1]},
-        gauge={
-            'axis': {'range': [0, 100]},
-            'bar': {'color': "#2ca02c"},
-            'steps': [
-                {'range': [0, 50], 'color': "#ff7f0e"},
-                {'range': [50, 80], 'color': "#2ca02c"},
-                {'range': [80, 100], 'color': "#1f77b4"}
-            ],
-            'threshold': {
-                'line': {'color': "red", 'width': 4},
-                'thickness': 0.75,
-                'value': 50
+        # Code Quality Score Gauge
+        quality_score = metrics.get('complexity', {}).get('score', 0)
+        fig_quality = go.Figure(go.Indicator(
+            mode="gauge+number",
+            value=quality_score,
+            title={'text': "Code Quality Score"},
+            domain={'x': [0, 1], 'y': [0, 1]},
+            gauge={
+                'axis': {'range': [0, 100]},
+                'bar': {'color': "#2ca02c"},
+                'steps': [
+                    {'range': [0, 50], 'color': "#ff7f0e"},
+                    {'range': [50, 80], 'color': "#2ca02c"},
+                    {'range': [80, 100], 'color': "#1f77b4"}
+                ],
+                'threshold': {
+                    'line': {'color': "red", 'width': 4},
+                    'thickness': 0.75,
+                    'value': 50
+                }
             }
+        ))
+        fig_quality.update_layout(height=300)
+        st.plotly_chart(fig_quality, use_container_width=True)
+
+        # Code Structure Distribution
+        structure_data = {
+            'Category': ['Classes', 'Methods', 'Functions'],
+            'Count': [
+                raw_metrics.get('classes', 0),
+                raw_metrics.get('methods', 0),
+                raw_metrics.get('functions', 0)
+            ]
         }
-    ))
-    fig_quality.update_layout(height=300)
-    st.plotly_chart(fig_quality, use_container_width=True)
+        structure_df = pd.DataFrame(structure_data)
 
-    # Code Structure Distribution
-    structure_data = {
-        'Category': ['Classes', 'Methods', 'Functions'],
-        'Count': [
-            raw_metrics.get('classes', 0),
-            raw_metrics.get('methods', 0),
-            raw_metrics.get('functions', 0)
-        ]
-    }
-    structure_df = pd.DataFrame(structure_data)
+        fig_structure = px.pie(
+            structure_df,
+            values='Count',
+            names='Category',
+            title='Code Structure Distribution',
+            color_discrete_sequence=['#1f77b4', '#2ca02c', '#ff7f0e'],
+            hole=0.4
+        )
+        fig_structure.update_layout(
+            showlegend=True,
+            height=400
+        )
+        st.plotly_chart(fig_structure, use_container_width=True)
 
-    fig_structure = px.pie(
-        structure_df,
-        values='Count',
-        names='Category',
-        title='Code Structure Distribution',
-        color_discrete_sequence=['#1f77b4', '#2ca02c', '#ff7f0e'],
-        hole=0.4
-    )
-    fig_structure.update_layout(
-        showlegend=True,
-        height=400
-    )
-    st.plotly_chart(fig_structure, use_container_width=True)
+        # Display issues if any
+        if metrics.get('code_smells') or metrics.get(
+                'maintainability', {}).get('issues'):
+            st.header("⚠️ Issues Found")
 
-    # Display issues if any
-    if metrics.get('code_smells') or metrics.get(
-            'maintainability', {}).get('issues'):
-        st.header("⚠️ Issues Found")
+            issues_data = {
+                'Category': [],
+                'Count': []
+            }
 
-        issues_data = {
-            'Category': [],
-            'Count': []
-        }
+            code_smells = len(metrics.get('code_smells', []))
+            maintainability_issues = len(
+                metrics.get(
+                    'maintainability', {}).get(
+                    'issues', []))
+            complexity_issues = len(
+                metrics.get(
+                    'complexity',
+                    {}).get(
+                    'issues',
+                    []))
 
-        code_smells = len(metrics.get('code_smells', []))
-        maintainability_issues = len(
-            metrics.get(
-                'maintainability', {}).get(
-                'issues', []))
-        complexity_issues = len(
-            metrics.get(
-                'complexity',
-                {}).get(
-                'issues',
-                []))
+            if code_smells > 0:
+                issues_data['Category'].append('Code Smells')
+                issues_data['Count'].append(code_smells)
+            if maintainability_issues > 0:
+                issues_data['Category'].append('Maintainability Issues')
+                issues_data['Count'].append(maintainability_issues)
+            if complexity_issues > 0:
+                issues_data['Category'].append('Complexity Issues')
+                issues_data['Count'].append(complexity_issues)
 
-        if code_smells > 0:
-            issues_data['Category'].append('Code Smells')
-            issues_data['Count'].append(code_smells)
-        if maintainability_issues > 0:
-            issues_data['Category'].append('Maintainability Issues')
-            issues_data['Count'].append(maintainability_issues)
-        if complexity_issues > 0:
-            issues_data['Category'].append('Complexity Issues')
-            issues_data['Count'].append(complexity_issues)
-
-        if issues_data['Category']:
-            issues_df = pd.DataFrame(issues_data)
-            fig_issues = px.bar(
-                issues_df,
-                x='Category',
-                y='Count',
-                title='Issues Distribution',
-                color='Category',
-                color_discrete_sequence=['#ff7f0e', '#d62728', '#9467bd']
-            )
-            fig_issues.update_layout(
-                showlegend=False,
-                plot_bgcolor='white',
-                yaxis_title="Number of Issues",
-                xaxis_title=""
-            )
-            st.plotly_chart(fig_issues, use_container_width=True)
+            if issues_data['Category']:
+                issues_df = pd.DataFrame(issues_data)
+                fig_issues = px.bar(
+                    issues_df,
+                    x='Category',
+                    y='Count',
+                    title='Issues Distribution',
+                    color='Category',
+                    color_discrete_sequence=['#ff7f0e', '#d62728', '#9467bd']
+                )
+                fig_issues.update_layout(
+                    showlegend=False,
+                    plot_bgcolor='white',
+                    yaxis_title="Number of Issues",
+                    xaxis_title=""
+                )
+                st.plotly_chart(fig_issues, use_container_width=True)
+    except Exception as e:
+        st.error(f"Error displaying metrics: {str(e)}")
+        st.info("Please try selecting the file again or reanalyzing it.")
 
 
 def display_file_explorer():
@@ -1849,697 +1863,610 @@ def display_file_explorer():
                 value=st.session_state.file_filter,
                 placeholder="Filter by filename..."
             )
-
-            st.session_state.file_type_filter = st.selectbox(
-                "File Type",
-                ["all", "python", "java", "javascript", "html", "css", "json", "yaml", "markdown", "text"]
-            )
-
+            
+            # Add filtering options
             col1, col2 = st.columns(2)
-            with col1:
-                st.session_state.sort_by = st.selectbox(
-                    "Sort By",
-                    ["name", "size", "modified", "type"]
+            
+            # Check if df exists in session state
+            if 'df' in st.session_state and st.session_state.df is not None:
+                with col1:
+                    category_filter = st.multiselect(
+                        "Filter by Category",
+                        options=st.session_state.df['Category'].unique(),
+                        key="category_filter_1"
+                    )
+                with col2:
+                    severity_filter = st.multiselect(
+                        "Filter by Severity",
+                        options=st.session_state.df['Severity'].unique(),
+                        key="severity_filter_1"
+                    )
+            else:
+                with col1:
+                    category_filter = st.multiselect(
+                        "Filter by Category",
+                        options=[],
+                        key="category_filter_1"
+                    )
+                with col2:
+                    severity_filter = st.multiselect(
+                        "Filter by Severity",
+                        options=[],
+                        key="severity_filter_1"
+                    )
+            
+            # Apply filters if selected
+            if category_filter or severity_filter:
+                filtered_df = df
+                if category_filter:
+                    filtered_df = filtered_df[filtered_df['Category'].isin(category_filter)]
+                if severity_filter:
+                    filtered_df = filtered_df[filtered_df['Severity'].isin(severity_filter)]
+                st.dataframe(
+                    filtered_df.style.applymap(color_severity, subset=['Severity']),
+                    use_container_width=True,
+                    height=400
                 )
-            with col2:
-                st.session_state.sort_order = st.selectbox(
-                    "Order",
-                    ["asc", "desc"]
+            else:
+                st.success("✅ No issues detected in the current file")
+        
+        # Create tabs for different views
+        tab1, tab2, tab3 = st.tabs([
+            "🔍 Analysis & Selection",
+            "📊 Metrics",
+            "📈 Charts"
+        ])
+        
+        with tab2:
+            st.markdown("#### Code Analysis")
+            if st.session_state.current_metrics:
+                # Create columns for different metric categories
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.markdown("##### 📊 Quality Metrics")
+                    
+                    # Get metrics with proper type handling
+                    metrics = st.session_state.current_metrics
+                    
+                    # Initialize metrics with safe defaults
+                    if not isinstance(metrics, dict):
+                        metrics = {}
+                    
+                    # Handle maintainability index
+                    maintainability = metrics.get('maintainability', {})
+                    maintainability_score = (
+                        maintainability.get('score', 0) 
+                        if isinstance(maintainability, dict) 
+                        else float(maintainability if maintainability is not None else 0)
+                    )
+                    
+                    # Handle cyclomatic complexity
+                    complexity = metrics.get('complexity', {})
+                    complexity_score = (
+                        complexity.get('score', 0) 
+                        if isinstance(complexity, dict) 
+                        else float(complexity if complexity is not None else 0)
+                    )
+                    
+                    # Handle cognitive complexity
+                    cognitive_complexity = metrics.get('cognitive_complexity', 0)
+                    cognitive_score = float(cognitive_complexity if cognitive_complexity is not None else 0)
+                    
+                    # Handle code coverage
+                    code_coverage = metrics.get('code_coverage', 0)
+                    coverage_score = float(code_coverage if code_coverage is not None else 0)
+                    
+                    # Display metrics with proper formatting
+                    st.metric(
+                        "Maintainability Index",
+                        f"{maintainability_score:.1f}/100",
+                        help="Score from 0-100. Higher is better. Based on code structure, complexity, and documentation"
+                    )
+                    st.metric(
+                        "Cyclomatic Complexity",
+                        f"{complexity_score:.1f}",
+                        help="Number of linearly independent paths through the code"
+                    )
+                    st.metric(
+                        "Cognitive Complexity",
+                        f"{cognitive_score:.1f}",
+                        help="Measure of how difficult the code is to understand"
+                    )
+                    st.metric(
+                        "Code Coverage",
+                        f"{coverage_score:.1f}%",
+                        help="Percentage of code covered by tests"
+                    )
+                
+                with col2:
+                    st.markdown("##### 📏 Size Metrics")
+                    
+                    # Get raw metrics with proper type handling
+                    raw_metrics = metrics.get('raw_metrics', {})
+                    if not isinstance(raw_metrics, dict):
+                        raw_metrics = {}
+                    
+                    # Display size metrics with proper formatting
+                    st.metric(
+                        "Lines of Code",
+                        f"{raw_metrics.get('loc', 0):,}",
+                        help="Total number of lines of code"
+                    )
+                    st.metric(
+                        "Comment Density",
+                        f"{raw_metrics.get('comment_ratio', 0):.1f}%",
+                        help="Percentage of code that is comments"
+                    )
+                    st.metric(
+                        "Function Count",
+                        f"{raw_metrics.get('functions', 0) + raw_metrics.get('methods', 0):,}",
+                        help="Total number of functions and methods"
+                    )
+                    st.metric(
+                        "Class Count",
+                        f"{raw_metrics.get('classes', 0):,}",
+                        help="Total number of classes"
+                    )
+            else:
+                st.info("No metrics available for the selected file.")
+
+        with tab3:
+            st.markdown("#### Interactive Metric Visualizations")
+            if st.session_state.current_metrics:
+                metrics = st.session_state.current_metrics
+                
+                # Add chart type selector
+                chart_type = st.selectbox(
+                    "Select Visualization Type",
+                    ["Quality Overview", "Size Analysis", "Composition", "Issues", "Trends"],
+                    key="chart_selector"
                 )
-
-            st.session_state.view_mode = st.radio(
-                "View Mode",
-                ["tree", "list", "grid"],
-                horizontal=True
-            )
-
-        # Display files based on selected view mode
-        if st.session_state.view_mode == "tree":
-            display_tree_view(group_files_by_directory())
-        elif st.session_state.view_mode == "list":
-            display_list_view(group_files_by_directory())
-        else:  # grid view
-            display_grid_view(group_files_by_directory())
-
-    with content_col:
-        if st.session_state.current_file:
-            # Create tabs for different views
-            tab1, tab2, tab3 = st.tabs([
-                "🔍 Analysis & Selection",
-                "📊 Metrics",
-                "📈 Charts"
-            ])
-
-            with tab1:
-                st.markdown("#### Current Code")
-                if st.session_state.current_metrics:
-                    code_content = st.session_state.current_metrics.get('content', '')
-                    st.code(code_content, language='python')
+                
+                # Add interactive features
+                enable_animations = st.checkbox("Enable Animations", value=True)
+                show_details = st.checkbox("Show Detailed Information", value=True)
+                
+                # Common chart configurations
+                chart_config = {
+                    "displayModeBar": True,
+                    "scrollZoom": True,
+                    "displaylogo": False,
+                    "responsive": True
+                }
+                
+                if chart_type == "Quality Overview":
+                    st.subheader("🎯 Quality Metrics Overview")
                     
-                    # Analyze code quality
-                    quality_metrics = analyze_code_quality(code_content)
+                    # Prepare quality metrics data with error handling
+                    maintainability = metrics.get('maintainability', {})
+                    maintainability_score = (
+                        maintainability.get('score', 0) if isinstance(maintainability, dict)
+                        else float(maintainability or 0)
+                    )
                     
-                    # Create issues data
-                    issues_data = []
+                    complexity = metrics.get('complexity', {})
+                    complexity_score = (
+                        complexity.get('score', 0) if isinstance(complexity, dict)
+                        else float(complexity or 0)
+                    )
                     
-                    # Check for design issues
-                    raw = quality_metrics['raw_metrics']
-                    if raw['classes'] > 0:
-                        methods_per_class = raw['methods'] / raw['classes']
-                        if methods_per_class > 10:
-                            issues_data.append({
-                                'Category': 'Design Issue',
-                                'Severity': 'High',
-                                'Issue': f'Large Class: {methods_per_class:.1f} methods per class',
-                                'Impact': 'High coupling, reduced maintainability',
-                                'Recommendation': 'Split class into smaller, focused classes'
-                            })
+                    cognitive_score = float(metrics.get('cognitive_complexity', 0) or 0)
+                    coverage_score = float(metrics.get('code_coverage', 0) or 0)
                     
-                    # Check for code complexity
-                    if quality_metrics['complexity'] > 10:
-                        issues_data.append({
-                            'Category': 'Design Issue',
-                            'Severity': 'Medium',
-                            'Issue': f'High Complexity: {quality_metrics["complexity"]} cyclomatic complexity',
-                            'Impact': 'Difficult to test and maintain',
-                            'Recommendation': 'Break down complex methods into smaller ones'
-                        })
+                    # Enhanced radar chart
+                    quality_metrics = {
+                        'Metric': ['Maintainability', 'Code Quality', 'Cognitive Complexity', 'Code Coverage'],
+                        'Score': [maintainability_score, 100 - complexity_score, 100 - cognitive_score, coverage_score],
+                        'Description': [
+                            f"Maintainability Index: {maintainability_score:.1f}/100",
+                            f"Code Quality Score: {100 - complexity_score:.1f}/100",
+                            f"Cognitive Load: {100 - cognitive_score:.1f}/100",
+                            f"Test Coverage: {coverage_score:.1f}%"
+                        ]
+                    }
                     
-                    # Check for code smells
-                    if raw['loc'] > 0:
-                        comment_ratio = (raw['comments'] + raw['multi']) / raw['loc']
-                        if comment_ratio < 0.1:
-                            issues_data.append({
-                                'Category': 'Code Smell',
-                                'Severity': 'Low',
-                                'Issue': 'Low Comment Density',
-                                'Impact': 'Code may be difficult to understand',
-                                'Recommendation': 'Add meaningful comments to explain complex logic'
-                            })
+                    fig_radar = go.Figure()
+                    fig_radar.add_trace(go.Scatterpolar(
+                        r=quality_metrics['Score'],
+                        theta=quality_metrics['Metric'],
+                        fill='toself',
+                        name='Quality Metrics',
+                        hovertemplate="<b>%{theta}</b><br>" +
+                                    "Score: %{r:.1f}<br>" +
+                                    "<extra>%{customdata}</extra>",
+                        customdata=quality_metrics['Description']
+                    ))
                     
-                    # Display issues in a data frame
-                    st.markdown("#### 🔍 Code Quality Analysis")
-                    if issues_data:
-                        df = pd.DataFrame(issues_data)
-                        
-                        # Color coding for severity
-                        def color_severity(val):
-                            colors = {
-                                'High': 'background-color: #ff6b6b',
-                                'Medium': 'background-color: #ffd93d',
-                                'Low': 'background-color: #95cd41'
-                            }
-                            return colors.get(val, '')
-                        
-                        # Display styled dataframe
-    st.dataframe(
-                            df.style.applymap(color_severity, subset=['Severity']),
-                            use_container_width=True,
-                            height=400
-                        )
-                        
-                        # Add filtering options
+                    fig_radar.update_layout(
+                        polar=dict(
+                            radialaxis=dict(
+                                visible=True,
+                                range=[0, 100],
+                                tickfont=dict(size=10),
+                                gridcolor="rgba(0,0,0,0.1)"
+                            ),
+                            angularaxis=dict(
+                                tickfont=dict(size=12),
+                                gridcolor="rgba(0,0,0,0.1)"
+                            )
+                        ),
+                        showlegend=False,
+                        title=dict(
+                            text="Code Quality Metrics Radar",
+                            x=0.5,
+                            y=0.95
+                        ),
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        plot_bgcolor='rgba(0,0,0,0)',
+                        margin=dict(l=80, r=80, t=100, b=80)
+                    )
+                    
+                    st.plotly_chart(fig_radar, use_container_width=True, config=chart_config)
+                    
+                    if show_details:
                         col1, col2 = st.columns(2)
                         with col1:
-                            category_filter = st.multiselect(
-                                "Filter by Category",
-                                options=df['Category'].unique(),
-                                key="category_filter_1"
-                            )
+                            st.metric("Overall Quality Score", 
+                                     f"{(maintainability_score + (100-complexity_score) + (100-cognitive_score) + coverage_score)/4:.1f}/100")
                         with col2:
-                            severity_filter = st.multiselect(
-                                "Filter by Severity",
-                                options=df['Severity'].unique(),
-                                key="severity_filter_1"
-                            )
+                            st.metric("Quality Grade", 
+                                     "A" if maintainability_score > 80 else "B" if maintainability_score > 60 else "C")
+                
+                elif chart_type == "Size Analysis":
+                    st.subheader("📏 Code Size Analysis")
+                    raw_metrics = metrics.get('raw_metrics', {})
+                    
+                    # Enhanced size metrics visualization
+                    size_metrics = {
+                        'Metric': ['Lines of Code', 'Comment Lines', 'Blank Lines', 'Functions', 'Classes'],
+                        'Count': [
+                            int(raw_metrics.get('loc', 0)),
+                            int(raw_metrics.get('comments', 0)) + int(raw_metrics.get('multi', 0)),
+                            int(raw_metrics.get('blank', 0)),
+                            int(raw_metrics.get('functions', 0)) + int(raw_metrics.get('methods', 0)),
+                            int(raw_metrics.get('classes', 0))
+                        ]
+                    }
+                    
+                    fig_size = px.bar(
+                        size_metrics,
+                        x='Metric',
+                        y='Count',
+                        title='Code Size Distribution',
+                        color='Count',
+                        color_continuous_scale='Viridis',
+                        custom_data=['Metric', 'Count']
+                    )
+                    
+                    fig_size.update_traces(
+                        hovertemplate="<b>%{customdata[0]}</b><br>" +
+                                    "Count: %{customdata[1]}<br>" +
+                                    "<extra></extra>"
+                    )
+                    
+                    fig_size.update_layout(
+                        xaxis_title="",
+                        yaxis_title="Count",
+                        showlegend=False,
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        plot_bgcolor='rgba(0,0,0,0.02)',
+                        margin=dict(l=60, r=40, t=80, b=60)
+                    )
+                    
+                    st.plotly_chart(fig_size, use_container_width=True, config=chart_config)
+                    
+                    if show_details:
+                        st.markdown("#### Size Metrics Details")
                         
-                        # Apply filters if selected
-                        if category_filter or severity_filter:
-                            filtered_df = df
-                            if category_filter:
-                                filtered_df = filtered_df[filtered_df['Category'].isin(category_filter)]
-                            if severity_filter:
-                                filtered_df = filtered_df[filtered_df['Severity'].isin(severity_filter)]
+                        # Create columns for different metric categories
+                        col1, col2 = st.columns(2)
+                        
+                        with col1:
+                            st.markdown("##### 📏 Code Structure")
+                            metrics = st.session_state.current_metrics
+                            raw = metrics.get('raw_metrics', {})
+                            
+                            # Display detailed code structure metrics
+                            structure_metrics = {
+                                "Total Lines": raw.get('loc', 0),
+                                "Effective Lines": raw.get('loc', 0) - raw.get('comments', 0) - raw.get('blank_lines', 0),
+                                "Comment Lines": raw.get('comments', 0),
+                                "Blank Lines": raw.get('blank_lines', 0),
+                                "Classes": raw.get('classes', 0),
+                                "Methods": raw.get('methods', 0),
+                                "Functions": raw.get('functions', 0),
+                                "Nested Depth": raw.get('max_nested_depth', 0)
+                            }
+                            
+                            for metric, value in structure_metrics.items():
+                                st.metric(
+                                    metric,
+                                    f"{value:,}",
+                                    help=f"Number of {metric.lower()}"
+                                )
+                        
+                        with col2:
+                            st.markdown("##### 🎯 Complexity Distribution")
+                            
+                            # Calculate complexity distribution
+                            methods = metrics.get('method_metrics', [])
+                            if methods:
+                                complexities = [m.get('complexity', 0) for m in methods]
+                                
+                                complexity_data = {
+                                    'Simple (1-5)': len([c for c in complexities if c <= 5]),
+                                    'Moderate (6-10)': len([c for c in complexities if 5 < c <= 10]),
+                                    'Complex (11-20)': len([c for c in complexities if 10 < c <= 20]),
+                                    'Very Complex (>20)': len([c for c in complexities if c > 20])
+                                }
+                                
+                                # Create a bar chart
+                                st.bar_chart(complexity_data)
+                        
+                        # Add Refactoring Opportunities section
+                        st.markdown("#### 🔄 Refactoring Opportunities")
+                        
+                        opportunities = []
+                        
+                        # Check for large methods
+                        large_methods = [m for m in methods if m.get('loc', 0) > 30]
+                        if large_methods:
+                            opportunities.append({
+                                'Type': 'Method Size',
+                                'Priority': 'High' if len(large_methods) > 5 else 'Medium',
+                                'Issue': f'Found {len(large_methods)} methods with more than 30 lines',
+                                'Impact': 'Large methods are harder to understand and maintain',
+                                'Suggestion': 'Extract related logic into smaller, focused methods'
+                            })
+                        
+                        # Check for deep nesting
+                        if raw.get('max_nested_depth', 0) > 3:
+                            opportunities.append({
+                                'Type': 'Code Nesting',
+                                'Priority': 'Medium',
+                                'Issue': f'Maximum nesting depth of {raw["max_nested_depth"]} levels',
+                                'Impact': 'Deeply nested code is hard to follow and test',
+                                'Suggestion': 'Extract nested logic into separate methods or use early returns'
+                            })
+                        
+                        # Check for low cohesion
+                        if raw.get('classes', 0) > 0:
+                            avg_methods = raw.get('methods', 0) / raw.get('classes', 1)
+                            if avg_methods > 15:
+                                opportunities.append({
+                                    'Type': 'Class Cohesion',
+                                    'Priority': 'High',
+                                    'Issue': f'Classes have an average of {avg_methods:.1f} methods',
+                                    'Impact': 'Large classes may have multiple responsibilities',
+                                    'Suggestion': 'Split large classes into smaller, focused classes'
+                                })
+                        
+                        # Check for comment ratio
+                        if raw.get('loc', 0) > 0:
+                            comment_ratio = (raw.get('comments', 0) + raw.get('multi', 0)) / raw.get('loc', 1)
+                            if comment_ratio < 0.1:
+                                opportunities.append({
+                                    'Type': 'Documentation',
+                                    'Priority': 'Medium',
+                                    'Issue': f'Low comment ratio ({comment_ratio:.1%})',
+                                    'Impact': 'Code may be difficult for others to understand',
+                                    'Suggestion': 'Add meaningful comments to explain complex logic and decisions'
+                                })
+                        
+                        # Display refactoring opportunities
+                        if opportunities:
+                            df = pd.DataFrame(opportunities)
+                            
+                            # Color coding for priority
+                            def color_priority(val):
+                                colors = {
+                                    'High': 'background-color: #ff6b6b; color: white',
+                                    'Medium': 'background-color: #ffd93d',
+                                    'Low': 'background-color: #95cd41'
+                                }
+                                return colors.get(val, '')
+                            
                             st.dataframe(
-                                filtered_df.style.applymap(color_severity, subset=['Severity']),
+                                df.style.map(color_priority, subset=['Priority']),
                                 use_container_width=True,
                                 height=400
                             )
-                        else:
-                            st.success("✅ No issues detected in the current file")
-                    else:
-                        st.info("No code content available for the selected file.")
-
-            with tab2:
-                st.markdown("#### Code Analysis")
-                if st.session_state.current_metrics:
-                    # Create columns for different metric categories
-                    col1, col2 = st.columns(2)
-                    
-                    with col1:
-                        st.markdown("##### 📊 Quality Metrics")
-                        
-                        # Get metrics with proper type handling
-                        metrics = st.session_state.current_metrics
-                        
-                        # Initialize metrics with safe defaults
-                        if not isinstance(metrics, dict):
-                            metrics = {}
-                        
-                        # Handle maintainability index
-                        maintainability = metrics.get('maintainability', {})
-                        maintainability_score = (
-                            maintainability.get('score', 0) 
-                            if isinstance(maintainability, dict) 
-                            else float(maintainability if maintainability is not None else 0)
-                        )
-                        
-                        # Handle cyclomatic complexity
-                        complexity = metrics.get('complexity', {})
-                        complexity_score = (
-                            complexity.get('score', 0) 
-                            if isinstance(complexity, dict) 
-                            else float(complexity if complexity is not None else 0)
-                        )
-                        
-                        # Handle cognitive complexity
-                        cognitive_complexity = metrics.get('cognitive_complexity', 0)
-                        cognitive_score = float(cognitive_complexity if cognitive_complexity is not None else 0)
-                        
-                        # Handle code coverage
-                        code_coverage = metrics.get('code_coverage', 0)
-                        coverage_score = float(code_coverage if code_coverage is not None else 0)
-                        
-                        # Display metrics with proper formatting
-                        st.metric(
-                            "Maintainability Index",
-                            f"{maintainability_score:.1f}/100",
-                            help="Score from 0-100. Higher is better. Based on code structure, complexity, and documentation"
-                        )
-                        st.metric(
-                            "Cyclomatic Complexity",
-                            f"{complexity_score:.1f}",
-                            help="Number of linearly independent paths through the code"
-                        )
-                        st.metric(
-                            "Cognitive Complexity",
-                            f"{cognitive_score:.1f}",
-                            help="Measure of how difficult the code is to understand"
-                        )
-                        st.metric(
-                            "Code Coverage",
-                            f"{coverage_score:.1f}%",
-                            help="Percentage of code covered by tests"
-                        )
-                    
-                    with col2:
-                        st.markdown("##### 📏 Size Metrics")
-                        
-                        # Get raw metrics with proper type handling
-                        raw_metrics = metrics.get('raw_metrics', {})
-                        if not isinstance(raw_metrics, dict):
-                            raw_metrics = {}
-                        
-                        # Display size metrics with proper formatting
-                        st.metric(
-                            "Lines of Code",
-                            f"{raw_metrics.get('loc', 0):,}",
-                            help="Total number of lines of code"
-                        )
-                        st.metric(
-                            "Comment Density",
-                            f"{raw_metrics.get('comment_ratio', 0):.1f}%",
-                            help="Percentage of code that is comments"
-                        )
-                        st.metric(
-                            "Function Count",
-                            f"{raw_metrics.get('functions', 0) + raw_metrics.get('methods', 0):,}",
-                            help="Total number of functions and methods"
-                        )
-                        st.metric(
-                            "Class Count",
-                            f"{raw_metrics.get('classes', 0):,}",
-                            help="Total number of classes"
-                        )
-                else:
-                    st.info("No metrics available for the selected file.")
-
-            with tab3:
-                st.markdown("#### Interactive Metric Visualizations")
-                if st.session_state.current_metrics:
-                    metrics = st.session_state.current_metrics
-                    
-                    # Add chart type selector
-                    chart_type = st.selectbox(
-                        "Select Visualization Type",
-                        ["Quality Overview", "Size Analysis", "Composition", "Issues", "Trends"],
-                        key="chart_selector"
-                    )
-                    
-                    # Add interactive features
-                    enable_animations = st.checkbox("Enable Animations", value=True)
-                    show_details = st.checkbox("Show Detailed Information", value=True)
-                    
-                    # Common chart configurations
-                    chart_config = {
-                        "displayModeBar": True,
-                        "scrollZoom": True,
-                        "displaylogo": False,
-                        "responsive": True
-                    }
-                    
-                    if chart_type == "Quality Overview":
-                        st.subheader("🎯 Quality Metrics Overview")
-                        
-                        # Prepare quality metrics data with error handling
-                        maintainability = metrics.get('maintainability', {})
-                        maintainability_score = (
-                            maintainability.get('score', 0) if isinstance(maintainability, dict)
-                            else float(maintainability or 0)
-                        )
-                        
-                        complexity = metrics.get('complexity', {})
-                        complexity_score = (
-                            complexity.get('score', 0) if isinstance(complexity, dict)
-                            else float(complexity or 0)
-                        )
-                        
-                        cognitive_score = float(metrics.get('cognitive_complexity', 0) or 0)
-                        coverage_score = float(metrics.get('code_coverage', 0) or 0)
-                        
-                        # Enhanced radar chart
-                        quality_metrics = {
-                            'Metric': ['Maintainability', 'Code Quality', 'Cognitive Complexity', 'Code Coverage'],
-                            'Score': [maintainability_score, 100 - complexity_score, 100 - cognitive_score, coverage_score],
-                            'Description': [
-                                f"Maintainability Index: {maintainability_score:.1f}/100",
-                                f"Code Quality Score: {100 - complexity_score:.1f}/100",
-                                f"Cognitive Load: {100 - cognitive_score:.1f}/100",
-                                f"Test Coverage: {coverage_score:.1f}%"
-                            ]
-                        }
-                        
-                        fig_radar = go.Figure()
-                        fig_radar.add_trace(go.Scatterpolar(
-                            r=quality_metrics['Score'],
-                            theta=quality_metrics['Metric'],
-                            fill='toself',
-                            name='Quality Metrics',
-                            hovertemplate="<b>%{theta}</b><br>" +
-                                        "Score: %{r:.1f}<br>" +
-                                        "<extra>%{customdata}</extra>",
-                            customdata=quality_metrics['Description']
-                        ))
-                        
-                        fig_radar.update_layout(
-                            polar=dict(
-                                radialaxis=dict(
-                                    visible=True,
-                                    range=[0, 100],
-                                    tickfont=dict(size=10),
-                                    gridcolor="rgba(0,0,0,0.1)"
-                                ),
-                                angularaxis=dict(
-                                    tickfont=dict(size=12),
-                                    gridcolor="rgba(0,0,0,0.1)"
-                                )
-                            ),
-                            showlegend=False,
-                            title=dict(
-                                text="Code Quality Metrics Radar",
-                                x=0.5,
-                                y=0.95
-                            ),
-                            paper_bgcolor='rgba(0,0,0,0)',
-                            plot_bgcolor='rgba(0,0,0,0)',
-                            margin=dict(l=80, r=80, t=100, b=80)
-                        )
-                        
-                        st.plotly_chart(fig_radar, use_container_width=True, config=chart_config)
-                        
-                        if show_details:
-                            col1, col2 = st.columns(2)
-                            with col1:
-                                st.metric("Overall Quality Score", 
-                                         f"{(maintainability_score + (100-complexity_score) + (100-cognitive_score) + coverage_score)/4:.1f}/100")
-                            with col2:
-                                st.metric("Quality Grade", 
-                                         "A" if maintainability_score > 80 else "B" if maintainability_score > 60 else "C")
-                    
-                    elif chart_type == "Size Analysis":
-                        st.subheader("📏 Code Size Analysis")
-                        raw_metrics = metrics.get('raw_metrics', {})
-                        
-                        # Enhanced size metrics visualization
-                        size_metrics = {
-                            'Metric': ['Lines of Code', 'Comment Lines', 'Blank Lines', 'Functions', 'Classes'],
-                            'Count': [
-                                int(raw_metrics.get('loc', 0)),
-                                int(raw_metrics.get('comments', 0)) + int(raw_metrics.get('multi', 0)),
-                                int(raw_metrics.get('blank', 0)),
-                                int(raw_metrics.get('functions', 0)) + int(raw_metrics.get('methods', 0)),
-                                int(raw_metrics.get('classes', 0))
-                            ]
-                        }
-                        
-                        fig_size = px.bar(
-                            size_metrics,
-                            x='Metric',
-                            y='Count',
-                            title='Code Size Distribution',
-                            color='Count',
-                            color_continuous_scale='Viridis',
-                            custom_data=['Metric', 'Count']
-                        )
-                        
-                        fig_size.update_traces(
-                            hovertemplate="<b>%{customdata[0]}</b><br>" +
-                                        "Count: %{customdata[1]}<br>" +
-                                        "<extra></extra>"
-                        )
-                        
-                        fig_size.update_layout(
-                            xaxis_title="",
-                            yaxis_title="Count",
-                            showlegend=False,
-                            paper_bgcolor='rgba(0,0,0,0)',
-                            plot_bgcolor='rgba(0,0,0,0.02)',
-                            margin=dict(l=60, r=40, t=80, b=60)
-                        )
-                        
-                        st.plotly_chart(fig_size, use_container_width=True, config=chart_config)
-                        
-                        if show_details:
-                            st.markdown("#### Size Metrics Details")
                             
-                            # Create columns for different metric categories
-                            col1, col2 = st.columns(2)
-                            
-                            with col1:
-                                st.markdown("##### 📏 Code Structure")
-                                metrics = st.session_state.current_metrics
-                                raw = metrics.get('raw_metrics', {})
-                                
-                                # Display detailed code structure metrics
-                                structure_metrics = {
-                                    "Total Lines": raw.get('loc', 0),
-                                    "Effective Lines": raw.get('loc', 0) - raw.get('comments', 0) - raw.get('blank_lines', 0),
-                                    "Comment Lines": raw.get('comments', 0),
-                                    "Blank Lines": raw.get('blank_lines', 0),
-                                    "Classes": raw.get('classes', 0),
-                                    "Methods": raw.get('methods', 0),
-                                    "Functions": raw.get('functions', 0),
-                                    "Nested Depth": raw.get('max_nested_depth', 0)
-                                }
-                                
-                                for metric, value in structure_metrics.items():
-                                    st.metric(
-                                        metric,
-                                        f"{value:,}",
-                                        help=f"Number of {metric.lower()}"
-                                    )
-                            
-                            with col2:
-                                st.markdown("##### 🎯 Complexity Distribution")
-                                
-                                # Calculate complexity distribution
-                                methods = metrics.get('method_metrics', [])
-                                if methods:
-                                    complexities = [m.get('complexity', 0) for m in methods]
-                                    
-                                    complexity_data = {
-                                        'Simple (1-5)': len([c for c in complexities if c <= 5]),
-                                        'Moderate (6-10)': len([c for c in complexities if 5 < c <= 10]),
-                                        'Complex (11-20)': len([c for c in complexities if 10 < c <= 20]),
-                                        'Very Complex (>20)': len([c for c in complexities if c > 20])
-                                    }
-                                    
-                                    # Create a bar chart
-                                    st.bar_chart(complexity_data)
-                            
-                            # Add Refactoring Opportunities section
-                            st.markdown("#### 🔄 Refactoring Opportunities")
-                            
-                            opportunities = []
-                            
-                            # Check for large methods
-                            large_methods = [m for m in methods if m.get('loc', 0) > 30]
-                            if large_methods:
-                                opportunities.append({
-                                    'Type': 'Method Size',
-                                    'Priority': 'High' if len(large_methods) > 5 else 'Medium',
-                                    'Issue': f'Found {len(large_methods)} methods with more than 30 lines',
-                                    'Impact': 'Large methods are harder to understand and maintain',
-                                    'Suggestion': 'Extract related logic into smaller, focused methods'
-                                })
-                            
-                            # Check for deep nesting
-                            if raw.get('max_nested_depth', 0) > 3:
-                                opportunities.append({
-                                    'Type': 'Code Nesting',
-                                    'Priority': 'Medium',
-                                    'Issue': f'Maximum nesting depth of {raw["max_nested_depth"]} levels',
-                                    'Impact': 'Deeply nested code is hard to follow and test',
-                                    'Suggestion': 'Extract nested logic into separate methods or use early returns'
-                                })
-                            
-                            # Check for low cohesion
-                            if raw.get('classes', 0) > 0:
-                                avg_methods = raw.get('methods', 0) / raw.get('classes', 1)
-                                if avg_methods > 15:
-                                    opportunities.append({
-                                        'Type': 'Class Cohesion',
-                                        'Priority': 'High',
-                                        'Issue': f'Classes have an average of {avg_methods:.1f} methods',
-                                        'Impact': 'Large classes may have multiple responsibilities',
-                                        'Suggestion': 'Split large classes into smaller, focused classes'
-                                    })
-                            
-                            # Check for comment ratio
-                            if raw.get('loc', 0) > 0:
-                                comment_ratio = (raw.get('comments', 0) + raw.get('multi', 0)) / raw.get('loc', 1)
-                                if comment_ratio < 0.1:
-                                    opportunities.append({
-                                        'Type': 'Documentation',
-                                        'Priority': 'Medium',
-                                        'Issue': f'Low comment ratio ({comment_ratio:.1%})',
-                                        'Impact': 'Code may be difficult for others to understand',
-                                        'Suggestion': 'Add meaningful comments to explain complex logic and decisions'
-                                    })
-                            
-                            # Display refactoring opportunities
-                            if opportunities:
-                                df = pd.DataFrame(opportunities)
-                                
-                                # Color coding for priority
-                                def color_priority(val):
-                                    colors = {
-                                        'High': 'background-color: #ff6b6b; color: white',
-                                        'Medium': 'background-color: #ffd93d',
-                                        'Low': 'background-color: #95cd41'
-                                    }
-                                    return colors.get(val, '')
-                                
-                                st.dataframe(
-                                    df.style.map(color_priority, subset=['Priority']),
-                                    use_container_width=True,
-                                    height=400
-                                )
-                                
-                                # Add action buttons for each opportunity
-                                selected_opportunity = st.selectbox(
-                                    "Select an opportunity to see detailed refactoring steps",
-                                    df['Type'].tolist()
-                                )
-                                
-                                if selected_opportunity:
-                                    opp = df[df['Type'] == selected_opportunity].iloc[0]
-                                    
-                                    st.markdown("##### Refactoring Steps")
-                                    steps = get_refactoring_steps(selected_opportunity)
-                                    for i, step in enumerate(steps, 1):
-                                        st.markdown(f"{i}. {step}")
-                                    
-                                    if st.button("Generate Refactoring Preview"):
-                                        preview = generate_refactoring_preview(
-                                            selected_opportunity,
-                                            st.session_state.current_metrics.get('content', '')
-                                        )
-                                        st.code(preview, language='python')
-                            else:
-                                st.success("✅ No significant refactoring opportunities detected")
-                    
-                    elif chart_type == "Composition":
-                        st.subheader("🔄 Code Composition")
-                        raw_metrics = metrics.get('raw_metrics', {})
-                        
-                        # Enhanced composition visualization
-                        composition_data = {
-                            'Component': ['Source Code', 'Comments', 'Blank Lines'],
-                            'Lines': [
-                                int(raw_metrics.get('sloc', 0)),
-                                int(raw_metrics.get('comments', 0)) + int(raw_metrics.get('multi', 0)),
-                                int(raw_metrics.get('blank', 0))
-                            ]
-                        }
-                        
-                        total_lines = sum(composition_data['Lines'])
-                        composition_data['Percentage'] = [
-                            f"{(lines/total_lines)*100:.1f}%" for lines in composition_data['Lines']
-                        ]
-                        
-                        fig_composition = px.pie(
-        composition_data,
-        values='Lines',
-                            names='Component',
-                            title='Code Composition Distribution',
-                            color_discrete_sequence=px.colors.qualitative.Set3,
-                            custom_data=['Component', 'Lines', 'Percentage']
-                        )
-                        
-                        fig_composition.update_traces(
-                            textposition='inside',
-                            textinfo='percent+label',
-                            hovertemplate="<b>%{customdata[0]}</b><br>" +
-                                        "Lines: %{customdata[1]}<br>" +
-                                        "Percentage: %{customdata[2]}<br>" +
-                                        "<extra></extra>"
-                        )
-                        
-                        fig_composition.update_layout(
-                            showlegend=True,
-                            legend=dict(
-                                orientation="h",
-                                yanchor="bottom",
-                                y=1.02,
-                                xanchor="right",
-                                x=1
-                            ),
-                            paper_bgcolor='rgba(0,0,0,0)',
-                            margin=dict(l=40, r=40, t=80, b=40)
-                        )
-                        
-                        st.plotly_chart(fig_composition, use_container_width=True, config=chart_config)
-                        
-                        if show_details:
-                            st.markdown("#### Composition Analysis")
-                            col1, col2 = st.columns(2)
-                            with col1:
-                                st.metric("Code Density", 
-                                         f"{(composition_data['Lines'][0]/total_lines)*100:.1f}%",
-                                         help="Percentage of actual code lines")
-                            with col2:
-                                st.metric("Documentation Ratio", 
-                                         f"{(composition_data['Lines'][1]/composition_data['Lines'][0])*100:.1f}%",
-                                         help="Ratio of comments to code lines")
-                    
-                    elif chart_type == "Issues":
-                        st.subheader("⚠️ Issues Overview")
-                        
-                        # Enhanced issues visualization
-                        issues_data = {
-                            'Category': ['Design Issues', 'Code Smells', 'Performance Issues', 'Security Issues'],
-                            'Count': [
-                                len(metrics.get('design_issues', [])),
-                                len(metrics.get('code_smells', [])),
-                                len(metrics.get('performance_issues', [])),
-                                len(metrics.get('security_issues', []))
-                            ]
-                        }
-                        
-                        total_issues = sum(issues_data['Count'])
-                        issues_data['Percentage'] = [
-                            f"{(count/max(total_issues, 1))*100:.1f}%" for count in issues_data['Count']
-                        ]
-                        
-                        fig_issues = px.bar(
-                            issues_data,
-                            x='Category',
-                            y='Count',
-                            title='Code Issues Distribution',
-                            color='Category',
-                            color_discrete_sequence=['#FFA07A', '#98FB98', '#87CEFA', '#DDA0DD'],
-                            custom_data=['Category', 'Count', 'Percentage']
-                        )
-                        
-                        fig_issues.update_traces(
-                            hovertemplate="<b>%{customdata[0]}</b><br>" +
-                                        "Count: %{customdata[1]}<br>" +
-                                        "Percentage: %{customdata[2]}<br>" +
-                                        "<extra></extra>"
-                        )
-                        
-                        fig_issues.update_layout(
-                            xaxis_title="",
-                            yaxis_title="Number of Issues",
-                            showlegend=False,
-                            paper_bgcolor='rgba(0,0,0,0)',
-                            plot_bgcolor='rgba(0,0,0,0.02)',
-                            margin=dict(l=60, r=40, t=80, b=60)
-                        )
-                        
-                        st.plotly_chart(fig_issues, use_container_width=True, config=chart_config)
-                        
-                        if show_details and total_issues > 0:
-                            st.markdown("#### Issue Details")
-                            col1, col2, col3 = st.columns(3)
-                            with col1:
-                                st.metric("Total Issues", total_issues)
-                            with col2:
-                                st.metric("Critical Issues", 
-                                         sum(1 for i in metrics.get('security_issues', []) 
-                                             if i.get('severity') == 'critical'))
-                            with col3:
-                                st.metric("Issue Density", 
-                                         f"{total_issues/max(int(raw_metrics.get('loc', 1)), 1):.3f}",
-                                         help="Issues per line of code")
-                    
-                    elif chart_type == "Trends":
-                        st.subheader("📈 Complexity Trends")
-                        if 'complexity_trends' in metrics:
-                            trends = metrics['complexity_trends']
-                            
-                            fig_trends = go.Figure()
-                            fig_trends.add_trace(go.Scatter(
-                                x=list(range(len(trends))),
-                                y=trends,
-                                mode='lines+markers',
-                                name='Complexity Trend',
-                                line=dict(color='#2E86C1', width=2),
-                                marker=dict(size=8),
-                                hovertemplate="Time Period: %{x}<br>" +
-                                            "Complexity: %{y:.2f}<br>" +
-                                            "<extra></extra>"
-                            ))
-                            
-                            fig_trends.update_layout(
-                                title="Code Complexity Trend",
-                                xaxis_title="Time",
-                                yaxis_title="Complexity Score",
-                                paper_bgcolor='rgba(0,0,0,0)',
-                                plot_bgcolor='rgba(0,0,0,0.02)',
-                                margin=dict(l=60, r=40, t=80, b=60)
+                            # Add action buttons for each opportunity
+                            selected_opportunity = st.selectbox(
+                                "Select an opportunity to see detailed refactoring steps",
+                                df['Type'].tolist()
                             )
                             
-                            st.plotly_chart(fig_trends, use_container_width=True, config=chart_config)
-                            
-                            if show_details:
-                                st.markdown("#### Trend Analysis")
-                                col1, col2 = st.columns(2)
-                                with col1:
-                                    st.metric("Trend Direction", 
-                                             "⬆️ Increasing" if trends[-1] > trends[0] else "⬇️ Decreasing",
-                                             delta=f"{trends[-1] - trends[0]:.2f}")
-                                with col2:
-                                    st.metric("Volatility", 
-                                             f"{np.std(trends):.2f}",
-                                             help="Standard deviation of complexity scores")
+                            if selected_opportunity:
+                                opp = df[df['Type'] == selected_opportunity].iloc[0]
+                                
+                                st.markdown("##### Refactoring Steps")
+                                steps = get_refactoring_steps(selected_opportunity)
+                                for i, step in enumerate(steps, 1):
+                                    st.markdown(f"{i}. {step}")
+                                
+                                if st.button("Generate Refactoring Preview"):
+                                    preview = generate_refactoring_preview(
+                                        selected_opportunity,
+                                        st.session_state.current_metrics.get('content', '')
+                                    )
+                                    st.code(preview, language='python')
                         else:
-                            st.info("No trend data available for this file.")
+                            st.success("✅ No significant refactoring opportunities detected")
+                
+                elif chart_type == "Composition":
+                    st.subheader("🔄 Code Composition")
+                    raw_metrics = metrics.get('raw_metrics', {})
+                    
+                    # Enhanced composition visualization
+                    composition_data = {
+                        'Component': ['Source Code', 'Comments', 'Blank Lines'],
+                        'Lines': [
+                            int(raw_metrics.get('sloc', 0)),
+                            int(raw_metrics.get('comments', 0)) + int(raw_metrics.get('multi', 0)),
+                            int(raw_metrics.get('blank', 0))
+                        ]
+                    }
+                    
+                    total_lines = sum(composition_data['Lines'])
+                    composition_data['Percentage'] = [
+                        f"{(lines/total_lines)*100:.1f}%" for lines in composition_data['Lines']
+                    ]
+                    
+                    fig_composition = px.pie(
+        composition_data,
+        values='Lines',
+                        names='Component',
+                        title='Code Composition Distribution',
+                        color_discrete_sequence=px.colors.qualitative.Set3,
+                        custom_data=['Component', 'Lines', 'Percentage']
+                    )
+                    
+                    fig_composition.update_traces(
+                        textposition='inside',
+                        textinfo='percent+label',
+                        hovertemplate="<b>%{customdata[0]}</b><br>" +
+                                    "Lines: %{customdata[1]}<br>" +
+                                    "Percentage: %{customdata[2]}<br>" +
+                                    "<extra></extra>"
+                    )
+                    
+                    fig_composition.update_layout(
+                        showlegend=True,
+                        legend=dict(
+                            orientation="h",
+                            yanchor="bottom",
+                            y=1.02,
+                            xanchor="right",
+                            x=1
+                        ),
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        margin=dict(l=40, r=40, t=80, b=40)
+                    )
+                    
+                    st.plotly_chart(fig_composition, use_container_width=True, config=chart_config)
+                    
+                    if show_details:
+                        st.markdown("#### Composition Analysis")
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.metric("Code Density", 
+                                     f"{(composition_data['Lines'][0]/total_lines)*100:.1f}%",
+                                     help="Percentage of actual code lines")
+                        with col2:
+                            st.metric("Documentation Ratio", 
+                                     f"{(composition_data['Lines'][1]/composition_data['Lines'][0])*100:.1f}%",
+                                     help="Ratio of comments to code lines")
+                
+                elif chart_type == "Issues":
+                    st.subheader("⚠️ Issues Overview")
+                    
+                    # Enhanced issues visualization
+                    issues_data = {
+                        'Category': ['Design Issues', 'Code Smells', 'Performance Issues', 'Security Issues'],
+                        'Count': [
+                            len(metrics.get('design_issues', [])),
+                            len(metrics.get('code_smells', [])),
+                            len(metrics.get('performance_issues', [])),
+                            len(metrics.get('security_issues', []))
+                        ]
+                    }
+                    
+                    total_issues = sum(issues_data['Count'])
+                    issues_data['Percentage'] = [
+                        f"{(count/max(total_issues, 1))*100:.1f}%" for count in issues_data['Count']
+                    ]
+                    
+                    fig_issues = px.bar(
+                        issues_data,
+                        x='Category',
+                        y='Count',
+                        title='Code Issues Distribution',
+                        color='Category',
+                        color_discrete_sequence=['#FFA07A', '#98FB98', '#87CEFA', '#DDA0DD'],
+                        custom_data=['Category', 'Count', 'Percentage']
+                    )
+                    
+                    fig_issues.update_traces(
+                        hovertemplate="<b>%{customdata[0]}</b><br>" +
+                                    "Count: %{customdata[1]}<br>" +
+                                    "Percentage: %{customdata[2]}<br>" +
+                                    "<extra></extra>"
+                    )
+                    
+                    fig_issues.update_layout(
+                        xaxis_title="",
+                        yaxis_title="Number of Issues",
+                        showlegend=False,
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        plot_bgcolor='rgba(0,0,0,0.02)',
+                        margin=dict(l=60, r=40, t=80, b=60)
+                    )
+                    
+                    st.plotly_chart(fig_issues, use_container_width=True, config=chart_config)
+                    
+                    if show_details and total_issues > 0:
+                        st.markdown("#### Issue Details")
+                        col1, col2, col3 = st.columns(3)
+                        with col1:
+                            st.metric("Total Issues", total_issues)
+                        with col2:
+                            st.metric("Critical Issues", 
+                                     sum(1 for i in metrics.get('security_issues', []) 
+                                         if i.get('severity') == 'critical'))
+                        with col3:
+                            st.metric("Issue Density", 
+                                     f"{total_issues/max(int(raw_metrics.get('loc', 1)), 1):.3f}",
+                                     help="Issues per line of code")
+                
+                elif chart_type == "Trends":
+                    st.subheader("📈 Complexity Trends")
+                    if 'complexity_trends' in metrics:
+                        trends = metrics['complexity_trends']
+                        
+                        fig_trends = go.Figure()
+                        fig_trends.add_trace(go.Scatter(
+                            x=list(range(len(trends))),
+                            y=trends,
+                            mode='lines+markers',
+                            name='Complexity Trend',
+                            line=dict(color='#2E86C1', width=2),
+                            marker=dict(size=8),
+                            hovertemplate="Time Period: %{x}<br>" +
+                                        "Complexity: %{y:.2f}<br>" +
+                                        "<extra></extra>"
+                        ))
+                        
+                        fig_trends.update_layout(
+                            title="Code Complexity Trend",
+                            xaxis_title="Time",
+                            yaxis_title="Complexity Score",
+                            paper_bgcolor='rgba(0,0,0,0)',
+                            plot_bgcolor='rgba(0,0,0,0.02)',
+                            margin=dict(l=60, r=40, t=80, b=60)
+                        )
+                        
+                        st.plotly_chart(fig_trends, use_container_width=True, config=chart_config)
+                        
+                        if show_details:
+                            st.markdown("#### Trend Analysis")
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                st.metric("Trend Direction", 
+                                         "⬆️ Increasing" if trends[-1] > trends[0] else "⬇️ Decreasing",
+                                         delta=f"{trends[-1] - trends[0]:.2f}")
+                            with col2:
+                                st.metric("Volatility", 
+                                         f"{np.std(trends):.2f}",
+                                         help="Standard deviation of complexity scores")
+                    else:
+                        st.info("No trend data available for this file.")
                 else:
                     st.info("No metrics available for visualization. Please select a file to analyze.")
-        else:
-            st.info("Select a file from the file explorer to view its analysis.")
+            else:
+                st.info("Select a file from the file explorer to view its analysis.")
 
 
 def get_file_icon(file_ext):
@@ -2576,28 +2503,51 @@ def get_file_icon(file_ext):
 
 def select_file(file_path):
     """Select a file and update session state."""
-    st.session_state.current_file = file_path
-    # Add to recent files
-    if file_path not in st.session_state.recent_files:
-        st.session_state.recent_files.insert(0, file_path)
-        # Keep only the 10 most recent files
-        st.session_state.recent_files = st.session_state.recent_files[:10]
-    else:
-        # Move to the top of recent files
-        st.session_state.recent_files.remove(file_path)
-        st.session_state.recent_files.insert(0, file_path)
-
-    # Load file content and analyze metrics
     try:
-        with open(file_path, 'r') as f:
+        if not os.path.exists(file_path):
+            st.error(f"File not found: {file_path}")
+            return
+
+        st.session_state.current_file = file_path
+        
+        # Add to recent files
+        if 'recent_files' not in st.session_state:
+            st.session_state.recent_files = []
+        if file_path not in st.session_state.recent_files:
+            st.session_state.recent_files.insert(0, file_path)
+            st.session_state.recent_files = st.session_state.recent_files[:10]
+        else:
+            st.session_state.recent_files.remove(file_path)
+            st.session_state.recent_files.insert(0, file_path)
+
+        # Load file content and analyze metrics
+        with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
             st.session_state.current_code = content
+            
+            # Initialize metrics if not already present
+            if 'analyzer' not in st.session_state:
+                st.error("Code analyzer not initialized. Please refresh the page.")
+                return
+                
             # Analyze file and store metrics
             metrics = st.session_state.analyzer.analyze_file(file_path)
+            if not metrics:
+                st.warning("No metrics generated for the file. Please try again.")
+                return
+                
             st.session_state.current_metrics = metrics
+            if 'uploaded_files' not in st.session_state:
+                st.session_state.uploaded_files = {}
             st.session_state.uploaded_files[file_path] = metrics
+            
+            # Force refresh to show metrics
+            st.experimental_rerun()
+            
     except Exception as e:
         st.error(f"Error loading file: {str(e)}")
+        if 'current_metrics' in st.session_state:
+            del st.session_state.current_metrics
 
 
 def display_tree_view(files_by_dir):
