@@ -1247,165 +1247,167 @@ def display_refactoring_options():
                         # Code Quality Issues
                         st.markdown("##### 🔍 Code Quality Analysis")
                         
-                        # Summary section
-                        total_issues = len(metrics.get('design_issues', [])) + \
-                                     len(metrics.get('code_smells', [])) + \
-                                     len(metrics.get('performance_issues', [])) + \
-                                     len(metrics.get('security_issues', []))
-                        
-                        quality_score = 100 - (total_issues * 5)  # Deduct 5 points per issue
-                        quality_score = max(0, min(100, quality_score))  # Clamp between 0 and 100
-                        
-                        col1, col2, col3 = st.columns(3)
-                        with col1:
-                            st.metric(
-                                "Overall Quality Score",
-                                f"{quality_score}/100",
-                                delta="Good" if quality_score >= 80 else "Needs Improvement" if quality_score >= 50 else "Critical",
-                                delta_color="normal" if quality_score >= 80 else "off" if quality_score >= 50 else "inverse"
-                            )
-                        
-                        with col2:
-                            st.metric(
-                                "Total Issues",
-                                str(total_issues),
-                                help="Total number of detected issues across all categories"
-                            )
-                        
-                        with col3:
-                            priority_issues = sum(1 for issues in [
-                                metrics.get('security_issues', []),
-                                metrics.get('performance_issues', []),
-                                metrics.get('design_issues', []),
-                                metrics.get('code_smells', [])
-                            ] for issue in issues if isinstance(issue, dict) and issue.get('severity') == 'high')
+                        # Summary section with actual metrics
+                        if st.session_state.current_metrics:
+                            metrics = st.session_state.current_metrics
                             
-                            st.metric(
-                                "Priority Issues",
-                                str(priority_issues),
-                                help="Number of high-severity issues that need immediate attention",
-                                delta=None if priority_issues == 0 else str(priority_issues),
-                                delta_color="inverse" if priority_issues > 0 else "off"
-                            )
-                        
-                        # Add a quick filter for issues
-                        if total_issues > 0:
-                            st.markdown("---")
-                            filter_options = ["All Issues", "High Priority", "Medium Priority", "Low Priority"]
-                            selected_filter = st.selectbox("Filter Issues", filter_options)
+                            # Create a data frame for all issues
+                            issues_data = []
                             
-                            # Add sorting options
-                            sort_options = ["Severity", "Category", "Latest First"]
-                            sort_by = st.selectbox("Sort By", sort_options)
-                        
-                        st.markdown("---")
-
-                        # Design Issues
-                        with st.expander("Design Issues 🎨", expanded=False):
-                            st.info("""
-                            Design issues indicate potential problems with code architecture and structure.
-                            This includes:
-                            - Class cohesion and coupling
-                            - Interface design
-                            - Code organization
-                            - Design pattern violations
-                            """)
-                            design_issues = metrics.get('design_issues', [])
-                            if design_issues:
-                                for issue in design_issues:
-                                    severity = issue.get('severity', 'medium')
-                                    icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
-                                    st.warning(f"{icon} {issue.get('message', str(issue))}")
-                                    if issue.get('suggestion'):
-                                        st.info(f"💡 Suggestion: {issue['suggestion']}")
+                            # Analyze and collect actual design issues
+                            if 'raw_metrics' in metrics:
+                                raw = metrics['raw_metrics']
+                                
+                                # Check for large classes
+                                if raw.get('classes', 0) > 0:
+                                    class_methods = raw.get('methods', 0) / raw.get('classes', 1)
+                                    if class_methods > 20:
+                                        issues_data.append({
+                                            'Category': 'Design Issue',
+                                            'Severity': 'High',
+                                            'Issue': f'Large Class Detected: Average {class_methods:.1f} methods per class',
+                                            'Impact': 'Reduced maintainability and increased coupling',
+                                            'Recommendation': 'Consider splitting large classes into smaller, more focused ones'
+                                        })
+                                
+                                # Check for complex methods
+                                complexity = metrics.get('complexity', 0)
+                                complexity_score = (
+                                    complexity.get('score', 0) if isinstance(complexity, dict)
+                                    else float(complexity) if isinstance(complexity, (int, float))
+                                    else 0
+                                )
+                                
+                                if complexity_score > 15:
+                                    issues_data.append({
+                                        'Category': 'Design Issue',
+                                        'Severity': 'Medium',
+                                        'Issue': f'High Cyclomatic Complexity: {complexity_score:.1f}',
+                                        'Impact': 'Difficult to test and maintain',
+                                        'Recommendation': 'Break down complex methods into smaller, simpler ones'
+                                    })
+                                
+                                # Check method length
+                                if raw.get('loc', 0) > 0:
+                                    avg_loc_per_method = raw.get('loc', 0) / max(raw.get('methods', 1), 1)
+                                    if avg_loc_per_method > 30:
+                                        issues_data.append({
+                                            'Category': 'Code Smell',
+                                            'Severity': 'Medium',
+                                            'Issue': f'Long Methods: Average {avg_loc_per_method:.1f} lines per method',
+                                            'Impact': 'Reduced readability and maintainability',
+                                            'Recommendation': 'Break down methods longer than 30 lines'
+                                        })
+                                    
+                                    # Check comment density
+                                    comment_ratio = (raw.get('comments', 0) + raw.get('multi', 0)) / raw.get('loc', 1)
+                                    if comment_ratio < 0.1:
+                                        issues_data.append({
+                                            'Category': 'Code Smell',
+                                            'Severity': 'Low',
+                                            'Issue': 'Low Comment Density',
+                                            'Impact': 'Code may be difficult to understand',
+                                            'Recommendation': 'Add meaningful comments to explain complex logic'
+                                        })
+                            
+                            # Analyze and collect actual performance issues
+                            if 'performance_metrics' in metrics:
+                                perf = metrics['performance_metrics']
+                                
+                                # Check for memory usage
+                                if perf.get('memory_usage', 0) > 100:  # MB
+                                    issues_data.append({
+                                        'Category': 'Performance',
+                                        'Severity': 'High',
+                                        'Issue': f'High Memory Usage: {perf.get("memory_usage")}MB',
+                                        'Impact': 'May cause out of memory errors',
+                                        'Recommendation': 'Optimize memory usage, consider using generators'
+                                    })
+                                
+                                # Check for time complexity
+                                if perf.get('time_complexity', 'O(1)').startswith('O(n²'):
+                                    issues_data.append({
+                                        'Category': 'Performance',
+                                        'Severity': 'Medium',
+                                        'Issue': 'Quadratic Time Complexity',
+                                        'Impact': 'Poor performance with large inputs',
+                                        'Recommendation': 'Consider using more efficient algorithms'
+                                    })
+                            
+                            # Analyze and collect actual security issues
+                            if 'security_scan' in metrics:
+                                security = metrics['security_scan']
+                                
+                                # Check for input validation
+                                if security.get('input_validation_issues', False):
+                                    issues_data.append({
+                                        'Category': 'Security',
+                                        'Severity': 'Critical',
+                                        'Issue': 'Missing Input Validation',
+                                        'Impact': 'Vulnerable to injection attacks',
+                                        'Recommendation': 'Implement proper input validation and sanitization'
+                                    })
+                                
+                                # Check for sensitive data exposure
+                                if security.get('sensitive_data_exposure', False):
+                                    issues_data.append({
+                                        'Category': 'Security',
+                                        'Severity': 'Critical',
+                                        'Issue': 'Sensitive Data Exposure',
+                                        'Impact': 'Risk of data breach',
+                                        'Recommendation': 'Encrypt sensitive data and use secure protocols'
+                                    })
+                            
+                            # Display issues in a structured format
+                            if issues_data:
+                                df = pd.DataFrame(issues_data)
+                                
+                                # Add severity color coding
+                                def color_severity(val):
+                                    colors = {
+                                        'Critical': 'background-color: #ff0000; color: white',
+                                        'High': 'background-color: #ff6b6b; color: white',
+                                        'Medium': 'background-color: #ffd93d',
+                                        'Low': 'background-color: #95cd41'
+                                    }
+                                    return colors.get(val, '')
+                                
+                                # Display styled dataframe
+                                st.dataframe(
+                                    df.style.applymap(color_severity, subset=['Severity']),
+                                    use_container_width=True,
+                                    height=400
+                                )
+                                
+                                # Add filtering options
+                                col1, col2 = st.columns(2)
+                                with col1:
+                                    category_filter = st.multiselect(
+                                        "Filter by Category",
+                                        options=df['Category'].unique()
+                                    )
+                                with col2:
+                                    severity_filter = st.multiselect(
+                                        "Filter by Severity",
+                                        options=df['Severity'].unique()
+                                    )
+                                
+                                # Apply filters if selected
+                                if category_filter or severity_filter:
+                                    filtered_df = df
+                                    if category_filter:
+                                        filtered_df = filtered_df[filtered_df['Category'].isin(category_filter)]
+                                    if severity_filter:
+                                        filtered_df = filtered_df[filtered_df['Severity'].isin(severity_filter)]
+                                    st.dataframe(
+                                        filtered_df.style.applymap(color_severity, subset=['Severity']),
+                                        use_container_width=True,
+                                        height=400
+                                    )
                             else:
-                                st.success("✅ No design issues detected")
-
-                        # Code Smells
-                        with st.expander("Code Smells 👃", expanded=False):
-                            st.info("""
-                            Code smells are symptoms that might indicate deeper problems:
-                            - Duplicate code
-                            - Long methods
-                            - Large classes
-                            - Too many parameters
-                            - Dead code
-                            """)
-                            code_smells = metrics.get('code_smells', [])
-                            if code_smells:
-                                for smell in code_smells:
-                                    severity = smell.get('severity', 'medium')
-                                    icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
-                                    st.warning(f"{icon} {smell.get('message', str(smell))}")
-                                    if smell.get('suggestion'):
-                                        st.info(f"💡 Suggestion: {smell['suggestion']}")
-                            else:
-                                st.success("✅ No code smells detected")
-
-                        # Performance Issues
-                        with st.expander("Performance Issues ⚡", expanded=False):
-                            st.info("""
-                            Performance issues that might affect code execution:
-                            - Time complexity concerns
-                            - Memory usage
-                            - Resource leaks
-                            - Inefficient algorithms
-                            - Unnecessary computations
-                            """)
-                            perf_issues = metrics.get('performance_issues', [])
-                            if perf_issues:
-                                for issue in perf_issues:
-                                    severity = issue.get('severity', 'medium')
-                                    icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
-                                    st.warning(f"{icon} {issue.get('message', str(issue))}")
-                                    if issue.get('suggestion'):
-                                        with st.expander("View Optimization Suggestion"):
-                                            st.info(f"💡 {issue['suggestion']}")
-                                            if issue.get('code_example'):
-                                                st.code(issue['code_example'], language='python')
-                            else:
-                                st.success("✅ No performance issues detected")
-
-                        # Security Issues
-                        with st.expander("Security Issues 🔒", expanded=False):
-                            st.info("""
-                            Security vulnerabilities and potential risks:
-                            - Input validation
-                            - Authentication issues
-                            - Data exposure
-                            - Injection vulnerabilities
-                            - Insecure dependencies
-                            """)
-                            security_issues = metrics.get('security_issues', [])
-                            if security_issues:
-                                for issue in security_issues:
-                                    severity = issue.get('severity', 'high')
-                                    icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
-                                    st.error(f"{icon} {issue.get('message', str(issue))}")
-                                    if issue.get('cwe_id'):
-                                        st.markdown(f"[CWE-{issue['cwe_id']}](https://cwe.mitre.org/data/definitions/{issue['cwe_id']}.html)")
-                                    if issue.get('suggestion'):
-                                        with st.expander("View Security Fix"):
-                                            st.info(f"💡 {issue['suggestion']}")
-                                            if issue.get('code_example'):
-                                                st.code(issue['code_example'], language='python')
-                            else:
-                                st.success("✅ No security issues detected")
-
-                        # File Information
-                        st.markdown("##### 📄 File Information")
-                        col3, col4 = st.columns(2)
-                        with col3:
-                            file_ext = os.path.splitext(st.session_state.current_file)[1].lower()
-                            language = next((info['name'] for lang, info in config['supported_languages'].items() 
-                                          if file_ext in info['extensions']), "Unknown")
-                            st.markdown(f"**Language:** {language}")
-                            st.markdown(f"**Last Modified:** {metrics.get('last_modified', 'Unknown')}")
-                        with col4:
-                            st.markdown(f"**File Size:** {os.path.getsize(st.session_state.current_file) / 1024:.1f} KB")
-                            st.markdown(f"**Encoding:** {metrics.get('encoding', 'UTF-8')}")
-                    else:
-                        st.info("No metrics available for the selected file.")
+                                st.success("✅ No issues detected in the current file")
+                        else:
+                            st.info("Select a file to analyze code quality issues")
 
         elif st.session_state.selected_tab == "✏️ Code Editor":
             with tab2:
@@ -1969,7 +1971,99 @@ def display_file_explorer():
             with tab1:
                 st.markdown("#### Current Code")
                 if st.session_state.current_metrics:
-                    st.code(st.session_state.current_metrics.get('content', ''), language='python')
+                    code_content = st.session_state.current_metrics.get('content', '')
+                    st.code(code_content, language='python')
+                    
+                    # Analyze code quality
+                    quality_metrics = analyze_code_quality(code_content)
+                    
+                    # Create issues data
+                    issues_data = []
+                    
+                    # Check for design issues
+                    raw = quality_metrics['raw_metrics']
+                    if raw['classes'] > 0:
+                        methods_per_class = raw['methods'] / raw['classes']
+                        if methods_per_class > 10:
+                            issues_data.append({
+                                'Category': 'Design Issue',
+                                'Severity': 'High',
+                                'Issue': f'Large Class: {methods_per_class:.1f} methods per class',
+                                'Impact': 'High coupling, reduced maintainability',
+                                'Recommendation': 'Split class into smaller, focused classes'
+                            })
+                    
+                    # Check for code complexity
+                    if quality_metrics['complexity'] > 10:
+                        issues_data.append({
+                            'Category': 'Design Issue',
+                            'Severity': 'Medium',
+                            'Issue': f'High Complexity: {quality_metrics["complexity"]} cyclomatic complexity',
+                            'Impact': 'Difficult to test and maintain',
+                            'Recommendation': 'Break down complex methods into smaller ones'
+                        })
+                    
+                    # Check for code smells
+                    if raw['loc'] > 0:
+                        comment_ratio = (raw['comments'] + raw['multi']) / raw['loc']
+                        if comment_ratio < 0.1:
+                            issues_data.append({
+                                'Category': 'Code Smell',
+                                'Severity': 'Low',
+                                'Issue': 'Low Comment Density',
+                                'Impact': 'Code may be difficult to understand',
+                                'Recommendation': 'Add meaningful comments to explain complex logic'
+                            })
+                    
+                    # Display issues in a data frame
+                    st.markdown("#### 🔍 Code Quality Analysis")
+                    if issues_data:
+                        df = pd.DataFrame(issues_data)
+                        
+                        # Color coding for severity
+                        def color_severity(val):
+                            colors = {
+                                'Critical': 'background-color: #ff0000; color: white',
+                                'High': 'background-color: #ff6b6b; color: white',
+                                'Medium': 'background-color: #ffd93d',
+                                'Low': 'background-color: #95cd41'
+                            }
+                            return colors.get(val, '')
+                        
+                        # Display styled dataframe
+                        st.dataframe(
+                            df.style.applymap(color_severity, subset=['Severity']),
+                            use_container_width=True,
+                            height=400
+                        )
+                        
+                        # Add filtering options
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            category_filter = st.multiselect(
+                                "Filter by Category",
+                                options=df['Category'].unique()
+                            )
+                        with col2:
+                            severity_filter = st.multiselect(
+                                "Filter by Severity",
+                                options=df['Severity'].unique()
+                            )
+                        
+                        # Apply filters if selected
+                        if category_filter or severity_filter:
+                            filtered_df = df
+                            if category_filter:
+                                filtered_df = filtered_df[filtered_df['Category'].isin(category_filter)]
+                            if severity_filter:
+                                filtered_df = filtered_df[filtered_df['Severity'].isin(severity_filter)]
+                            st.dataframe(
+                                filtered_df.style.applymap(color_severity, subset=['Severity']),
+                                use_container_width=True,
+                                height=400
+                            )
+                    else:
+                        st.success("✅ No issues detected in the current file")
                 else:
                     st.info("No code content available for the selected file.")
 
@@ -2076,165 +2170,167 @@ def display_file_explorer():
                     # Code Quality Issues
                     st.markdown("##### 🔍 Code Quality Analysis")
                     
-                    # Summary section
-                    total_issues = len(metrics.get('design_issues', [])) + \
-                                 len(metrics.get('code_smells', [])) + \
-                                 len(metrics.get('performance_issues', [])) + \
-                                 len(metrics.get('security_issues', []))
-                    
-                    quality_score = 100 - (total_issues * 5)  # Deduct 5 points per issue
-                    quality_score = max(0, min(100, quality_score))  # Clamp between 0 and 100
-                    
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        st.metric(
-                            "Overall Quality Score",
-                            f"{quality_score}/100",
-                            delta="Good" if quality_score >= 80 else "Needs Improvement" if quality_score >= 50 else "Critical",
-                            delta_color="normal" if quality_score >= 80 else "off" if quality_score >= 50 else "inverse"
-                        )
-                    
-                    with col2:
-                        st.metric(
-                            "Total Issues",
-                            str(total_issues),
-                            help="Total number of detected issues across all categories"
-                        )
-                    
-                    with col3:
-                        priority_issues = sum(1 for issues in [
-                            metrics.get('security_issues', []),
-                            metrics.get('performance_issues', []),
-                            metrics.get('design_issues', []),
-                            metrics.get('code_smells', [])
-                        ] for issue in issues if isinstance(issue, dict) and issue.get('severity') == 'high')
+                    # Summary section with actual metrics
+                    if st.session_state.current_metrics:
+                        metrics = st.session_state.current_metrics
                         
-                        st.metric(
-                            "Priority Issues",
-                            str(priority_issues),
-                            help="Number of high-severity issues that need immediate attention",
-                            delta=None if priority_issues == 0 else str(priority_issues),
-                            delta_color="inverse" if priority_issues > 0 else "off"
-                        )
-                    
-                    # Add a quick filter for issues
-                    if total_issues > 0:
-                        st.markdown("---")
-                        filter_options = ["All Issues", "High Priority", "Medium Priority", "Low Priority"]
-                        selected_filter = st.selectbox("Filter Issues", filter_options)
+                        # Create a data frame for all issues
+                        issues_data = []
                         
-                        # Add sorting options
-                        sort_options = ["Severity", "Category", "Latest First"]
-                        sort_by = st.selectbox("Sort By", sort_options)
-                    
-                    st.markdown("---")
-
-                    # Design Issues
-                    with st.expander("Design Issues 🎨", expanded=False):
-                        st.info("""
-                        Design issues indicate potential problems with code architecture and structure.
-                        This includes:
-                        - Class cohesion and coupling
-                        - Interface design
-                        - Code organization
-                        - Design pattern violations
-                        """)
-                        design_issues = metrics.get('design_issues', [])
-                        if design_issues:
-                            for issue in design_issues:
-                                severity = issue.get('severity', 'medium')
-                                icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
-                                st.warning(f"{icon} {issue.get('message', str(issue))}")
-                                if issue.get('suggestion'):
-                                    st.info(f"💡 Suggestion: {issue['suggestion']}")
+                        # Analyze and collect actual design issues
+                        if 'raw_metrics' in metrics:
+                            raw = metrics['raw_metrics']
+                            
+                            # Check for large classes
+                            if raw.get('classes', 0) > 0:
+                                class_methods = raw.get('methods', 0) / raw.get('classes', 1)
+                                if class_methods > 20:
+                                    issues_data.append({
+                                        'Category': 'Design Issue',
+                                        'Severity': 'High',
+                                        'Issue': f'Large Class Detected: Average {class_methods:.1f} methods per class',
+                                        'Impact': 'Reduced maintainability and increased coupling',
+                                        'Recommendation': 'Consider splitting large classes into smaller, more focused ones'
+                                    })
+                            
+                            # Check for complex methods
+                            complexity = metrics.get('complexity', 0)
+                            complexity_score = (
+                                complexity.get('score', 0) if isinstance(complexity, dict)
+                                else float(complexity) if isinstance(complexity, (int, float))
+                                else 0
+                            )
+                            
+                            if complexity_score > 15:
+                                issues_data.append({
+                                    'Category': 'Design Issue',
+                                    'Severity': 'Medium',
+                                    'Issue': f'High Cyclomatic Complexity: {complexity_score:.1f}',
+                                    'Impact': 'Difficult to test and maintain',
+                                    'Recommendation': 'Break down complex methods into smaller, simpler ones'
+                                })
+                            
+                            # Check method length
+                            if raw.get('loc', 0) > 0:
+                                avg_loc_per_method = raw.get('loc', 0) / max(raw.get('methods', 1), 1)
+                                if avg_loc_per_method > 30:
+                                    issues_data.append({
+                                        'Category': 'Code Smell',
+                                        'Severity': 'Medium',
+                                        'Issue': f'Long Methods: Average {avg_loc_per_method:.1f} lines per method',
+                                        'Impact': 'Reduced readability and maintainability',
+                                        'Recommendation': 'Break down methods longer than 30 lines'
+                                    })
+                                
+                                # Check comment density
+                                comment_ratio = (raw.get('comments', 0) + raw.get('multi', 0)) / raw.get('loc', 1)
+                                if comment_ratio < 0.1:
+                                    issues_data.append({
+                                        'Category': 'Code Smell',
+                                        'Severity': 'Low',
+                                        'Issue': 'Low Comment Density',
+                                        'Impact': 'Code may be difficult to understand',
+                                        'Recommendation': 'Add meaningful comments to explain complex logic'
+                                    })
+                            
+                            # Analyze and collect actual performance issues
+                            if 'performance_metrics' in metrics:
+                                perf = metrics['performance_metrics']
+                                
+                                # Check for memory usage
+                                if perf.get('memory_usage', 0) > 100:  # MB
+                                    issues_data.append({
+                                        'Category': 'Performance',
+                                        'Severity': 'High',
+                                        'Issue': f'High Memory Usage: {perf.get("memory_usage")}MB',
+                                        'Impact': 'May cause out of memory errors',
+                                        'Recommendation': 'Optimize memory usage, consider using generators'
+                                    })
+                                
+                                # Check for time complexity
+                                if perf.get('time_complexity', 'O(1)').startswith('O(n²'):
+                                    issues_data.append({
+                                        'Category': 'Performance',
+                                        'Severity': 'Medium',
+                                        'Issue': 'Quadratic Time Complexity',
+                                        'Impact': 'Poor performance with large inputs',
+                                        'Recommendation': 'Consider using more efficient algorithms'
+                                    })
+                            
+                            # Analyze and collect actual security issues
+                            if 'security_scan' in metrics:
+                                security = metrics['security_scan']
+                                
+                                # Check for input validation
+                                if security.get('input_validation_issues', False):
+                                    issues_data.append({
+                                        'Category': 'Security',
+                                        'Severity': 'Critical',
+                                        'Issue': 'Missing Input Validation',
+                                        'Impact': 'Vulnerable to injection attacks',
+                                        'Recommendation': 'Implement proper input validation and sanitization'
+                                    })
+                                
+                                # Check for sensitive data exposure
+                                if security.get('sensitive_data_exposure', False):
+                                    issues_data.append({
+                                        'Category': 'Security',
+                                        'Severity': 'Critical',
+                                        'Issue': 'Sensitive Data Exposure',
+                                        'Impact': 'Risk of data breach',
+                                        'Recommendation': 'Encrypt sensitive data and use secure protocols'
+                                    })
+                            
+                            # Display issues in a structured format
+                            if issues_data:
+                                df = pd.DataFrame(issues_data)
+                                
+                                # Add severity color coding
+                                def color_severity(val):
+                                    colors = {
+                                        'Critical': 'background-color: #ff0000; color: white',
+                                        'High': 'background-color: #ff6b6b; color: white',
+                                        'Medium': 'background-color: #ffd93d',
+                                        'Low': 'background-color: #95cd41'
+                                    }
+                                    return colors.get(val, '')
+                                
+                                # Display styled dataframe
+                                st.dataframe(
+                                    df.style.applymap(color_severity, subset=['Severity']),
+                                    use_container_width=True,
+                                    height=400
+                                )
+                                
+                                # Add filtering options
+                                col1, col2 = st.columns(2)
+                                with col1:
+                                    category_filter = st.multiselect(
+                                        "Filter by Category",
+                                        options=df['Category'].unique()
+                                    )
+                                with col2:
+                                    severity_filter = st.multiselect(
+                                        "Filter by Severity",
+                                        options=df['Severity'].unique()
+                                    )
+                                
+                                # Apply filters if selected
+                                if category_filter or severity_filter:
+                                    filtered_df = df
+                                    if category_filter:
+                                        filtered_df = filtered_df[filtered_df['Category'].isin(category_filter)]
+                                    if severity_filter:
+                                        filtered_df = filtered_df[filtered_df['Severity'].isin(severity_filter)]
+                                    st.dataframe(
+                                        filtered_df.style.applymap(color_severity, subset=['Severity']),
+                                        use_container_width=True,
+                                        height=400
+                                    )
                             else:
-                                st.success("✅ No design issues detected")
-
-                    # Code Smells
-                    with st.expander("Code Smells 👃", expanded=False):
-                        st.info("""
-                        Code smells are symptoms that might indicate deeper problems:
-                        - Duplicate code
-                        - Long methods
-                        - Large classes
-                        - Too many parameters
-                        - Dead code
-                        """)
-                        code_smells = metrics.get('code_smells', [])
-                        if code_smells:
-                            for smell in code_smells:
-                                severity = smell.get('severity', 'medium')
-                                icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
-                                st.warning(f"{icon} {smell.get('message', str(smell))}")
-                                if smell.get('suggestion'):
-                                    st.info(f"💡 Suggestion: {smell['suggestion']}")
-                            else:
-                                st.success("✅ No code smells detected")
-
-                    # Performance Issues
-                    with st.expander("Performance Issues ⚡", expanded=False):
-                        st.info("""
-                        Performance issues that might affect code execution:
-                        - Time complexity concerns
-                        - Memory usage
-                        - Resource leaks
-                        - Inefficient algorithms
-                        - Unnecessary computations
-                        """)
-                        perf_issues = metrics.get('performance_issues', [])
-                        if perf_issues:
-                            for issue in perf_issues:
-                                severity = issue.get('severity', 'medium')
-                                icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
-                                st.warning(f"{icon} {issue.get('message', str(issue))}")
-                                if issue.get('suggestion'):
-                                    with st.expander("View Optimization Suggestion"):
-                                        st.info(f"💡 {issue['suggestion']}")
-                                        if issue.get('code_example'):
-                                            st.code(issue['code_example'], language='python')
-                            else:
-                                st.success("✅ No performance issues detected")
-
-                    # Security Issues
-                    with st.expander("Security Issues 🔒", expanded=False):
-                        st.info("""
-                        Security vulnerabilities and potential risks:
-                        - Input validation
-                        - Authentication issues
-                        - Data exposure
-                        - Injection vulnerabilities
-                        - Insecure dependencies
-                        """)
-                        security_issues = metrics.get('security_issues', [])
-                        if security_issues:
-                            for issue in security_issues:
-                                severity = issue.get('severity', 'high')
-                                icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
-                                st.error(f"{icon} {issue.get('message', str(issue))}")
-                                if issue.get('cwe_id'):
-                                    st.markdown(f"[CWE-{issue['cwe_id']}](https://cwe.mitre.org/data/definitions/{issue['cwe_id']}.html)")
-                                if issue.get('suggestion'):
-                                    with st.expander("View Security Fix"):
-                                        st.info(f"💡 {issue['suggestion']}")
-                                        if issue.get('code_example'):
-                                            st.code(issue['code_example'], language='python')
-                            else:
-                                st.success("✅ No security issues detected")
-
-                    # File Information
-                    st.markdown("##### 📄 File Information")
-                    col3, col4 = st.columns(2)
-                    with col3:
-                        file_ext = os.path.splitext(st.session_state.current_file)[1].lower()
-                        language = next((info['name'] for lang, info in config['supported_languages'].items() 
-                                      if file_ext in info['extensions']), "Unknown")
-                        st.markdown(f"**Language:** {language}")
-                        st.markdown(f"**Last Modified:** {metrics.get('last_modified', 'Unknown')}")
-                    with col4:
-                        st.markdown(f"**File Size:** {os.path.getsize(st.session_state.current_file) / 1024:.1f} KB")
-                        st.markdown(f"**Encoding:** {metrics.get('encoding', 'UTF-8')}")
-                else:
-                    st.info("No metrics available for the selected file.")
+                                st.success("✅ No issues detected in the current file")
+                        else:
+                            st.info("Select a file to analyze code quality issues")
 
             with tab3:
                 st.markdown("#### Interactive Metric Visualizations")
@@ -3119,6 +3215,28 @@ def group_files_by_directory():
             )
     
     return files_by_dir
+
+
+def analyze_code_quality(code_content):
+    """Analyze code content and return quality metrics"""
+    metrics = {
+        'raw_metrics': {
+            'loc': len(code_content.splitlines()),
+            'comments': len([line for line in code_content.splitlines() if line.strip().startswith('#')]),
+            'multi': len([line for line in code_content.splitlines() if '"""' in line or "'''" in line]),
+            'classes': len([line for line in code_content.splitlines() if line.strip().startswith('class ')]),
+            'methods': len([line for line in code_content.splitlines() if line.strip().startswith('def ')]),
+        }
+    }
+    
+    # Calculate complexity
+    complexity = 1
+    for line in code_content.splitlines():
+        if any(keyword in line for keyword in ['if', 'for', 'while', 'except', 'with', 'and', 'or']):
+            complexity += 1
+    metrics['complexity'] = complexity
+    
+    return metrics
 
 
 if __name__ == "__main__":
