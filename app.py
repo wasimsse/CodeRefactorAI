@@ -137,7 +137,7 @@ config = {
     'max_function_length': 50,
     'max_complexity': 10,
     'min_comment_ratio': 0.1,
-
+    
     # Supported programming languages configuration
     # Each language includes:
     # - extensions: List of file extensions
@@ -225,7 +225,7 @@ def init_session_state():
         'edit_mode': False,
         'selected_tab': "🔍 Analysis & Selection"
     }
-
+    
     # Initialize any missing session state variables
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -264,7 +264,7 @@ class CodeRefactorer:
                 'claude-3-sonnet-20240229'],
             'Google': ['gemini-pro'],
             'Cohere': ['command']}
-
+    
     async def refactor_code(self, code: str, model: str, prompt: str) -> str:
         """Refactor code using the specified model."""
         # Placeholder for actual refactoring logic
@@ -274,17 +274,17 @@ class CodeRefactorer:
 def main():
     """Main application function."""
     init_session_state()  # Initialize or reset session state
-
+    
     st.title("🔄 RefactoringAI")
     st.markdown("""
         ### AI-Powered Code Refactoring Tool
         Upload your code and let AI help you improve its quality, maintainability, and performance.
     """)
-
+    
     # Create tabs
     tab1, tab2, tab3 = st.tabs(
         ["Upload & Analyze", "File Explorer", "Refactor"])
-
+    
     with tab1:
         # Hero section with enhanced gradient and animation
         st.markdown("""
@@ -410,14 +410,14 @@ def main():
                     for lang in config['supported_languages'].values()
                 ])
             ), unsafe_allow_html=True)
-
+            
             # Update file uploader to accept all supported extensions
             supported_extensions = []
             for lang in config['supported_languages'].values():
                 # Remove the dot from extensions
                 supported_extensions.extend(
                     [ext[1:] for ext in lang['extensions']])
-
+            
             uploaded_file = st.file_uploader(
                 "Choose a source file",
                 type=supported_extensions,
@@ -455,29 +455,50 @@ def main():
             st.markdown("""
                 <div class="feature-card">
                     <div class="icon-container">🔗</div>
-                    <h3>GitHub Repository</h3>
-                    <p>Direct analysis from your GitHub repositories with branch support</p>
+                    <h3>Repository Analysis</h3>
+                    <p>Analyze code from GitHub repositories or local directories</p>
                     <ul class="feature-list">
-                        <li>✓ Repository integration</li>
+                        <li>✓ GitHub integration</li>
+                        <li>✓ Local repository support</li>
                         <li>✓ Branch analysis</li>
-                        <li>✓ Commit history review</li>
                     </ul>
                 </div>
             """, unsafe_allow_html=True)
-            repo_url = st.text_input(
-                "Enter repository URL",
+            
+            # Add tabs for GitHub and Local repository options
+            repo_tab1, repo_tab2 = st.tabs(["GitHub", "Local"])
+            
+            with repo_tab1:
+                repo_url = st.text_input(
+                    "Enter repository URL",
                 placeholder="https://github.com/username/repository",
                 help="Enter the URL of a public GitHub repository")
-
+            
             if repo_url:
-                if st.button(
-                    "🚀 Start Analysis",
-                    type="primary",
+                    if st.button(
+                        "🚀 Analyze GitHub Repository",
+                        type="primary",
                         use_container_width=True):
                     with st.spinner("🔍 Cloning and analyzing repository..."):
                         handle_github_upload(repo_url)
-                        st.success(
-                            "✅ Repository Analysis Complete! View results in the File Explorer tab.")
+                            st.success(
+                                "✅ Repository Analysis Complete! View results in the File Explorer tab.")
+            
+            with repo_tab2:
+                repo_path = st.text_input(
+                    "Enter local repository path",
+                    placeholder="/path/to/repository",
+                    help="Enter the path to your local repository")
+                
+                if repo_path:
+                    if st.button(
+                        "🚀 Analyze Local Repository",
+                        type="primary",
+                        use_container_width=True):
+                        with st.spinner("🔍 Analyzing repository..."):
+                            handle_local_repository_upload(repo_path)
+                            st.success(
+                                "✅ Repository Analysis Complete! View results in the File Explorer tab.")
 
         # Add custom CSS for the upload section
         st.markdown("""
@@ -548,7 +569,7 @@ def main():
 
         # Enhanced features section
         st.markdown("""
-            <div style='background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            <div style='background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
                       padding: 2.5rem; border-radius: 20px; margin: 3rem 0;
                       box-shadow: 0 4px 6px rgba(0,0,0,0.05);'>
                 <h2 style='color: #1E88E5; font-size: 1.8em; margin-bottom: 2rem; text-align: center;'>
@@ -585,7 +606,7 @@ def main():
 
         # Documentation sections with improved styling
         col_exp1, col_exp2 = st.columns(2)
-
+        
         with col_exp1:
             with st.expander("📋 Getting Started Guide"):
                 st.markdown("""
@@ -629,14 +650,14 @@ def main():
                             <li style='margin-bottom: 0.5rem;'>Valid syntax required</li>
                             <li>UTF-8 encoding recommended</li>
                         </ul>
-
+                        
                         <h4 style='color: #1E88E5; margin-bottom: 1rem; font-size: 1.1em;'>Size Limits</h4>
                         <ul style='color: #424242; margin-bottom: 1.5rem;'>
                             <li style='margin-bottom: 0.5rem;'>Single file: Max 100MB</li>
                             <li style='margin-bottom: 0.5rem;'>ZIP archive: Max 500MB</li>
                             <li>Repository: No strict limit</li>
                         </ul>
-
+                        
                         <div style='background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
                                   padding: 1rem; border-radius: 8px; margin-top: 1rem;'>
                             <p style='color: #ef6c00; margin: 0; font-size: 0.95em;'>
@@ -645,10 +666,10 @@ def main():
                         </div>
                     </div>
                 """, unsafe_allow_html=True)
-
+    
     with tab2:
         display_file_explorer()
-
+    
     with tab3:
         st.header("Refactor")
         if st.session_state.current_file:
@@ -660,7 +681,7 @@ def main():
 def handle_file_upload(uploaded_file):
     """
     Handle single file upload and analysis.
-
+    
     This function processes individual source code files in any supported language.
     It performs the following steps:
     1. Validates file extension against supported languages
@@ -668,10 +689,10 @@ def handle_file_upload(uploaded_file):
     3. Analyzes the file using the CodeAnalyzer
     4. Updates session state with analysis results
     5. Updates statistics for the analyzed file
-
+    
     Args:
         uploaded_file: StreamlitUploadedFile object containing the source code
-
+        
     Returns:
         bool: True if analysis was successful, False otherwise
     """
@@ -682,37 +703,37 @@ def handle_file_upload(uploaded_file):
             supported_extensions = []
             for lang in config['supported_languages'].values():
                 supported_extensions.extend(lang['extensions'])
-
+            
             if file_ext not in supported_extensions:
                 st.error(
                     f"Unsupported file type. Supported extensions: {
                         ', '.join(supported_extensions)}")
                 return False
-
+            
             # Process and analyze file
             temp_dir = Path("temp_analysis")
             temp_dir.mkdir(exist_ok=True)
-
+            
             file_path = temp_dir / uploaded_file.name
             content = uploaded_file.getvalue().decode('utf-8')
             with open(file_path, "wb") as f:
                 f.write(uploaded_file.getbuffer())
-
+            
             # Use the analyze_file function directly
             file_metrics = analyze_file(str(file_path), content)
-
+            
             # Update session state
             if 'uploaded_files' not in st.session_state:
                 st.session_state.uploaded_files = {}
             st.session_state.uploaded_files[str(file_path)] = file_metrics
             st.session_state.current_file = str(file_path)
-
+            
             # Update statistics
             st.session_state.stats_manager.update_file_analysis(
                 uploaded_file.name,
                 file_metrics
             )
-
+            
             return True
         except Exception as e:
             st.error(f"Error processing file: {str(e)}")
@@ -722,17 +743,17 @@ def handle_file_upload(uploaded_file):
 def handle_zip_upload(uploaded_zip):
     """
     Handle ZIP file upload and project analysis.
-
+    
     This function processes ZIP archives containing multiple source files.
     It supports all configured programming languages and performs:
     1. Extracts ZIP contents to a temporary directory
     2. Recursively analyzes all supported source files
     3. Updates session state with analysis results
     4. Generates project-wide statistics
-
+    
     Args:
         uploaded_zip: StreamlitUploadedFile object containing the ZIP archive
-
+        
     Returns:
         bool: True if analysis was successful, False otherwise
     """
@@ -741,25 +762,25 @@ def handle_zip_upload(uploaded_zip):
             # Setup temporary directories
             temp_dir = Path("temp_analysis")
             temp_dir.mkdir(exist_ok=True)
-
+            
             # Extract ZIP contents
             zip_path = temp_dir / uploaded_zip.name
             with open(zip_path, "wb") as f:
                 f.write(uploaded_zip.getbuffer())
-
+            
             extract_dir = temp_dir / Path(uploaded_zip.name).stem
             with zipfile.ZipFile(zip_path, 'r') as zip_ref:
                 zip_ref.extractall(extract_dir)
-
+            
             # Initialize analysis
             analyzer = CodeAnalyzer(config)
             st.session_state.uploaded_files = {}
-
+            
             # Get supported file extensions
             supported_extensions = []
             for lang in config['supported_languages'].values():
                 supported_extensions.extend(lang['extensions'])
-
+            
             # Process all supported files
             files_found = False
             for root, _, files in os.walk(extract_dir):
@@ -774,30 +795,30 @@ def handle_zip_upload(uploaded_zip):
                                 str(file_path))
                             st.session_state.uploaded_files[str(
                                 file_path)] = file_metrics
-
+                            
                             # Update statistics
                             st.session_state.stats_manager.update_file_analysis(
                                 file, file_metrics)
                         except Exception as e:
                             st.warning(f"Error analyzing {file}: {str(e)}")
-
+            
             if not files_found:
                 st.warning(
                     f"No supported files found in the ZIP archive. Supported extensions: {
                         ', '.join(supported_extensions)}")
                 return False
-
+            
             # Set initial file selection
             st.session_state.current_file = next(
                 iter(st.session_state.uploaded_files))
-
+            
             # Generate and update project analysis
             project_metrics = analyzer.analyze_project(str(extract_dir))
             st.session_state.project_analysis = project_metrics
             st.session_state.stats_manager.update_project_analysis()
-
+            
             return True
-
+            
         except Exception as e:
             st.error(f"Error processing ZIP file: {str(e)}")
             return False
@@ -806,19 +827,19 @@ def handle_zip_upload(uploaded_zip):
 def handle_github_upload(repo_url):
     """
     Handle GitHub repository analysis.
-
+    
     This function clones and analyzes GitHub repositories:
     1. Creates a unique directory for the repository
     2. Clones the repository using git
     3. Analyzes all supported source files
     4. Generates project-wide metrics and statistics
-
+    
     Supports all configured programming languages and maintains
     proper file organization for multi-language projects.
-
+    
     Args:
         repo_url: String URL of the GitHub repository
-
+        
     Returns:
         bool: True if analysis was successful, False otherwise
     """
@@ -827,19 +848,19 @@ def handle_github_upload(repo_url):
         repo_name = repo_url.split('/')[-1].replace('.git', '')
         repo_dir = Path("temp_analysis") / f"{repo_name}_{os.urandom(6).hex()}"
         repo_dir.mkdir(parents=True, exist_ok=True)
-
+        
         # Clone repository
         git.Repo.clone_from(repo_url, repo_dir)
-
+        
         # Initialize analysis
         st.session_state.uploaded_files = {}
         analyzer = CodeAnalyzer(config)
-
+        
         # Get supported file extensions
         supported_extensions = []
         for lang in config['supported_languages'].values():
             supported_extensions.extend(lang['extensions'])
-
+        
         # Process all supported files
         files_found = False
         for root, _, files in os.walk(repo_dir):
@@ -853,7 +874,7 @@ def handle_github_upload(repo_url):
                         file_metrics = analyzer.analyze_file(str(file_path))
                         st.session_state.uploaded_files[str(
                             file_path)] = file_metrics
-
+                        
                         # Update statistics
                         st.session_state.stats_manager.update_file_analysis(
                             file,
@@ -861,26 +882,100 @@ def handle_github_upload(repo_url):
                         )
                     except Exception as e:
                         st.warning(f"Error analyzing {file}: {str(e)}")
-
+        
         if not files_found:
             st.warning(
                 f"No supported files found in the repository. Supported extensions: {
                     ', '.join(supported_extensions)}")
             return False
-
+        
         # Set initial file selection
         st.session_state.current_file = next(
             iter(st.session_state.uploaded_files))
-
+        
         # Generate and update project analysis
         project_metrics = analyzer.analyze_project(str(repo_dir))
         st.session_state.project_analysis = project_metrics
         st.session_state.stats_manager.update_project_analysis()
-
+        
         return True
-
+        
     except Exception as e:
         st.error(f"Error cloning repository: {str(e)}")
+        return False
+
+
+def handle_local_repository_upload(repo_path):
+    """
+    Handle local repository analysis.
+    
+    This function analyzes a local repository:
+    1. Validates the repository path
+    2. Analyzes all supported source files
+    3. Generates project-wide metrics and statistics
+    
+    Args:
+        repo_path: String path to the local repository
+        
+    Returns:
+        bool: True if analysis was successful, False otherwise
+    """
+    try:
+        # Validate repository path
+        repo_dir = Path(repo_path)
+        if not repo_dir.exists() or not repo_dir.is_dir():
+            st.error("Invalid repository path. Please select a valid directory.")
+            return False
+            
+        # Initialize analysis
+        st.session_state.uploaded_files = {}
+        analyzer = CodeAnalyzer(config)
+        
+        # Get supported file extensions
+        supported_extensions = []
+        for lang in config['supported_languages'].values():
+            supported_extensions.extend(lang['extensions'])
+        
+        # Process all supported files
+        files_found = False
+        for root, _, files in os.walk(repo_dir):
+            for file in files:
+                file_ext = Path(file).suffix.lower()
+                if file_ext in supported_extensions:
+                    files_found = True
+                    file_path = Path(root) / file
+                    try:
+                        # Analyze file
+                        file_metrics = analyzer.analyze_file(str(file_path))
+                        st.session_state.uploaded_files[str(file_path)] = file_metrics
+                        
+                        # Update statistics
+                        st.session_state.stats_manager.update_file_analysis(
+                            file,
+                            file_metrics
+                        )
+                    except Exception as e:
+                        st.warning(f"Error analyzing {file}: {str(e)}")
+        
+        if not files_found:
+            st.warning(
+                f"No supported files found in the repository. Supported extensions: {
+                    ', '.join(supported_extensions)}")
+            return False
+        
+        # Set initial file selection
+        st.session_state.current_file = next(
+            iter(st.session_state.uploaded_files))
+        
+        # Generate and update project analysis
+        project_metrics = analyzer.analyze_project(str(repo_dir))
+        st.session_state.project_analysis = project_metrics
+        st.session_state.stats_manager.update_project_analysis()
+        
+        return True
+        
+    except Exception as e:
+        st.error(f"Error analyzing repository: {str(e)}")
         return False
 
 
@@ -989,17 +1084,15 @@ def display_refactoring_options():
                     )
                     
                     use_cache = st.checkbox("Use cached analysis", value=True, 
-                                         help="Use previously cached analysis results if available")
+                                          help="Use previously cached analysis results if available")
                     
                     parallel_processing = st.checkbox("Enable parallel processing", value=True,
-                                                   help="Use multiple CPU cores for faster processing")
+                                                    help="Use multiple CPU cores for faster processing")
 
                 elif mode == "Cloud-based":
                     st.info("Cloud mode leverages powerful cloud resources for comprehensive refactoring. Best for large projects.")
                     st.markdown("#### ☁️ Cloud Service Options")
-                    
-                    # Model selection
-                    model = st.selectbox(
+    model = st.selectbox(
                         "Select AI Model",
                         ["gpt-4", "gpt-3.5-turbo", "claude-3-opus", "claude-3-sonnet"],
                         index=0,
@@ -1054,7 +1147,7 @@ def display_refactoring_options():
                         "Modernize code style"
                     ],
                     default=["Improve readability", "Enhance maintainability"],
-                    key="goals_selector"
+                    key="refactoring_goals"
                 )
                 st.session_state.refactoring_goals = goals
 
@@ -1074,7 +1167,7 @@ def display_refactoring_options():
                         "Preserve API compatibility"
                     ],
                     default=["Preserve functionality"],
-                    key="constraints_selector"
+                    key="refactoring_constraints"
                 )
                 st.session_state.refactoring_constraints = constraints
 
@@ -1198,7 +1291,7 @@ def display_refactoring_options():
                             st.metric(
                                 "Cognitive Complexity",
                                 f"{cognitive_score:.1f}",
-                                help="How difficult it is to understand the code's control flow"
+                                help="Measure of how difficult the code is to understand"
                             )
                             st.metric(
                                 "Code Coverage",
@@ -1209,205 +1302,34 @@ def display_refactoring_options():
                         with col2:
                             st.markdown("##### 📏 Size Metrics")
                             
-                            # Get raw metrics with safe defaults
+                            # Get raw metrics with proper type handling
                             raw_metrics = metrics.get('raw_metrics', {})
-                            loc = int(raw_metrics.get('loc', 0))
-                            comments = int(raw_metrics.get('comments', 0))
-                            multi_comments = int(raw_metrics.get('multi', 0))
-                            total_comments = comments + multi_comments
-                            functions = int(raw_metrics.get('functions', 0))
-                            methods = int(raw_metrics.get('methods', 0))
-                            classes = int(raw_metrics.get('classes', 0))
-                            
-                            # Calculate comment density with safe division
-                            comment_density = (total_comments / max(loc, 1)) * 100 if loc > 0 else 0
+                            if not isinstance(raw_metrics, dict):
+                                raw_metrics = {}
                             
                             # Display size metrics with proper formatting
                             st.metric(
                                 "Lines of Code",
-                                f"{loc:,}",
-                                help="Total lines of code"
+                                f"{raw_metrics.get('loc', 0):,}",
+                                help="Total number of lines of code"
                             )
                             st.metric(
                                 "Comment Density",
-                                f"{comment_density:.1f}%",
-                                help="Percentage of comments in code"
+                                f"{raw_metrics.get('comment_ratio', 0):.1f}%",
+                                help="Percentage of code that is comments"
                             )
                             st.metric(
                                 "Function Count",
-                                f"{functions + methods:,}",
+                                f"{raw_metrics.get('functions', 0) + raw_metrics.get('methods', 0):,}",
                                 help="Total number of functions and methods"
                             )
                             st.metric(
                                 "Class Count",
-                                f"{classes:,}",
+                                f"{raw_metrics.get('classes', 0):,}",
                                 help="Total number of classes"
                             )
-
-                        # Code Quality Issues
-                        st.markdown("##### 🔍 Code Quality Analysis")
-                        
-                        # Summary section with actual metrics
-                        if st.session_state.current_metrics:
-                            metrics = st.session_state.current_metrics
-                            
-                            # Create a data frame for all issues
-                            issues_data = []
-                            
-                            # Analyze and collect actual design issues
-                            if 'raw_metrics' in metrics:
-                                raw = metrics['raw_metrics']
-                                
-                                # Check for large classes
-                                if raw.get('classes', 0) > 0:
-                                    class_methods = raw.get('methods', 0) / raw.get('classes', 1)
-                                    if class_methods > 20:
-                                        issues_data.append({
-                                            'Category': 'Design Issue',
-                                            'Severity': 'High',
-                                            'Issue': f'Large Class Detected: Average {class_methods:.1f} methods per class',
-                                            'Impact': 'Reduced maintainability and increased coupling',
-                                            'Recommendation': 'Consider splitting large classes into smaller, more focused ones'
-                                        })
-                                
-                                # Check for complex methods
-                                complexity = metrics.get('complexity', 0)
-                                complexity_score = (
-                                    complexity.get('score', 0) if isinstance(complexity, dict)
-                                    else float(complexity) if isinstance(complexity, (int, float))
-                                    else 0
-                                )
-                                
-                                if complexity_score > 15:
-                                    issues_data.append({
-                                        'Category': 'Design Issue',
-                                        'Severity': 'Medium',
-                                        'Issue': f'High Cyclomatic Complexity: {complexity_score:.1f}',
-                                        'Impact': 'Difficult to test and maintain',
-                                        'Recommendation': 'Break down complex methods into smaller, simpler ones'
-                                    })
-                                
-                                # Check method length
-                                if raw.get('loc', 0) > 0:
-                                    avg_loc_per_method = raw.get('loc', 0) / max(raw.get('methods', 1), 1)
-                                    if avg_loc_per_method > 30:
-                                        issues_data.append({
-                                            'Category': 'Code Smell',
-                                            'Severity': 'Medium',
-                                            'Issue': f'Long Methods: Average {avg_loc_per_method:.1f} lines per method',
-                                            'Impact': 'Reduced readability and maintainability',
-                                            'Recommendation': 'Break down methods longer than 30 lines'
-                                        })
-                                    
-                                    # Check comment density
-                                    comment_ratio = (raw.get('comments', 0) + raw.get('multi', 0)) / raw.get('loc', 1)
-                                    if comment_ratio < 0.1:
-                                        issues_data.append({
-                                            'Category': 'Code Smell',
-                                            'Severity': 'Low',
-                                            'Issue': 'Low Comment Density',
-                                            'Impact': 'Code may be difficult to understand',
-                                            'Recommendation': 'Add meaningful comments to explain complex logic'
-                                        })
-                            
-                            # Analyze and collect actual performance issues
-                            if 'performance_metrics' in metrics:
-                                perf = metrics['performance_metrics']
-                                
-                                # Check for memory usage
-                                if perf.get('memory_usage', 0) > 100:  # MB
-                                    issues_data.append({
-                                        'Category': 'Performance',
-                                        'Severity': 'High',
-                                        'Issue': f'High Memory Usage: {perf.get("memory_usage")}MB',
-                                        'Impact': 'May cause out of memory errors',
-                                        'Recommendation': 'Optimize memory usage, consider using generators'
-                                    })
-                                
-                                # Check for time complexity
-                                if perf.get('time_complexity', 'O(1)').startswith('O(n²'):
-                                    issues_data.append({
-                                        'Category': 'Performance',
-                                        'Severity': 'Medium',
-                                        'Issue': 'Quadratic Time Complexity',
-                                        'Impact': 'Poor performance with large inputs',
-                                        'Recommendation': 'Consider using more efficient algorithms'
-                                    })
-                            
-                            # Analyze and collect actual security issues
-                            if 'security_scan' in metrics:
-                                security = metrics['security_scan']
-                                
-                                # Check for input validation
-                                if security.get('input_validation_issues', False):
-                                    issues_data.append({
-                                        'Category': 'Security',
-                                        'Severity': 'Critical',
-                                        'Issue': 'Missing Input Validation',
-                                        'Impact': 'Vulnerable to injection attacks',
-                                        'Recommendation': 'Implement proper input validation and sanitization'
-                                    })
-                                
-                                # Check for sensitive data exposure
-                                if security.get('sensitive_data_exposure', False):
-                                    issues_data.append({
-                                        'Category': 'Security',
-                                        'Severity': 'Critical',
-                                        'Issue': 'Sensitive Data Exposure',
-                                        'Impact': 'Risk of data breach',
-                                        'Recommendation': 'Encrypt sensitive data and use secure protocols'
-                                    })
-                            
-                            # Display issues in a structured format
-                            if issues_data:
-                                df = pd.DataFrame(issues_data)
-                                
-                                # Add severity color coding
-                                def color_severity(val):
-                                    colors = {
-                                        'Critical': 'background-color: #ff0000; color: white',
-                                        'High': 'background-color: #ff6b6b; color: white',
-                                        'Medium': 'background-color: #ffd93d',
-                                        'Low': 'background-color: #95cd41'
-                                    }
-                                    return colors.get(val, '')
-                                
-                                # Display styled dataframe
-                                st.dataframe(
-                                    df.style.applymap(color_severity, subset=['Severity']),
-                                    use_container_width=True,
-                                    height=400
-                                )
-                                
-                                # Add filtering options
-                                col1, col2 = st.columns(2)
-                                with col1:
-                                    category_filter = st.multiselect(
-                                        "Filter by Category",
-                                        options=df['Category'].unique()
-                                    )
-                                with col2:
-                                    severity_filter = st.multiselect(
-                                        "Filter by Severity",
-                                        options=df['Severity'].unique()
-                                    )
-                                
-                                # Apply filters if selected
-                                if category_filter or severity_filter:
-                                    filtered_df = df
-                                    if category_filter:
-                                        filtered_df = filtered_df[filtered_df['Category'].isin(category_filter)]
-                                    if severity_filter:
-                                        filtered_df = filtered_df[filtered_df['Severity'].isin(severity_filter)]
-                                    st.dataframe(
-                                        filtered_df.style.applymap(color_severity, subset=['Severity']),
-                                        use_container_width=True,
-                                        height=400
-                                    )
-                            else:
-                                st.success("✅ No issues detected in the current file")
-                        else:
-                            st.info("Select a file to analyze code quality issues")
+                    else:
+                        st.info("No metrics available for the selected file.")
 
         elif st.session_state.selected_tab == "✏️ Code Editor":
             with tab2:
@@ -1570,14 +1492,14 @@ def display_project_analysis():
     """Display project analysis results."""
     if not st.session_state.project_analysis:
         return
-
+    
     analysis = st.session_state.project_analysis
-
+    
     # Display metrics dashboard
     viz_manager = VisualizationManager()
     viz_manager.display_metrics_dashboard(
         analysis['metrics'], prefix="project")
-
+    
     # Display project structure
     viz_manager.display_project_structure(analysis['structure'])
 
@@ -1586,16 +1508,16 @@ def display_directory_analysis(dir_path: str):
     """Display analysis for a specific directory."""
     if not st.session_state.project_analysis:
         return
-
+    
     analysis = st.session_state.project_analyzer.analyze_directory(dir_path)
-
+    
     st.header(f"Directory Analysis: {dir_path}")
-
+    
     # Display metrics dashboard for directory
     viz_manager = VisualizationManager()
     viz_manager.display_metrics_dashboard(
         analysis['metrics'], prefix=f"dir_{dir_path}")
-
+    
     # Display directory structure
     viz_manager.display_project_structure(analysis['structure'])
 
@@ -1603,7 +1525,7 @@ def display_directory_analysis(dir_path: str):
 def display_landing_stats():
     """Display dynamic statistics on the landing page."""
     stats = st.session_state.stats_manager.get_display_stats()
-
+    
     # Create a container with a gradient background for stats
     st.markdown("""
         <div style="
@@ -1623,47 +1545,47 @@ def display_landing_stats():
             </h2>
         </div>
     """, unsafe_allow_html=True)
-
+    
     # Display key metrics in a 4-column layout
     col1, col2, col3, col4 = st.columns(4)
-
+    
     with col1:
         st.metric(
             "Analysis Accuracy",
             f"{stats['analysis_accuracy']}%",
             help="Overall analysis accuracy"
         )
-
+    
     with col2:
         st.metric(
             "Code Metrics",
             f"{stats['code_metrics']}+",
             help="Available code quality metrics"
         )
-
+    
     with col3:
         st.metric(
             "Projects Analyzed",
             stats['projects_analyzed'],
             help="Total projects analyzed"
         )
-
+    
     with col4:
         st.metric(
             "Availability",
             stats['availability'],
             help="System availability"
         )
-
+    
     # Display detailed statistics
     st.markdown("### Project Impact")
     col1, col2 = st.columns(2)
-
+    
     with col1:
         st.metric("Total Files Analyzed", stats["total_files"])
         st.metric("Total Lines of Code", f"{stats['total_lines']:,}")
         st.metric("Issues Identified", stats["issues_found"])
-
+    
     with col2:
         # Language distribution
         st.subheader("Language Distribution")
@@ -1676,7 +1598,7 @@ def display_landing_stats():
                     'Count': list(languages.values())
                 }
             ).sort_values('Count', ascending=False)
-
+            
             # Create a bar chart using Plotly
             fig = px.bar(
                 lang_data,
@@ -1695,12 +1617,12 @@ def display_landing_stats():
             st.plotly_chart(fig, use_container_width=True)
         else:
             st.info("No language statistics available yet")
-
+    
     # Quality improvements
     st.markdown("### Quality Improvements")
     improvements = stats["improvements"]
     col1, col2, col3 = st.columns(3)
-
+    
     with col1:
         st.metric(
             "Complexity Reduced",
@@ -1726,7 +1648,7 @@ def display_metrics_tab(metrics):
     if not metrics:
         st.info("No metrics available for this file.")
         return
-
+        
     st.header("📊 File Statistics")
 
     # Create three columns for the metrics
@@ -2023,15 +1945,14 @@ def display_file_explorer():
                         # Color coding for severity
                         def color_severity(val):
                             colors = {
-                                'Critical': 'background-color: #ff0000; color: white',
-                                'High': 'background-color: #ff6b6b; color: white',
+                                'High': 'background-color: #ff6b6b',
                                 'Medium': 'background-color: #ffd93d',
                                 'Low': 'background-color: #95cd41'
                             }
                             return colors.get(val, '')
                         
                         # Display styled dataframe
-                        st.dataframe(
+    st.dataframe(
                             df.style.applymap(color_severity, subset=['Severity']),
                             use_container_width=True,
                             height=400
@@ -2042,12 +1963,14 @@ def display_file_explorer():
                         with col1:
                             category_filter = st.multiselect(
                                 "Filter by Category",
-                                options=df['Category'].unique()
+                                options=df['Category'].unique(),
+                                key="category_filter_1"
                             )
                         with col2:
                             severity_filter = st.multiselect(
                                 "Filter by Severity",
-                                options=df['Severity'].unique()
+                                options=df['Severity'].unique(),
+                                key="severity_filter_1"
                             )
                         
                         # Apply filters if selected
@@ -2062,10 +1985,10 @@ def display_file_explorer():
                                 use_container_width=True,
                                 height=400
                             )
+                        else:
+                            st.success("✅ No issues detected in the current file")
                     else:
-                        st.success("✅ No issues detected in the current file")
-                else:
-                    st.info("No code content available for the selected file.")
+                        st.info("No code content available for the selected file.")
 
             with tab2:
                 st.markdown("#### Code Analysis")
@@ -2121,7 +2044,7 @@ def display_file_explorer():
                         st.metric(
                             "Cognitive Complexity",
                             f"{cognitive_score:.1f}",
-                            help="How difficult it is to understand the code's control flow"
+                            help="Measure of how difficult the code is to understand"
                         )
                         st.metric(
                             "Code Coverage",
@@ -2132,205 +2055,34 @@ def display_file_explorer():
                     with col2:
                         st.markdown("##### 📏 Size Metrics")
                         
-                        # Get raw metrics with safe defaults
+                        # Get raw metrics with proper type handling
                         raw_metrics = metrics.get('raw_metrics', {})
-                        loc = int(raw_metrics.get('loc', 0))
-                        comments = int(raw_metrics.get('comments', 0))
-                        multi_comments = int(raw_metrics.get('multi', 0))
-                        total_comments = comments + multi_comments
-                        functions = int(raw_metrics.get('functions', 0))
-                        methods = int(raw_metrics.get('methods', 0))
-                        classes = int(raw_metrics.get('classes', 0))
-                        
-                        # Calculate comment density with safe division
-                        comment_density = (total_comments / max(loc, 1)) * 100 if loc > 0 else 0
+                        if not isinstance(raw_metrics, dict):
+                            raw_metrics = {}
                         
                         # Display size metrics with proper formatting
                         st.metric(
                             "Lines of Code",
-                            f"{loc:,}",
-                            help="Total lines of code"
+                            f"{raw_metrics.get('loc', 0):,}",
+                            help="Total number of lines of code"
                         )
                         st.metric(
                             "Comment Density",
-                            f"{comment_density:.1f}%",
-                            help="Percentage of comments in code"
+                            f"{raw_metrics.get('comment_ratio', 0):.1f}%",
+                            help="Percentage of code that is comments"
                         )
                         st.metric(
                             "Function Count",
-                            f"{functions + methods:,}",
+                            f"{raw_metrics.get('functions', 0) + raw_metrics.get('methods', 0):,}",
                             help="Total number of functions and methods"
                         )
                         st.metric(
                             "Class Count",
-                            f"{classes:,}",
+                            f"{raw_metrics.get('classes', 0):,}",
                             help="Total number of classes"
                         )
-
-                    # Code Quality Issues
-                    st.markdown("##### 🔍 Code Quality Analysis")
-                    
-                    # Summary section with actual metrics
-                    if st.session_state.current_metrics:
-                        metrics = st.session_state.current_metrics
-                        
-                        # Create a data frame for all issues
-                        issues_data = []
-                        
-                        # Analyze and collect actual design issues
-                        if 'raw_metrics' in metrics:
-                            raw = metrics['raw_metrics']
-                            
-                            # Check for large classes
-                            if raw.get('classes', 0) > 0:
-                                class_methods = raw.get('methods', 0) / raw.get('classes', 1)
-                                if class_methods > 20:
-                                    issues_data.append({
-                                        'Category': 'Design Issue',
-                                        'Severity': 'High',
-                                        'Issue': f'Large Class Detected: Average {class_methods:.1f} methods per class',
-                                        'Impact': 'Reduced maintainability and increased coupling',
-                                        'Recommendation': 'Consider splitting large classes into smaller, more focused ones'
-                                    })
-                            
-                            # Check for complex methods
-                            complexity = metrics.get('complexity', 0)
-                            complexity_score = (
-                                complexity.get('score', 0) if isinstance(complexity, dict)
-                                else float(complexity) if isinstance(complexity, (int, float))
-                                else 0
-                            )
-                            
-                            if complexity_score > 15:
-                                issues_data.append({
-                                    'Category': 'Design Issue',
-                                    'Severity': 'Medium',
-                                    'Issue': f'High Cyclomatic Complexity: {complexity_score:.1f}',
-                                    'Impact': 'Difficult to test and maintain',
-                                    'Recommendation': 'Break down complex methods into smaller, simpler ones'
-                                })
-                            
-                            # Check method length
-                            if raw.get('loc', 0) > 0:
-                                avg_loc_per_method = raw.get('loc', 0) / max(raw.get('methods', 1), 1)
-                                if avg_loc_per_method > 30:
-                                    issues_data.append({
-                                        'Category': 'Code Smell',
-                                        'Severity': 'Medium',
-                                        'Issue': f'Long Methods: Average {avg_loc_per_method:.1f} lines per method',
-                                        'Impact': 'Reduced readability and maintainability',
-                                        'Recommendation': 'Break down methods longer than 30 lines'
-                                    })
-                                
-                                # Check comment density
-                                comment_ratio = (raw.get('comments', 0) + raw.get('multi', 0)) / raw.get('loc', 1)
-                                if comment_ratio < 0.1:
-                                    issues_data.append({
-                                        'Category': 'Code Smell',
-                                        'Severity': 'Low',
-                                        'Issue': 'Low Comment Density',
-                                        'Impact': 'Code may be difficult to understand',
-                                        'Recommendation': 'Add meaningful comments to explain complex logic'
-                                    })
-                            
-                            # Analyze and collect actual performance issues
-                            if 'performance_metrics' in metrics:
-                                perf = metrics['performance_metrics']
-                                
-                                # Check for memory usage
-                                if perf.get('memory_usage', 0) > 100:  # MB
-                                    issues_data.append({
-                                        'Category': 'Performance',
-                                        'Severity': 'High',
-                                        'Issue': f'High Memory Usage: {perf.get("memory_usage")}MB',
-                                        'Impact': 'May cause out of memory errors',
-                                        'Recommendation': 'Optimize memory usage, consider using generators'
-                                    })
-                                
-                                # Check for time complexity
-                                if perf.get('time_complexity', 'O(1)').startswith('O(n²'):
-                                    issues_data.append({
-                                        'Category': 'Performance',
-                                        'Severity': 'Medium',
-                                        'Issue': 'Quadratic Time Complexity',
-                                        'Impact': 'Poor performance with large inputs',
-                                        'Recommendation': 'Consider using more efficient algorithms'
-                                    })
-                            
-                            # Analyze and collect actual security issues
-                            if 'security_scan' in metrics:
-                                security = metrics['security_scan']
-                                
-                                # Check for input validation
-                                if security.get('input_validation_issues', False):
-                                    issues_data.append({
-                                        'Category': 'Security',
-                                        'Severity': 'Critical',
-                                        'Issue': 'Missing Input Validation',
-                                        'Impact': 'Vulnerable to injection attacks',
-                                        'Recommendation': 'Implement proper input validation and sanitization'
-                                    })
-                                
-                                # Check for sensitive data exposure
-                                if security.get('sensitive_data_exposure', False):
-                                    issues_data.append({
-                                        'Category': 'Security',
-                                        'Severity': 'Critical',
-                                        'Issue': 'Sensitive Data Exposure',
-                                        'Impact': 'Risk of data breach',
-                                        'Recommendation': 'Encrypt sensitive data and use secure protocols'
-                                    })
-                            
-                            # Display issues in a structured format
-                            if issues_data:
-                                df = pd.DataFrame(issues_data)
-                                
-                                # Add severity color coding
-                                def color_severity(val):
-                                    colors = {
-                                        'Critical': 'background-color: #ff0000; color: white',
-                                        'High': 'background-color: #ff6b6b; color: white',
-                                        'Medium': 'background-color: #ffd93d',
-                                        'Low': 'background-color: #95cd41'
-                                    }
-                                    return colors.get(val, '')
-                                
-                                # Display styled dataframe
-                                st.dataframe(
-                                    df.style.applymap(color_severity, subset=['Severity']),
-                                    use_container_width=True,
-                                    height=400
-                                )
-                                
-                                # Add filtering options
-                                col1, col2 = st.columns(2)
-                                with col1:
-                                    category_filter = st.multiselect(
-                                        "Filter by Category",
-                                        options=df['Category'].unique()
-                                    )
-                                with col2:
-                                    severity_filter = st.multiselect(
-                                        "Filter by Severity",
-                                        options=df['Severity'].unique()
-                                    )
-                                
-                                # Apply filters if selected
-                                if category_filter or severity_filter:
-                                    filtered_df = df
-                                    if category_filter:
-                                        filtered_df = filtered_df[filtered_df['Category'].isin(category_filter)]
-                                    if severity_filter:
-                                        filtered_df = filtered_df[filtered_df['Severity'].isin(severity_filter)]
-                                    st.dataframe(
-                                        filtered_df.style.applymap(color_severity, subset=['Severity']),
-                                        use_container_width=True,
-                                        height=400
-                                    )
-                            else:
-                                st.success("✅ No issues detected in the current file")
-                        else:
-                            st.info("Select a file to analyze code quality issues")
+                else:
+                    st.info("No metrics available for the selected file.")
 
             with tab3:
                 st.markdown("#### Interactive Metric Visualizations")
@@ -2637,8 +2389,8 @@ def display_file_explorer():
                         ]
                         
                         fig_composition = px.pie(
-                            composition_data,
-                            values='Lines',
+        composition_data,
+        values='Lines',
                             names='Component',
                             title='Code Composition Distribution',
                             color_discrete_sequence=px.colors.qualitative.Set3,
@@ -3437,4 +3189,4 @@ def generate_result(data):
 
 
 if __name__ == "__main__":
-    main()
+    main() 
