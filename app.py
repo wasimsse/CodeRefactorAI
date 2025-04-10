@@ -1156,12 +1156,16 @@ def display_refactoring_options():
                             # Get metrics with proper type handling
                             metrics = st.session_state.current_metrics
                             
+                            # Initialize metrics with safe defaults
+                            if not isinstance(metrics, dict):
+                                metrics = {}
+                            
                             # Handle maintainability index
                             maintainability = metrics.get('maintainability', {})
                             maintainability_score = (
                                 maintainability.get('score', 0) 
                                 if isinstance(maintainability, dict) 
-                                else float(maintainability or 0)
+                                else float(maintainability if maintainability is not None else 0)
                             )
                             
                             # Handle cyclomatic complexity
@@ -1169,16 +1173,16 @@ def display_refactoring_options():
                             complexity_score = (
                                 complexity.get('score', 0) 
                                 if isinstance(complexity, dict) 
-                                else float(complexity or 0)
+                                else float(complexity if complexity is not None else 0)
                             )
                             
                             # Handle cognitive complexity
                             cognitive_complexity = metrics.get('cognitive_complexity', 0)
-                            cognitive_score = float(cognitive_complexity or 0)
+                            cognitive_score = float(cognitive_complexity if cognitive_complexity is not None else 0)
                             
                             # Handle code coverage
                             code_coverage = metrics.get('code_coverage', 0)
-                            coverage_score = float(code_coverage or 0)
+                            coverage_score = float(code_coverage if code_coverage is not None else 0)
                             
                             # Display metrics with proper formatting
                             st.metric(
@@ -1243,41 +1247,150 @@ def display_refactoring_options():
                         # Code Quality Issues
                         st.markdown("##### 🔍 Code Quality Analysis")
                         
+                        # Summary section
+                        total_issues = len(metrics.get('design_issues', [])) + \
+                                     len(metrics.get('code_smells', [])) + \
+                                     len(metrics.get('performance_issues', [])) + \
+                                     len(metrics.get('security_issues', []))
+                        
+                        quality_score = 100 - (total_issues * 5)  # Deduct 5 points per issue
+                        quality_score = max(0, min(100, quality_score))  # Clamp between 0 and 100
+                        
+                        col1, col2, col3 = st.columns(3)
+                        with col1:
+                            st.metric(
+                                "Overall Quality Score",
+                                f"{quality_score}/100",
+                                delta="Good" if quality_score >= 80 else "Needs Improvement" if quality_score >= 50 else "Critical",
+                                delta_color="normal" if quality_score >= 80 else "off" if quality_score >= 50 else "inverse"
+                            )
+                        
+                        with col2:
+                            st.metric(
+                                "Total Issues",
+                                str(total_issues),
+                                help="Total number of detected issues across all categories"
+                            )
+                        
+                        with col3:
+                            priority_issues = sum(1 for issues in [
+                                metrics.get('security_issues', []),
+                                metrics.get('performance_issues', []),
+                                metrics.get('design_issues', []),
+                                metrics.get('code_smells', [])
+                            ] for issue in issues if isinstance(issue, dict) and issue.get('severity') == 'high')
+                            
+                            st.metric(
+                                "Priority Issues",
+                                str(priority_issues),
+                                help="Number of high-severity issues that need immediate attention",
+                                delta=None if priority_issues == 0 else str(priority_issues),
+                                delta_color="inverse" if priority_issues > 0 else "off"
+                            )
+                        
+                        # Add a quick filter for issues
+                        if total_issues > 0:
+                            st.markdown("---")
+                            filter_options = ["All Issues", "High Priority", "Medium Priority", "Low Priority"]
+                            selected_filter = st.selectbox("Filter Issues", filter_options)
+                            
+                            # Add sorting options
+                            sort_options = ["Severity", "Category", "Latest First"]
+                            sort_by = st.selectbox("Sort By", sort_options)
+                        
+                        st.markdown("---")
+
                         # Design Issues
-                        with st.expander("Design Issues", expanded=False):
+                        with st.expander("Design Issues 🎨", expanded=False):
+                            st.info("""
+                            Design issues indicate potential problems with code architecture and structure.
+                            This includes:
+                            - Class cohesion and coupling
+                            - Interface design
+                            - Code organization
+                            - Design pattern violations
+                            """)
                             design_issues = metrics.get('design_issues', [])
                             if design_issues:
                                 for issue in design_issues:
-                                    st.warning(f"🎨 {issue}")
+                                    severity = issue.get('severity', 'medium')
+                                    icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
+                                    st.warning(f"{icon} {issue.get('message', str(issue))}")
+                                    if issue.get('suggestion'):
+                                        st.info(f"💡 Suggestion: {issue['suggestion']}")
                             else:
-                                st.success("No design issues detected")
+                                st.success("✅ No design issues detected")
 
                         # Code Smells
-                        with st.expander("Code Smells", expanded=False):
+                        with st.expander("Code Smells 👃", expanded=False):
+                            st.info("""
+                            Code smells are symptoms that might indicate deeper problems:
+                            - Duplicate code
+                            - Long methods
+                            - Large classes
+                            - Too many parameters
+                            - Dead code
+                            """)
                             code_smells = metrics.get('code_smells', [])
                             if code_smells:
                                 for smell in code_smells:
-                                    st.warning(f"👃 {smell}")
+                                    severity = smell.get('severity', 'medium')
+                                    icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
+                                    st.warning(f"{icon} {smell.get('message', str(smell))}")
+                                    if smell.get('suggestion'):
+                                        st.info(f"💡 Suggestion: {smell['suggestion']}")
                             else:
-                                st.success("No code smells detected")
+                                st.success("✅ No code smells detected")
 
                         # Performance Issues
-                        with st.expander("Performance Issues", expanded=False):
+                        with st.expander("Performance Issues ⚡", expanded=False):
+                            st.info("""
+                            Performance issues that might affect code execution:
+                            - Time complexity concerns
+                            - Memory usage
+                            - Resource leaks
+                            - Inefficient algorithms
+                            - Unnecessary computations
+                            """)
                             perf_issues = metrics.get('performance_issues', [])
                             if perf_issues:
                                 for issue in perf_issues:
-                                    st.warning(f"⚡ {issue}")
+                                    severity = issue.get('severity', 'medium')
+                                    icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
+                                    st.warning(f"{icon} {issue.get('message', str(issue))}")
+                                    if issue.get('suggestion'):
+                                        with st.expander("View Optimization Suggestion"):
+                                            st.info(f"💡 {issue['suggestion']}")
+                                            if issue.get('code_example'):
+                                                st.code(issue['code_example'], language='python')
                             else:
-                                st.success("No performance issues detected")
+                                st.success("✅ No performance issues detected")
 
                         # Security Issues
-                        with st.expander("Security Issues", expanded=False):
+                        with st.expander("Security Issues 🔒", expanded=False):
+                            st.info("""
+                            Security vulnerabilities and potential risks:
+                            - Input validation
+                            - Authentication issues
+                            - Data exposure
+                            - Injection vulnerabilities
+                            - Insecure dependencies
+                            """)
                             security_issues = metrics.get('security_issues', [])
                             if security_issues:
                                 for issue in security_issues:
-                                    st.error(f"🔒 {issue}")
+                                    severity = issue.get('severity', 'high')
+                                    icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
+                                    st.error(f"{icon} {issue.get('message', str(issue))}")
+                                    if issue.get('cwe_id'):
+                                        st.markdown(f"[CWE-{issue['cwe_id']}](https://cwe.mitre.org/data/definitions/{issue['cwe_id']}.html)")
+                                    if issue.get('suggestion'):
+                                        with st.expander("View Security Fix"):
+                                            st.info(f"💡 {issue['suggestion']}")
+                                            if issue.get('code_example'):
+                                                st.code(issue['code_example'], language='python')
                             else:
-                                st.success("No security issues detected")
+                                st.success("✅ No security issues detected")
 
                         # File Information
                         st.markdown("##### 📄 File Information")
@@ -1872,12 +1985,16 @@ def display_file_explorer():
                         # Get metrics with proper type handling
                         metrics = st.session_state.current_metrics
                         
+                        # Initialize metrics with safe defaults
+                        if not isinstance(metrics, dict):
+                            metrics = {}
+                        
                         # Handle maintainability index
                         maintainability = metrics.get('maintainability', {})
                         maintainability_score = (
                             maintainability.get('score', 0) 
                             if isinstance(maintainability, dict) 
-                            else float(maintainability or 0)
+                            else float(maintainability if maintainability is not None else 0)
                         )
                         
                         # Handle cyclomatic complexity
@@ -1885,16 +2002,16 @@ def display_file_explorer():
                         complexity_score = (
                             complexity.get('score', 0) 
                             if isinstance(complexity, dict) 
-                            else float(complexity or 0)
+                            else float(complexity if complexity is not None else 0)
                         )
                         
                         # Handle cognitive complexity
                         cognitive_complexity = metrics.get('cognitive_complexity', 0)
-                        cognitive_score = float(cognitive_complexity or 0)
+                        cognitive_score = float(cognitive_complexity if cognitive_complexity is not None else 0)
                         
                         # Handle code coverage
                         code_coverage = metrics.get('code_coverage', 0)
-                        coverage_score = float(code_coverage or 0)
+                        coverage_score = float(code_coverage if code_coverage is not None else 0)
                         
                         # Display metrics with proper formatting
                         st.metric(
@@ -1959,41 +2076,150 @@ def display_file_explorer():
                     # Code Quality Issues
                     st.markdown("##### 🔍 Code Quality Analysis")
                     
+                    # Summary section
+                    total_issues = len(metrics.get('design_issues', [])) + \
+                                 len(metrics.get('code_smells', [])) + \
+                                 len(metrics.get('performance_issues', [])) + \
+                                 len(metrics.get('security_issues', []))
+                    
+                    quality_score = 100 - (total_issues * 5)  # Deduct 5 points per issue
+                    quality_score = max(0, min(100, quality_score))  # Clamp between 0 and 100
+                    
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.metric(
+                            "Overall Quality Score",
+                            f"{quality_score}/100",
+                            delta="Good" if quality_score >= 80 else "Needs Improvement" if quality_score >= 50 else "Critical",
+                            delta_color="normal" if quality_score >= 80 else "off" if quality_score >= 50 else "inverse"
+                        )
+                    
+                    with col2:
+                        st.metric(
+                            "Total Issues",
+                            str(total_issues),
+                            help="Total number of detected issues across all categories"
+                        )
+                    
+                    with col3:
+                        priority_issues = sum(1 for issues in [
+                            metrics.get('security_issues', []),
+                            metrics.get('performance_issues', []),
+                            metrics.get('design_issues', []),
+                            metrics.get('code_smells', [])
+                        ] for issue in issues if isinstance(issue, dict) and issue.get('severity') == 'high')
+                        
+                        st.metric(
+                            "Priority Issues",
+                            str(priority_issues),
+                            help="Number of high-severity issues that need immediate attention",
+                            delta=None if priority_issues == 0 else str(priority_issues),
+                            delta_color="inverse" if priority_issues > 0 else "off"
+                        )
+                    
+                    # Add a quick filter for issues
+                    if total_issues > 0:
+                        st.markdown("---")
+                        filter_options = ["All Issues", "High Priority", "Medium Priority", "Low Priority"]
+                        selected_filter = st.selectbox("Filter Issues", filter_options)
+                        
+                        # Add sorting options
+                        sort_options = ["Severity", "Category", "Latest First"]
+                        sort_by = st.selectbox("Sort By", sort_options)
+                    
+                    st.markdown("---")
+
                     # Design Issues
-                    with st.expander("Design Issues", expanded=False):
+                    with st.expander("Design Issues 🎨", expanded=False):
+                        st.info("""
+                        Design issues indicate potential problems with code architecture and structure.
+                        This includes:
+                        - Class cohesion and coupling
+                        - Interface design
+                        - Code organization
+                        - Design pattern violations
+                        """)
                         design_issues = metrics.get('design_issues', [])
                         if design_issues:
                             for issue in design_issues:
-                                st.warning(f"🎨 {issue}")
-                        else:
-                            st.success("No design issues detected")
+                                severity = issue.get('severity', 'medium')
+                                icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
+                                st.warning(f"{icon} {issue.get('message', str(issue))}")
+                                if issue.get('suggestion'):
+                                    st.info(f"💡 Suggestion: {issue['suggestion']}")
+                            else:
+                                st.success("✅ No design issues detected")
 
                     # Code Smells
-                    with st.expander("Code Smells", expanded=False):
+                    with st.expander("Code Smells 👃", expanded=False):
+                        st.info("""
+                        Code smells are symptoms that might indicate deeper problems:
+                        - Duplicate code
+                        - Long methods
+                        - Large classes
+                        - Too many parameters
+                        - Dead code
+                        """)
                         code_smells = metrics.get('code_smells', [])
                         if code_smells:
                             for smell in code_smells:
-                                st.warning(f"👃 {smell}")
-                        else:
-                            st.success("No code smells detected")
+                                severity = smell.get('severity', 'medium')
+                                icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
+                                st.warning(f"{icon} {smell.get('message', str(smell))}")
+                                if smell.get('suggestion'):
+                                    st.info(f"💡 Suggestion: {smell['suggestion']}")
+                            else:
+                                st.success("✅ No code smells detected")
 
                     # Performance Issues
-                    with st.expander("Performance Issues", expanded=False):
+                    with st.expander("Performance Issues ⚡", expanded=False):
+                        st.info("""
+                        Performance issues that might affect code execution:
+                        - Time complexity concerns
+                        - Memory usage
+                        - Resource leaks
+                        - Inefficient algorithms
+                        - Unnecessary computations
+                        """)
                         perf_issues = metrics.get('performance_issues', [])
                         if perf_issues:
                             for issue in perf_issues:
-                                st.warning(f"⚡ {issue}")
-                        else:
-                            st.success("No performance issues detected")
+                                severity = issue.get('severity', 'medium')
+                                icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
+                                st.warning(f"{icon} {issue.get('message', str(issue))}")
+                                if issue.get('suggestion'):
+                                    with st.expander("View Optimization Suggestion"):
+                                        st.info(f"💡 {issue['suggestion']}")
+                                        if issue.get('code_example'):
+                                            st.code(issue['code_example'], language='python')
+                            else:
+                                st.success("✅ No performance issues detected")
 
                     # Security Issues
-                    with st.expander("Security Issues", expanded=False):
+                    with st.expander("Security Issues 🔒", expanded=False):
+                        st.info("""
+                        Security vulnerabilities and potential risks:
+                        - Input validation
+                        - Authentication issues
+                        - Data exposure
+                        - Injection vulnerabilities
+                        - Insecure dependencies
+                        """)
                         security_issues = metrics.get('security_issues', [])
                         if security_issues:
                             for issue in security_issues:
-                                st.error(f"🔒 {issue}")
-                        else:
-                            st.success("No security issues detected")
+                                severity = issue.get('severity', 'high')
+                                icon = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
+                                st.error(f"{icon} {issue.get('message', str(issue))}")
+                                if issue.get('cwe_id'):
+                                    st.markdown(f"[CWE-{issue['cwe_id']}](https://cwe.mitre.org/data/definitions/{issue['cwe_id']}.html)")
+                                if issue.get('suggestion'):
+                                    with st.expander("View Security Fix"):
+                                        st.info(f"💡 {issue['suggestion']}")
+                                        if issue.get('code_example'):
+                                            st.code(issue['code_example'], language='python')
+                            else:
+                                st.success("✅ No security issues detected")
 
                     # File Information
                     st.markdown("##### 📄 File Information")
