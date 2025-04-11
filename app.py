@@ -1875,14 +1875,239 @@ def display_file_explorer():
                     if st.session_state.current_metrics.get('dependencies'):
                         st.markdown("""
                             <div style="margin: 2rem 0;">
-                                <h3 style="color: #1E88E5; margin-bottom: 1rem;">🔗 Dependencies</h3>
+                                <h3 style="color: #1E88E5; margin-bottom: 1rem;">
+                                    <span style="font-size: 1.5em; margin-right: 0.5rem;">🔗</span> Dependencies
+                                </h3>
                             </div>
                         """, unsafe_allow_html=True)
                         
+                        # Organize dependencies by type
+                        direct_deps = []
+                        indirect_deps = []
                         for dep in st.session_state.current_metrics['dependencies']:
-                            st.code(dep, language="plaintext")
+                            if 'direct' in dep.lower():
+                                direct_deps.append(dep)
+                            else:
+                                indirect_deps.append(dep)
+                        
+                        # Create columns for different dependency types
+                        col1, col2 = st.columns(2)
+                        
+                        with col1:
+                            st.markdown("""
+                                <div style="
+                                    background: white;
+                                    padding: 1.5rem;
+                                    border-radius: 10px;
+                                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                                    margin-bottom: 1rem;
+                                ">
+                                    <h4 style="color: #1E88E5; font-size: 1.1em; margin-bottom: 1rem;">
+                                        📦 Direct Dependencies
+                                    </h4>
+                                    <div style="
+                                        background: #f8f9fa;
+                                        padding: 1rem;
+                                        border-radius: 8px;
+                                        max-height: 300px;
+                                        overflow-y: auto;
+                                    ">
+                            """, unsafe_allow_html=True)
+                            
+                            if direct_deps:
+                                for dep in direct_deps:
+                                    st.markdown(f"""
+                                        <div style="
+                                            background: white;
+                                            padding: 0.8rem;
+                                            border-radius: 6px;
+                                            margin-bottom: 0.5rem;
+                                            border: 1px solid #e0e0e0;
+                                        ">
+                                            <code style="color: #1E88E5;">{dep}</code>
+                                        </div>
+                                    """, unsafe_allow_html=True)
+                            else:
+                                st.info("No direct dependencies found")
+                            
+                            st.markdown("</div></div>", unsafe_allow_html=True)
+                        
+                        with col2:
+                            st.markdown("""
+                                <div style="
+                                    background: white;
+                                    padding: 1.5rem;
+                                    border-radius: 10px;
+                                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                                    margin-bottom: 1rem;
+                                ">
+                                    <h4 style="color: #1E88E5; font-size: 1.1em; margin-bottom: 1rem;">
+                                        🔄 Indirect Dependencies
+                                    </h4>
+                                    <div style="
+                                        background: #f8f9fa;
+                                        padding: 1rem;
+                                        border-radius: 8px;
+                                        max-height: 300px;
+                                        overflow-y: auto;
+                                    ">
+                            """, unsafe_allow_html=True)
+                            
+                            if indirect_deps:
+                                for dep in indirect_deps:
+                                    st.markdown(f"""
+                                        <div style="
+                                            background: white;
+                                            padding: 0.8rem;
+                                            border-radius: 6px;
+                                            margin-bottom: 0.5rem;
+                                            border: 1px solid #e0e0e0;
+                                        ">
+                                            <code style="color: #666;">{dep}</code>
+                                        </div>
+                                    """, unsafe_allow_html=True)
+                            else:
+                                st.info("No indirect dependencies found")
+                            
+                            st.markdown("</div></div>", unsafe_allow_html=True)
+                        
+                        # Add dependency statistics
+                        st.markdown("""
+                            <div style="
+                                background: white;
+                                padding: 1.5rem;
+                                border-radius: 10px;
+                                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                                margin-top: 1rem;
+                            ">
+                                <h4 style="color: #1E88E5; font-size: 1.1em; margin-bottom: 1rem;">
+                                    📊 Dependency Statistics
+                                </h4>
+                            </div>
+                        """, unsafe_allow_html=True)
+                        
+                        # Display dependency metrics
+                        col1, col2, col3 = st.columns(3)
+                        with col1:
+                            st.metric(
+                                "Total Dependencies",
+                                len(direct_deps) + len(indirect_deps),
+                                help="Total number of dependencies"
+                            )
+                        with col2:
+                            st.metric(
+                                "Direct Dependencies",
+                                len(direct_deps),
+                                help="Number of direct dependencies"
+                            )
+                        with col3:
+                            st.metric(
+                                "Indirect Dependencies",
+                                len(indirect_deps),
+                                help="Number of indirect dependencies"
+                            )
+                        
+                        # Add dependency graph visualization if available
+                        if len(direct_deps) + len(indirect_deps) > 0:
+                            # Create a tree-like structure
+                            def create_tree_html(deps, level=0):
+                                if not deps:
+                                    return ""
+                                html = ""
+                                for dep in deps:
+                                    indent = "&nbsp;" * (level * 4)
+                                    color = "#1E88E5" if level == 0 else "#666"
+                                    icon = "📦" if level == 0 else "↳"
+                                    html += f"""
+                                        <div style="
+                                            padding: 0.8rem;
+                                            margin: 0.4rem 0;
+                                            background: white;
+                                            border-radius: 8px;
+                                            border-left: 3px solid {color};
+                                            margin-left: {level * 25}px;
+                                            transition: all 0.2s ease;
+                                            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                                            display: flex;
+                                            align-items: center;
+                                        "
+                                        onmouseover="this.style.transform='translateX(5px)';this.style.boxShadow='0 2px 5px rgba(0,0,0,0.15)';"
+                                        onmouseout="this.style.transform='translateX(0)';this.style.boxShadow='0 1px 3px rgba(0,0,0,0.1)';"
+                                        >
+                                            <span style="
+                                                margin-right: 8px;
+                                                font-size: 1.1em;
+                                                color: {color};
+                                            ">{icon}</span>
+                                            <code style="
+                                                color: {color};
+                                                font-size: 0.95em;
+                                                font-weight: {500 if level == 0 else 400};
+                                            ">{dep}</code>
+                                        </div>
+                                    """
+                                return html
+                            
+                            st.markdown("""
+                                <div style="margin: 2rem 0;">
+                                    <h4 style="
+                                        color: #1E88E5;
+                                        font-size: 1.2em;
+                                        margin-bottom: 1rem;
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 0.5rem;
+                                    ">
+                                        <span style="font-size: 1.2em;">🌳</span>
+                                        Dependency Tree
+                                    </h4>
+                                </div>
+                            """, unsafe_allow_html=True)
+                            
+                            st.markdown(f"""
+                                <div style="
+                                    background: white;
+                                    padding: 1.5rem;
+                                    border-radius: 12px;
+                                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                                ">
+                                    <div style="
+                                        background: #f8f9fa;
+                                        padding: 1.2rem;
+                                        border-radius: 8px;
+                                        max-height: 400px;
+                                        overflow-y: auto;
+                                    ">
+                                        <div style="
+                                            padding: 0.5rem;
+                                            margin-bottom: 1rem;
+                                            border-radius: 6px;
+                                            background: rgba(30, 136, 229, 0.1);
+                                            border-left: 3px solid #1E88E5;
+                                        ">
+                                            <span style="color: #1E88E5; font-size: 0.9em;">
+                                                📦 Direct Dependencies ({len(direct_deps)})
+                                            </span>
+                                        </div>
+                                        {create_tree_html(direct_deps)}
+                                        
+                                        <div style="
+                                            padding: 0.5rem;
+                                            margin: 1.5rem 0 1rem 0;
+                                            border-radius: 6px;
+                                            background: rgba(102, 102, 102, 0.1);
+                                            border-left: 3px solid #666;
+                                        ">
+                                            <span style="color: #666; font-size: 0.9em;">
+                                                🔄 Indirect Dependencies ({len(indirect_deps)})
+                                            </span>
+                                        </div>
+                                        {create_tree_html(indirect_deps, level=1)}
+                                    </div>
+                                </div>
+                            """, unsafe_allow_html=True)
                 else:
-                    st.info("No metrics data available for this file.")
+                    st.info("No dependencies data available for this file.")
             
             with issues_tab:
                 if st.session_state.current_metrics:
