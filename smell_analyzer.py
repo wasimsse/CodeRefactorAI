@@ -141,20 +141,62 @@ class SmellAnalyzer:
         """Analyze a single file for code and design smells."""
         smells = []
         
+        # Get file extension
+        file_ext = file_path.lower().split('.')[-1] if '.' in file_path else ''
+        
+        # Only analyze Python files for now
+        if file_ext != 'py':
+            return [Smell(
+                type=SmellType.CODE_SMELL,
+                name='Unsupported File Type',
+                description=f'File type .{file_ext} is not currently supported for smell analysis',
+                severity=SmellSeverity.LOW,
+                location=file_path,
+                line_numbers=[],
+                metrics={},
+                recommendations=['Convert to Python if possible', 'Use language-specific analyzers']
+            )]
+        
         try:
             tree = ast.parse(content)
             
             # Analyze code smells
-            smells.extend(self._analyze_code_smells(tree, file_path))
+            code_smells = self._analyze_code_smells(tree, file_path)
+            if code_smells:
+                smells.extend(code_smells)
             
             # Analyze design smells
-            smells.extend(self._analyze_design_smells(tree, file_path))
+            design_smells = self._analyze_design_smells(tree, file_path)
+            if design_smells:
+                smells.extend(design_smells)
             
             # Analyze architectural smells
-            smells.extend(self._analyze_architectural_smells(tree, file_path))
+            arch_smells = self._analyze_architectural_smells(tree, file_path)
+            if arch_smells:
+                smells.extend(arch_smells)
             
         except SyntaxError as e:
-            print(f"Syntax error in {file_path}: {str(e)}")
+            smells.append(Smell(
+                type=SmellType.CODE_SMELL,
+                name='Syntax Error',
+                description=f'Could not parse file: {str(e)}',
+                severity=SmellSeverity.HIGH,
+                location=f"{file_path}:{getattr(e, 'lineno', 0)}",
+                line_numbers=[getattr(e, 'lineno', 0)],
+                metrics={'error_offset': getattr(e, 'offset', 0)},
+                recommendations=['Fix the syntax error', 'Validate the code with a linter']
+            ))
+        except Exception as e:
+            smells.append(Smell(
+                type=SmellType.CODE_SMELL,
+                name='Analysis Error',
+                description=f'Error analyzing file: {str(e)}',
+                severity=SmellSeverity.MEDIUM,
+                location=file_path,
+                line_numbers=[],
+                metrics={},
+                recommendations=['Check file encoding', 'Validate file contents']
+            ))
         
         return smells
 

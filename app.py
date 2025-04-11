@@ -2443,13 +2443,20 @@ def display_file_explorer():
                     """, unsafe_allow_html=True)
                     
                     # Analyze the current file for smells
-                    if st.button("Analyze Code Smells", type="primary", use_container_width=True):
+                    if st.button("Analyze Code Smells", type="primary", use_container_width=True, key="analyze_smells_btn"):
                         with st.spinner("Analyzing code smells..."):
-                            smells = st.session_state.smell_analyzer.analyze_file(
-                                st.session_state.current_file,
-                                st.session_state.current_code
-                            )
-                            st.session_state.smells = smells
+                            try:
+                                smells = st.session_state.smell_analyzer.analyze_file(
+                                    st.session_state.current_file,
+                                    st.session_state.current_code
+                                )
+                                st.session_state.smells = smells
+                                
+                                if not smells:
+                                    st.success("No code smells detected in this file!")
+                            except Exception as e:
+                                st.error(f"Error analyzing code smells: {str(e)}")
+                                st.session_state.smells = []
                     
                     if st.session_state.smells:
                         # Display smell statistics
@@ -2459,9 +2466,9 @@ def display_file_explorer():
                         with col1:
                             st.metric("Total Smells", stats['total_smells'])
                         with col2:
-                            st.metric("Code Smells", stats['by_type']['code_smells'])
+                            st.metric("Code Smells", stats['by_type'].get('code_smells', 0))
                         with col3:
-                            st.metric("Design Smells", stats['by_type']['design_smells'])
+                            st.metric("Design Smells", stats['by_type'].get('design_smells', 0))
                         
                         # Create tabs for different smell types
                         smell_type_tabs = st.tabs(["Code Smells", "Design Smells", "Architectural Smells"])
@@ -2473,12 +2480,14 @@ def display_file_explorer():
                                     with st.expander(f"🔴 {smell.name} - {smell.severity.value}", expanded=True):
                                         st.markdown(f"**Location:** {smell.location}")
                                         st.markdown(f"**Description:** {smell.description}")
-                                        st.markdown("**Metrics:**")
-                                        for metric, value in smell.metrics.items():
-                                            st.markdown(f"- {metric}: {value}")
-                                        st.markdown("**Recommendations:**")
-                                        for rec in smell.recommendations:
-                                            st.markdown(f"- {rec}")
+                                        if smell.metrics:
+                                            st.markdown("**Metrics:**")
+                                            for metric, value in smell.metrics.items():
+                                                st.markdown(f"- {metric}: {value}")
+                                        if smell.recommendations:
+                                            st.markdown("**Recommendations:**")
+                                            for rec in smell.recommendations:
+                                                st.markdown(f"- {rec}")
                             else:
                                 st.success("No code smells detected!")
                         
@@ -2489,12 +2498,14 @@ def display_file_explorer():
                                     with st.expander(f"🔴 {smell.name} - {smell.severity.value}", expanded=True):
                                         st.markdown(f"**Location:** {smell.location}")
                                         st.markdown(f"**Description:** {smell.description}")
-                                        st.markdown("**Metrics:**")
-                                        for metric, value in smell.metrics.items():
-                                            st.markdown(f"- {metric}: {value}")
-                                        st.markdown("**Recommendations:**")
-                                        for rec in smell.recommendations:
-                                            st.markdown(f"- {rec}")
+                                        if smell.metrics:
+                                            st.markdown("**Metrics:**")
+                                            for metric, value in smell.metrics.items():
+                                                st.markdown(f"- {metric}: {value}")
+                                        if smell.recommendations:
+                                            st.markdown("**Recommendations:**")
+                                            for rec in smell.recommendations:
+                                                st.markdown(f"- {rec}")
                             else:
                                 st.success("No design smells detected!")
                         
@@ -2505,60 +2516,61 @@ def display_file_explorer():
                                     with st.expander(f"🔴 {smell.name} - {smell.severity.value}", expanded=True):
                                         st.markdown(f"**Location:** {smell.location}")
                                         st.markdown(f"**Description:** {smell.description}")
-                                        st.markdown("**Metrics:**")
-                                        for metric, value in smell.metrics.items():
-                                            st.markdown(f"- {metric}: {value}")
-                                        st.markdown("**Recommendations:**")
-                                        for rec in smell.recommendations:
-                                            st.markdown(f"- {rec}")
+                                        if smell.metrics:
+                                            st.markdown("**Metrics:**")
+                                            for metric, value in smell.metrics.items():
+                                                st.markdown(f"- {metric}: {value}")
+                                        if smell.recommendations:
+                                            st.markdown("**Recommendations:**")
+                                            for rec in smell.recommendations:
+                                                st.markdown(f"- {rec}")
                             else:
                                 st.success("No architectural smells detected!")
                         
-                        # Add visualization of smell distribution
-                        st.markdown("### Smell Distribution")
-                        smell_data = {
-                            'Type': ['Code Smells', 'Design Smells', 'Architectural Smells'],
-                            'Count': [
-                                stats['by_type']['code_smells'],
-                                stats['by_type']['design_smells'],
-                                stats['by_type']['architectural_smells']
-                            ]
-                        }
-                        df_smells = pd.DataFrame(smell_data)
-                        
-                        fig = px.pie(
-                            df_smells,
-                            values='Count',
-                            names='Type',
-                            title='Distribution of Smells by Type',
-                            color_discrete_sequence=px.colors.qualitative.Set3
-                        )
-                        st.plotly_chart(fig, use_container_width=True)
-                        
-                        # Add severity distribution
-                        st.markdown("### Severity Distribution")
-                        severity_data = {
-                            'Severity': ['Low', 'Medium', 'High', 'Critical'],
-                            'Count': [
-                                stats['by_severity']['low'],
-                                stats['by_severity']['medium'],
-                                stats['by_severity']['high'],
-                                stats['by_severity']['critical']
-                            ]
-                        }
-                        df_severity = pd.DataFrame(severity_data)
-                        
-                        fig = px.bar(
-                            df_severity,
-                            x='Severity',
-                            y='Count',
-                            title='Distribution of Smells by Severity',
-                            color='Severity',
-                            color_discrete_sequence=['#4CAF50', '#FFC107', '#FF5722', '#F44336']
-                        )
-                        st.plotly_chart(fig, use_container_width=True)
-                    else:
-                        st.info("Click 'Analyze Code Smells' to start the analysis.")
+                        if len(st.session_state.smells) > 0:
+                            # Add visualization of smell distribution
+                            st.markdown("### Smell Distribution")
+                            smell_data = {
+                                'Type': ['Code Smells', 'Design Smells', 'Architectural Smells'],
+                                'Count': [
+                                    stats['by_type'].get('code_smells', 0),
+                                    stats['by_type'].get('design_smells', 0),
+                                    stats['by_type'].get('architectural_smells', 0)
+                                ]
+                            }
+                            df_smells = pd.DataFrame(smell_data)
+                            
+                            fig = px.pie(
+                                df_smells,
+                                values='Count',
+                                names='Type',
+                                title='Distribution of Smells by Type',
+                                color_discrete_sequence=px.colors.qualitative.Set3
+                            )
+                            st.plotly_chart(fig, use_container_width=True)
+                            
+                            # Add severity distribution
+                            st.markdown("### Severity Distribution")
+                            severity_data = {
+                                'Severity': ['Low', 'Medium', 'High', 'Critical'],
+                                'Count': [
+                                    stats['by_severity'].get('low', 0),
+                                    stats['by_severity'].get('medium', 0),
+                                    stats['by_severity'].get('high', 0),
+                                    stats['by_severity'].get('critical', 0)
+                                ]
+                            }
+                            df_severity = pd.DataFrame(severity_data)
+                            
+                            fig = px.bar(
+                                df_severity,
+                                x='Severity',
+                                y='Count',
+                                title='Distribution of Smells by Severity',
+                                color='Severity',
+                                color_discrete_sequence=['#4CAF50', '#FFC107', '#FF5722', '#F44336']
+                            )
+                            st.plotly_chart(fig, use_container_width=True)
                 else:
                     st.info("Please select a file to analyze code smells.")
         else:
