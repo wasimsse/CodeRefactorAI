@@ -2009,45 +2009,6 @@ def display_file_explorer():
                         
                         # Add dependency graph visualization if available
                         if len(direct_deps) + len(indirect_deps) > 0:
-                            # Create a tree-like structure
-                            def create_tree_html(deps, level=0):
-                                if not deps:
-                                    return ""
-                                html = ""
-                                for dep in deps:
-                                    indent = "&nbsp;" * (level * 4)
-                                    color = "#1E88E5" if level == 0 else "#666"
-                                    icon = "📦" if level == 0 else "↳"
-                                    html += f"""
-                                        <div style="
-                                            padding: 0.8rem;
-                                            margin: 0.4rem 0;
-                                            background: white;
-                                            border-radius: 8px;
-                                            border-left: 3px solid {color};
-                                            margin-left: {level * 25}px;
-                                            transition: all 0.2s ease;
-                                            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-                                            display: flex;
-                                            align-items: center;
-                                        "
-                                        onmouseover="this.style.transform='translateX(5px)';this.style.boxShadow='0 2px 5px rgba(0,0,0,0.15)';"
-                                        onmouseout="this.style.transform='translateX(0)';this.style.boxShadow='0 1px 3px rgba(0,0,0,0.1)';"
-                                        >
-                                            <span style="
-                                                margin-right: 8px;
-                                                font-size: 1.1em;
-                                                color: {color};
-                                            ">{icon}</span>
-                                            <code style="
-                                                color: {color};
-                                                font-size: 0.95em;
-                                                font-weight: {500 if level == 0 else 400};
-                                            ">{dep}</code>
-                                        </div>
-                                    """
-                                return html
-                            
                             st.markdown("""
                                 <div style="margin: 2rem 0;">
                                     <h4 style="
@@ -2064,7 +2025,8 @@ def display_file_explorer():
                                 </div>
                             """, unsafe_allow_html=True)
                             
-                            st.markdown(f"""
+                            # Display direct dependencies
+                            st.markdown("""
                                 <div style="
                                     background: white;
                                     padding: 1.5rem;
@@ -2078,34 +2040,84 @@ def display_file_explorer():
                                         max-height: 400px;
                                         overflow-y: auto;
                                     ">
-                                        <div style="
-                                            padding: 0.5rem;
-                                            margin-bottom: 1rem;
-                                            border-radius: 6px;
-                                            background: rgba(30, 136, 229, 0.1);
-                                            border-left: 3px solid #1E88E5;
-                                        ">
-                                            <span style="color: #1E88E5; font-size: 0.9em;">
-                                                📦 Direct Dependencies ({len(direct_deps)})
-                                            </span>
-                                        </div>
-                                        {create_tree_html(direct_deps)}
-                                        
-                                        <div style="
-                                            padding: 0.5rem;
-                                            margin: 1.5rem 0 1rem 0;
-                                            border-radius: 6px;
-                                            background: rgba(102, 102, 102, 0.1);
-                                            border-left: 3px solid #666;
-                                        ">
-                                            <span style="color: #666; font-size: 0.9em;">
-                                                🔄 Indirect Dependencies ({len(indirect_deps)})
-                                            </span>
-                                        </div>
-                                        {create_tree_html(indirect_deps, level=1)}
-                                    </div>
-                                </div>
                             """, unsafe_allow_html=True)
+
+                            # Direct Dependencies Section
+                            st.markdown("""
+                                <div style="
+                                    padding: 0.5rem;
+                                    margin-bottom: 1rem;
+                                    border-radius: 6px;
+                                    background: rgba(30, 136, 229, 0.1);
+                                    border-left: 3px solid #1E88E5;
+                                ">
+                                    <span style="color: #1E88E5; font-size: 0.9em;">
+                                        📦 Direct Dependencies ({})
+                                    </span>
+                                </div>
+                            """.format(len(direct_deps)), unsafe_allow_html=True)
+
+                            # Display direct dependencies
+                            for dep in direct_deps:
+                                st.markdown(f"""
+                                    <div style="
+                                        padding: 0.8rem;
+                                        margin: 0.4rem 0;
+                                        background: white;
+                                        border-radius: 8px;
+                                        border-left: 3px solid #1E88E5;
+                                        transition: all 0.2s ease;
+                                        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                                        display: flex;
+                                        align-items: center;
+                                    "
+                                    onmouseover="this.style.transform='translateX(5px)';this.style.boxShadow='0 2px 5px rgba(0,0,0,0.15)';"
+                                    onmouseout="this.style.transform='translateX(0)';this.style.boxShadow='0 1px 3px rgba(0,0,0,0.1)';"
+                                    >
+                                        <span style="margin-right: 8px; font-size: 1.1em; color: #1E88E5;">📦</span>
+                                        <code style="color: #1E88E5; font-size: 0.95em; font-weight: 500;">{dep}</code>
+                                    </div>
+                                """, unsafe_allow_html=True)
+
+                            # Indirect Dependencies Section
+                            st.markdown("""
+                                <div style="
+                                    padding: 0.5rem;
+                                    margin: 1.5rem 0 1rem 0;
+                                    border-radius: 6px;
+                                    background: rgba(102, 102, 102, 0.1);
+                                    border-left: 3px solid #666;
+                                ">
+                                    <span style="color: #666; font-size: 0.9em;">
+                                        🔄 Indirect Dependencies ({})
+                                    </span>
+                                </div>
+                            """.format(len(indirect_deps)), unsafe_allow_html=True)
+
+                            # Display indirect dependencies
+                            for dep in indirect_deps:
+                                st.markdown(f"""
+                                    <div style="
+                                        padding: 0.8rem;
+                                        margin: 0.4rem 0;
+                                        background: white;
+                                        border-radius: 8px;
+                                        border-left: 3px solid #666;
+                                        margin-left: 25px;
+                                        transition: all 0.2s ease;
+                                        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                                        display: flex;
+                                        align-items: center;
+                                    "
+                                    onmouseover="this.style.transform='translateX(5px)';this.style.boxShadow='0 2px 5px rgba(0,0,0,0.15)';"
+                                    onmouseout="this.style.transform='translateX(0)';this.style.boxShadow='0 1px 3px rgba(0,0,0,0.1)';"
+                                    >
+                                        <span style="margin-right: 8px; font-size: 1.1em; color: #666;">↳</span>
+                                        <code style="color: #666; font-size: 0.95em; font-weight: 400;">{dep}</code>
+                                    </div>
+                                """, unsafe_allow_html=True)
+
+                            st.markdown("</div></div>", unsafe_allow_html=True)
                 else:
                     st.info("No dependencies data available for this file.")
             
