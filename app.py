@@ -24,7 +24,6 @@ from visualization_manager import VisualizationManager
 from dataset_analyzer import DatasetAnalyzer
 from stats_manager import StatsManager
 from datetime import datetime
-import numpy as np
 
 # Load environment variables
 load_dotenv()
@@ -191,7 +190,6 @@ config = {
 if 'stats_manager' not in st.session_state:
     st.session_state.stats_manager = StatsManager()
 
-
 def init_session_state():
     """Initialize or reset session state variables."""
     # Define all session state variables with their default values
@@ -203,34 +201,13 @@ def init_session_state():
         'selected_directory': None,
         'selected_file': None,
         'analyzer': CodeAnalyzer(config),
-        'project_analyzer': ProjectAnalyzer(config),
-        'current_file': None,
-        'current_metrics': {},
-        'current_code': "",
-        'file_filter': "",
-        'file_type_filter': "all",
-        'sort_by': "name",
-        'sort_order': "asc",
-        'view_mode': "tree",
-        'expanded_dirs': set(),
-        'recent_files': [],
-        'refactoring_history': [],
-        'refactoring_suggestions': [],
-        'refactoring_model': "gpt-4",
-        'refactoring_goals': [],
-        'refactoring_constraints': [],
-        'refactoring_mode': "local",
-        'custom_instructions': "",
-        'show_find': False,
-        'edit_mode': False,
-        'selected_tab': "🔍 Analysis & Selection"
+        'project_analyzer': ProjectAnalyzer(config)
     }
     
     # Initialize any missing session state variables
     for key, value in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = value
-
 
 def cleanup_upload_dir():
     """Clean up the upload directory before new uploads."""
@@ -240,7 +217,6 @@ def cleanup_upload_dir():
         config.UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
     except Exception as e:
         st.error(f"Error cleaning upload directory: {str(e)}")
-
 
 def clear_analysis_state():
     """Clear analysis related session state."""
@@ -252,24 +228,19 @@ def clear_analysis_state():
     # Clean up the upload directory
     cleanup_upload_dir()
 
-
 class CodeRefactorer:
     def __init__(self):
         self.available_models = {
-            'OpenAI': [
-                'gpt-4',
-                'gpt-3.5-turbo'],
-            'Anthropic': [
-                'claude-3-opus-20240229',
-                'claude-3-sonnet-20240229'],
+            'OpenAI': ['gpt-4', 'gpt-3.5-turbo'],
+            'Anthropic': ['claude-3-opus-20240229', 'claude-3-sonnet-20240229'],
             'Google': ['gemini-pro'],
-            'Cohere': ['command']}
+            'Cohere': ['command']
+        }
     
     async def refactor_code(self, code: str, model: str, prompt: str) -> str:
         """Refactor code using the specified model."""
         # Placeholder for actual refactoring logic
         return code
-
 
 def main():
     """Main application function."""
@@ -282,8 +253,7 @@ def main():
     """)
     
     # Create tabs
-    tab1, tab2, tab3 = st.tabs(
-        ["Upload & Analyze", "File Explorer", "Refactor"])
+    tab1, tab2, tab3 = st.tabs(["Upload & Analyze", "File Explorer", "Refactor"])
     
     with tab1:
         # Hero section with enhanced gradient and animation
@@ -404,9 +374,7 @@ def main():
                 </div>
             """.format(
                 supported_langs_html=''.join([
-                    f'<span style="padding: 0.2rem 0.5rem; background: #f8f9fa; border-radius: 4px; font-size: 0.8em;">{
-                        lang["icon"]} {
-                        lang["name"]}</span>'
+                    f'<span style="padding: 0.2rem 0.5rem; background: #f8f9fa; border-radius: 4px; font-size: 0.8em;">{lang["icon"]} {lang["name"]}</span>'
                     for lang in config['supported_languages'].values()
                 ])
             ), unsafe_allow_html=True)
@@ -414,9 +382,7 @@ def main():
             # Update file uploader to accept all supported extensions
             supported_extensions = []
             for lang in config['supported_languages'].values():
-                # Remove the dot from extensions
-                supported_extensions.extend(
-                    [ext[1:] for ext in lang['extensions']])
+                supported_extensions.extend([ext[1:] for ext in lang['extensions']])  # Remove the dot from extensions
             
             uploaded_file = st.file_uploader(
                 "Choose a source file",
@@ -427,8 +393,7 @@ def main():
             if uploaded_file:
                 with st.spinner("🔍 Analyzing your code..."):
                     if handle_file_upload(uploaded_file):
-                        st.success(
-                            "✅ Analysis Complete! View results in the File Explorer tab.")
+                        st.success("✅ Analysis Complete! View results in the File Explorer tab.")
 
         with col2:
             st.markdown("""
@@ -443,62 +408,34 @@ def main():
                     </ul>
                 </div>
             """, unsafe_allow_html=True)
-            uploaded_zip = st.file_uploader(
-                "Choose a ZIP file", type=['zip'], key="zip_file")
+            uploaded_zip = st.file_uploader("Choose a ZIP file", type=['zip'], key="zip_file")
             if uploaded_zip:
                 with st.spinner("📊 Processing your project..."):
                     if handle_zip_upload(uploaded_zip):
-                        st.success(
-                            "✅ Project Analysis Complete! View results in the File Explorer tab.")
+                        st.success("✅ Project Analysis Complete! View results in the File Explorer tab.")
 
         with col3:
             st.markdown("""
                 <div class="feature-card">
                     <div class="icon-container">🔗</div>
-                    <h3>Repository Analysis</h3>
-                    <p>Analyze code from GitHub repositories or local directories</p>
+                    <h3>GitHub Repository</h3>
+                    <p>Direct analysis from your GitHub repositories with branch support</p>
                     <ul class="feature-list">
-                        <li>✓ GitHub integration</li>
-                        <li>✓ Local repository support</li>
+                        <li>✓ Repository integration</li>
                         <li>✓ Branch analysis</li>
+                        <li>✓ Commit history review</li>
                     </ul>
                 </div>
             """, unsafe_allow_html=True)
-            
-            # Add tabs for GitHub and Local repository options
-            repo_tab1, repo_tab2 = st.tabs(["GitHub", "Local"])
-            
-            with repo_tab1:
-                repo_url = st.text_input(
-                    "Enter repository URL",
+            repo_url = st.text_input("Enter repository URL", 
                 placeholder="https://github.com/username/repository",
                 help="Enter the URL of a public GitHub repository")
             
             if repo_url:
-                if st.button(
-                    "🚀 Analyze GitHub Repository",
-                    type="primary",
-                    use_container_width=True):
+                if st.button("🚀 Start Analysis", type="primary", use_container_width=True):
                     with st.spinner("🔍 Cloning and analyzing repository..."):
                         handle_github_upload(repo_url)
-                        st.success(
-                            "✅ Repository Analysis Complete! View results in the File Explorer tab.")
-            
-            with repo_tab2:
-                repo_path = st.text_input(
-                    "Enter local repository path",
-                    placeholder="/path/to/repository",
-                    help="Enter the path to your local repository")
-                
-                if repo_path:
-                    if st.button(
-                        "🚀 Analyze Local Repository",
-                        type="primary",
-                        use_container_width=True):
-                        with st.spinner("🔍 Analyzing repository..."):
-                            handle_local_repository_upload(repo_path)
-                            st.success(
-                                "✅ Repository Analysis Complete! View results in the File Explorer tab.")
+                        st.success("✅ Repository Analysis Complete! View results in the File Explorer tab.")
 
         # Add custom CSS for the upload section
         st.markdown("""
@@ -677,7 +614,6 @@ def main():
         else:
             st.info("Select a file from the File Explorer to start refactoring.")
 
-
 def handle_file_upload(uploaded_file):
     """
     Handle single file upload and analysis.
@@ -705,9 +641,7 @@ def handle_file_upload(uploaded_file):
                 supported_extensions.extend(lang['extensions'])
             
             if file_ext not in supported_extensions:
-                st.error(
-                    f"Unsupported file type. Supported extensions: {
-                        ', '.join(supported_extensions)}")
+                st.error(f"Unsupported file type. Supported extensions: {', '.join(supported_extensions)}")
                 return False
             
             # Process and analyze file
@@ -738,7 +672,6 @@ def handle_file_upload(uploaded_file):
         except Exception as e:
             st.error(f"Error processing file: {str(e)}")
             return False
-
 
 def handle_zip_upload(uploaded_zip):
     """
@@ -791,26 +724,23 @@ def handle_zip_upload(uploaded_zip):
                         file_path = Path(root) / file
                         try:
                             # Analyze individual file
-                            file_metrics = analyzer.analyze_file(
-                                str(file_path))
-                            st.session_state.uploaded_files[str(
-                                file_path)] = file_metrics
+                            file_metrics = analyzer.analyze_file(str(file_path))
+                            st.session_state.uploaded_files[str(file_path)] = file_metrics
                             
                             # Update statistics
                             st.session_state.stats_manager.update_file_analysis(
-                                file, file_metrics)
+                                file,
+                                file_metrics
+                            )
                         except Exception as e:
                             st.warning(f"Error analyzing {file}: {str(e)}")
             
             if not files_found:
-                st.warning(
-                    f"No supported files found in the ZIP archive. Supported extensions: {
-                        ', '.join(supported_extensions)}")
+                st.warning(f"No supported files found in the ZIP archive. Supported extensions: {', '.join(supported_extensions)}")
                 return False
             
             # Set initial file selection
-            st.session_state.current_file = next(
-                iter(st.session_state.uploaded_files))
+            st.session_state.current_file = next(iter(st.session_state.uploaded_files))
             
             # Generate and update project analysis
             project_metrics = analyzer.analyze_project(str(extract_dir))
@@ -822,7 +752,6 @@ def handle_zip_upload(uploaded_zip):
         except Exception as e:
             st.error(f"Error processing ZIP file: {str(e)}")
             return False
-
 
 def handle_github_upload(repo_url):
     """
@@ -872,81 +801,6 @@ def handle_github_upload(repo_url):
                     try:
                         # Analyze file
                         file_metrics = analyzer.analyze_file(str(file_path))
-                        st.session_state.uploaded_files[str(
-                            file_path)] = file_metrics
-                        
-                        # Update statistics
-                        st.session_state.stats_manager.update_file_analysis(
-                            file,
-                            file_metrics
-                        )
-                    except Exception as e:
-                        st.warning(f"Error analyzing {file}: {str(e)}")
-        
-        if not files_found:
-            st.warning(
-                f"No supported files found in the repository. Supported extensions: {
-                    ', '.join(supported_extensions)}")
-            return False
-        
-        # Set initial file selection
-        st.session_state.current_file = next(
-            iter(st.session_state.uploaded_files))
-        
-        # Generate and update project analysis
-        project_metrics = analyzer.analyze_project(str(repo_dir))
-        st.session_state.project_analysis = project_metrics
-        st.session_state.stats_manager.update_project_analysis()
-        
-        return True
-        
-    except Exception as e:
-        st.error(f"Error cloning repository: {str(e)}")
-        return False
-
-
-def handle_local_repository_upload(repo_path):
-    """
-    Handle local repository analysis.
-    
-    This function analyzes a local repository:
-    1. Validates the repository path
-    2. Analyzes all supported source files
-    3. Generates project-wide metrics and statistics
-    
-    Args:
-        repo_path: String path to the local repository
-        
-    Returns:
-        bool: True if analysis was successful, False otherwise
-    """
-    try:
-        # Validate repository path
-        repo_dir = Path(repo_path)
-        if not repo_dir.exists() or not repo_dir.is_dir():
-            st.error("Invalid repository path. Please select a valid directory.")
-            return False
-            
-        # Initialize analysis
-        st.session_state.uploaded_files = {}
-        analyzer = CodeAnalyzer(config)
-        
-        # Get supported file extensions
-        supported_extensions = []
-        for lang in config['supported_languages'].values():
-            supported_extensions.extend(lang['extensions'])
-        
-        # Process all supported files
-        files_found = False
-        for root, _, files in os.walk(repo_dir):
-            for file in files:
-                file_ext = Path(file).suffix.lower()
-                if file_ext in supported_extensions:
-                    files_found = True
-                    file_path = Path(root) / file
-                    try:
-                        # Analyze file
-                        file_metrics = analyzer.analyze_file(str(file_path))
                         st.session_state.uploaded_files[str(file_path)] = file_metrics
                         
                         # Update statistics
@@ -958,14 +812,11 @@ def handle_local_repository_upload(repo_path):
                         st.warning(f"Error analyzing {file}: {str(e)}")
         
         if not files_found:
-            st.warning(
-                f"No supported files found in the repository. Supported extensions: {
-                    ', '.join(supported_extensions)}")
+            st.warning(f"No supported files found in the repository. Supported extensions: {', '.join(supported_extensions)}")
             return False
         
         # Set initial file selection
-        st.session_state.current_file = next(
-            iter(st.session_state.uploaded_files))
+        st.session_state.current_file = next(iter(st.session_state.uploaded_files))
         
         # Generate and update project analysis
         project_metrics = analyzer.analyze_project(str(repo_dir))
@@ -975,9 +826,8 @@ def handle_local_repository_upload(repo_path):
         return True
         
     except Exception as e:
-        st.error(f"Error analyzing repository: {str(e)}")
+        st.error(f"Error cloning repository: {str(e)}")
         return False
-
 
 def display_refactoring_options():
     """Display the refactoring interface with enhanced UI and features."""
@@ -997,24 +847,22 @@ def display_refactoring_options():
     if 'refactoring_suggestions' not in st.session_state:
         st.session_state.refactoring_suggestions = []
     if 'refactoring_model' not in st.session_state:
-        st.session_state.refactoring_model = "gpt-4"
+        st.session_state.refactoring_model = "GPT-4"
     if 'refactoring_goals' not in st.session_state:
         st.session_state.refactoring_goals = []
     if 'refactoring_constraints' not in st.session_state:
         st.session_state.refactoring_constraints = []
-    if 'refactoring_mode' not in st.session_state:
-        st.session_state.refactoring_mode = "local"
-
+    
     # Check if files are available
     if 'uploaded_files' not in st.session_state or not st.session_state.uploaded_files:
         st.warning("Please upload or select files to refactor first.")
         return
-
+        
     files = list(st.session_state.uploaded_files.keys())
     if not files:
         st.warning("No files available for refactoring.")
         return
-
+    
     # Header with gradient background
     st.markdown("""
         <div style="
@@ -1024,12 +872,17 @@ def display_refactoring_options():
             margin: 1rem 0;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         ">
-            <h2 style="color: white; text-align: center; margin-bottom: 1rem; font-size: 1.8em;">
+            <h2 style="
+                color: white;
+                text-align: center;
+                margin-bottom: 1rem;
+                font-size: 1.8em;
+            ">
                 Code Refactoring Assistant
             </h2>
         </div>
     """, unsafe_allow_html=True)
-
+    
     # Main layout with sidebar and content area
     with st.container():
         # File selection in a compact format at the top
@@ -1044,14 +897,16 @@ def display_refactoring_options():
         with col2:
             if st.button("📋 Show File Info", use_container_width=True):
                 st.session_state.selected_tab = "🔍 Analysis & Selection"
-
+        
         # Update session state when file selection changes
         if selected_file != st.session_state.current_file:
             st.session_state.current_file = selected_file
             st.session_state.current_metrics = st.session_state.uploaded_files[selected_file]
             if st.session_state.current_metrics:
                 st.session_state.current_code = st.session_state.current_metrics.get('content', '')
-
+                # Automatically switch to code editor tab
+                st.session_state.selected_tab = "✏️ Code Editor"
+        
         # Create tabs for different aspects of refactoring
         tab1, tab2, tab3, tab4 = st.tabs([
             "🔍 Analysis & Selection",
@@ -1059,161 +914,163 @@ def display_refactoring_options():
             "🎯 Refactoring Options",
             "👀 Preview & Impact"
         ])
-
+        
         # Display the selected tab content
-        if st.session_state.selected_tab == "🎯 Refactoring Options":
-            with tab3:
-                # Refactoring mode selection
-                st.markdown("#### 🔄 Refactoring Mode")
-                mode = st.radio(
-                    "Select refactoring mode",
-                    ["Local", "Cloud-based", "Hybrid"],
-                    help="Choose how you want to perform the refactoring",
-                    horizontal=True
-                )
-                st.session_state.refactoring_mode = mode.lower()
-
-                # Display different options based on mode
-                if mode == "Local":
-                    st.info("Local mode uses your machine's resources for refactoring. Best for small to medium files.")
-                    st.markdown("#### 🛠️ Local Processing Options")
-                    local_engine = st.selectbox(
-                        "Select local processing engine",
-                        ["Basic Refactoring", "Advanced Analysis", "Performance Optimization"],
-                        help="Choose the type of local processing to apply"
-                    )
-                    
-                    use_cache = st.checkbox("Use cached analysis", value=True, 
-                                          help="Use previously cached analysis results if available")
-                    
-                    parallel_processing = st.checkbox("Enable parallel processing", value=True,
-                                                    help="Use multiple CPU cores for faster processing")
-
-                elif mode == "Cloud-based":
-                    st.info("Cloud mode leverages powerful cloud resources for comprehensive refactoring. Best for large projects.")
-                    st.markdown("#### ☁️ Cloud Service Options")
-                    model = st.selectbox(
-                        "Select AI Model",
-                        ["gpt-4", "gpt-3.5-turbo", "claude-3-opus", "claude-3-sonnet"],
-                        index=0,
-                        help="Choose the AI model for refactoring"
-                    )
-                st.session_state.refactoring_model = model
-                    
-                    # Cloud provider selection
-                cloud_provider = st.selectbox(
-                        "Select Cloud Provider",
-                        ["OpenAI", "Anthropic", "Google Cloud", "Azure"],
-                        help="Choose the cloud provider for processing"
-                    )
-                    
-                    # API configuration
-                with st.expander("API Configuration"):
-                        st.text_input("API Key", type="password", help="Enter your API key")
-                        st.number_input("Request Timeout (seconds)", min_value=30, max_value=300, value=60)
-                        st.checkbox("Enable streaming response", value=True)
-
-        else:  # Hybrid
-                    st.info("Hybrid mode combines local and cloud processing for optimal results.")
-                    st.markdown("#### 🔄 Hybrid Processing Options")
-                    
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        st.markdown("##### Local Components")
-                        st.checkbox("Static Analysis", value=True)
-                        st.checkbox("Syntax Optimization", value=True)
-                        st.checkbox("Performance Profiling", value=True)
-                    
-                    with col2:
-                        st.markdown("##### Cloud Components")
-                        st.checkbox("AI-based Suggestions", value=True)
-                        st.checkbox("Pattern Recognition", value=True)
-                        st.checkbox("Security Analysis", value=True)
-
-                # Common options for all modes
-        st.markdown("#### 🎯 Goals")
-        # Initialize session state for goals if not already set
-        if 'refactoring_goals' not in st.session_state:
-            st.session_state.refactoring_goals = ["Improve readability", "Enhance maintainability"]
-        
-        goals = st.multiselect(
-            "Select goals",
-            [
-                "Improve readability",
-                "Enhance maintainability",
-                "Reduce complexity",
-                "Optimize performance",
-                "Fix code smells",
-                "Enhance security",
-                "Improve test coverage",
-                "Modernize code style"
-            ],
-            default=st.session_state.refactoring_goals,
-            key="refactoring_goals"
-        )
-
-        st.markdown("#### 🎯 Constraints")
-        # Initialize session state for constraints if not already set
-        if 'refactoring_constraints' not in st.session_state:
-            st.session_state.refactoring_constraints = ["Preserve functionality"]
-        
-        constraints = st.multiselect(
-            "Select constraints",
-            [
-                "Preserve functionality",
-                "Maintain backward compatibility",
-                "Keep existing interfaces",
-                "Minimize changes",
-                "Follow style guide",
-                "Use design patterns",
-                "Consider performance impact",
-                "Maintain test coverage",
-                "Keep memory usage stable",
-                "Preserve API compatibility"
-            ],
-            default=st.session_state.refactoring_constraints,
-            key="refactoring_constraints"
-        )
-
-        st.markdown("#### 📝 Custom Instructions")
-        # Initialize session state for custom instructions if not already set
-        if 'custom_instructions' not in st.session_state:
-            st.session_state.custom_instructions = ""
-        
-        custom_instructions = st.text_area(
-            "Add any specific instructions or requirements",
-            value=st.session_state.custom_instructions,
-            key="custom_instructions",
-            height=100,
-            help="Provide any additional context or requirements for the refactoring"
-        )
-
-                # Advanced options expander
-        with st.expander("⚙️ Advanced Options", expanded=False):
-                    st.markdown("##### Processing Options")
-                    st.checkbox("Deep Analysis", value=False, 
-                              help="Perform deeper analysis (slower but more thorough)")
-                    st.checkbox("Generate Documentation", value=True,
-                              help="Automatically generate documentation for changes")
-                    st.checkbox("Create Backup", value=True,
-                              help="Create backup of original files")
-                    
-                    st.markdown("##### Output Options")
-                    st.checkbox("Generate Detailed Report", value=True,
-                              help="Create a detailed report of all changes")
-                    st.checkbox("Include Metrics Comparison", value=True,
-                              help="Compare metrics before and after refactoring")
-                    st.checkbox("Generate Test Cases", value=False,
-                              help="Automatically generate test cases for modified code")
-
-                # Generate button at the bottom
-        if st.button("Generate Refactoring Suggestions", type="primary", use_container_width=True):
-                    if not st.session_state.current_file:
-                        st.warning("Please select a file to refactor first.")
-                    elif not goals:
-                        st.warning("Please select at least one refactoring goal.")
+        if st.session_state.selected_tab == "🔍 Analysis & Selection":
+            with tab1:
+                col1, col2 = st.columns([2, 1])
+                
+                with col1:
+                    st.markdown("#### Current Code")
+                    with st.expander("View Code", expanded=True):
+                        if st.session_state.current_metrics:
+                            st.code(st.session_state.current_metrics.get('content', ''), language='python')
+                        else:
+                            st.info("No code content available for the selected file.")
+                
+                with col2:
+                    st.markdown("#### Code Analysis")
+                    if st.session_state.current_metrics:
+                        metrics = st.session_state.current_metrics.get('metrics', {})
+                        
+                        # Quality metrics
+                        st.metric("Maintainability", f"{metrics.get('maintainability', 0):.1f}")
+                        st.metric("Complexity", f"{metrics.get('complexity', 0):.1f}")
+                        
+                        # Code smells
+                        smells = metrics.get('code_smells', [])
+                        if smells:
+                            st.markdown("**Detected Issues:**")
+                            for smell in smells:
+                                st.warning(smell)
+                        else:
+                            st.success("No code smells detected")
+                        
+                        # Language detection
+                        file_ext = os.path.splitext(st.session_state.current_file)[1].lower()
+                        language = "Unknown"
+                        for lang, info in config['supported_languages'].items():
+                            if file_ext in info['extensions']:
+                                language = info['name']
+                                break
+                        
+                        st.markdown(f"**Language:** {language}")
+                        
+                        # File size
+                        file_size = os.path.getsize(st.session_state.current_file)
+                        st.markdown(f"**File Size:** {file_size / 1024:.1f} KB")
                     else:
-                        with st.spinner("Analyzing code and generating refactoring suggestions..."):
+                        st.info("No metrics available for the selected file.")
+        
+        elif st.session_state.selected_tab == "✏️ Code Editor":
+            with tab2:
+                st.markdown("#### Code Editor")
+                
+                if st.session_state.current_code:
+                    # Editor options in a compact format
+                    col1, col2, col3 = st.columns([2, 1, 1])
+                    with col1:
+                        editor_options = st.radio(
+                            "Editor Options",
+                            ["Syntax Highlighting", "Line Numbers", "Auto-indent"],
+                            horizontal=True
+                        )
+                    with col2:
+                        if st.button("💾 Save", use_container_width=True):
+                            try:
+                                with open(st.session_state.current_file, 'w') as f:
+                                    f.write(st.session_state.current_code)
+                                st.success("Changes saved successfully!")
+                            except Exception as e:
+                                st.error(f"Error saving changes: {str(e)}")
+                    with col3:
+                        if st.button("↺ Reset", use_container_width=True):
+                            st.session_state.current_code = st.session_state.uploaded_files[st.session_state.current_file].get('content', '')
+                            st.experimental_rerun()
+                    
+                    # Code editor with session state
+                    edited_code = st.text_area(
+                        "Edit Code",
+                        value=st.session_state.current_code,
+                        height=400,
+                        key="code_editor"
+                    )
+                    
+                    # Update session state with edited code
+                    if edited_code != st.session_state.current_code:
+                        st.session_state.current_code = edited_code
+                else:
+                    st.info("No code available to edit. Please select a file first.")
+        
+        elif st.session_state.selected_tab == "🎯 Refactoring Options":
+            with tab3:
+                # Refactoring configuration
+                col1, col2 = st.columns([1, 1])
+                
+                with col1:
+                    st.markdown("#### Model Selection")
+                    model = st.selectbox(
+                        "Select model",
+                        ["gpt-3.5-turbo", "gpt-4"],
+                        key="model_selector"
+                    )
+                    st.session_state.refactoring_model = model
+                    
+                    st.markdown("#### Scope")
+                    scope = st.radio(
+                        "Select refactoring scope",
+                        ["Selected file", "Entire project"],
+                        key="scope_selector"
+                    )
+                    st.session_state.refactoring_scope = scope
+                    
+                    st.markdown("#### Goals")
+                    goals = st.multiselect(
+                        "Select refactoring goals",
+                        [
+                            "Improve readability",
+                            "Enhance maintainability",
+                            "Optimize performance",
+                            "Fix code smells",
+                            "Reduce complexity",
+                            "Improve error handling",
+                            "Add documentation"
+                        ],
+                        key="goals_selector"
+                    )
+                    st.session_state.refactoring_goals = goals
+                
+                with col2:
+                    st.markdown("#### Constraints")
+                    constraints = st.multiselect(
+                        "Select constraints",
+                        [
+                            "Preserve functionality",
+                            "Maintain backward compatibility",
+                            "Keep existing interfaces",
+                            "Minimize changes",
+                            "Follow style guide",
+                            "Use design patterns",
+                            "Consider performance impact"
+                        ],
+                        key="constraints_selector"
+                    )
+                    st.session_state.refactoring_constraints = constraints
+                    
+                    st.markdown("#### Custom Instructions")
+                    custom_instructions = st.text_area(
+                        "Add any specific instructions or requirements",
+                        key="custom_instructions",
+                        height=100
+                    )
+                    st.session_state.custom_instructions = custom_instructions
+                
+                # Generate button at the bottom
+                if st.button("Generate Refactoring Suggestions", type="primary", use_container_width=True):
+                    if not st.session_state.current_metrics:
+                        st.warning("Please select a file to refactor first.")
+                    else:
+                        with st.spinner("Generating refactoring suggestions..."):
                             suggestions = generate_refactoring_suggestions(
                                 st.session_state.current_file,
                                 st.session_state.current_metrics,
@@ -1223,190 +1080,29 @@ def display_refactoring_options():
                                 st.session_state.custom_instructions
                             )
                             st.session_state.refactoring_suggestions = suggestions
-                            
-                            if suggestions:
-                                st.success(f"Generated {len(suggestions)} refactoring suggestions!")
-                                # Switch to preview tab
-                                st.session_state.selected_tab = "👀 Preview & Impact"
-                            else:
-                                st.info("No refactoring suggestions were generated. Try adjusting your goals or constraints.")
-
-        elif st.session_state.selected_tab == "🔍 Analysis & Selection":
-            with tab1:
-                col1, col2 = st.columns([2, 1])
-
-                with col1:
-                    st.markdown("#### Current Code")
-                    with st.expander("View Code", expanded=True):
-                        if st.session_state.current_metrics:
-                            st.code(st.session_state.current_metrics.get('content', ''), language='python')
-                        else:
-                            st.info("No code content available for the selected file.")
-
-                with col2:
-                    st.markdown("#### Code Analysis")
-                    if st.session_state.current_metrics:
-                        metrics = st.session_state.current_metrics.get('metrics', {})
-                        
-                        # Create columns for different metric categories
-                        col1, col2 = st.columns(2)
-                        
-                        with col1:
-                            st.markdown("##### 📊 Quality Metrics")
-                            
-                            # Get metrics with proper type handling
-                            metrics = st.session_state.current_metrics
-                            
-                            # Initialize metrics with safe defaults
-                            if not isinstance(metrics, dict):
-                                metrics = {}
-                            
-                            # Handle maintainability index
-                            maintainability = metrics.get('maintainability', {})
-                            maintainability_score = (
-                                maintainability.get('score', 0) 
-                                if isinstance(maintainability, dict) 
-                                else float(maintainability if maintainability is not None else 0)
-                            )
-                            
-                            # Handle cyclomatic complexity
-                            complexity = metrics.get('complexity', {})
-                            complexity_score = (
-                                complexity.get('score', 0) 
-                                if isinstance(complexity, dict) 
-                                else float(complexity if complexity is not None else 0)
-                            )
-                            
-                            # Handle cognitive complexity
-                            cognitive_complexity = metrics.get('cognitive_complexity', 0)
-                            cognitive_score = float(cognitive_complexity if cognitive_complexity is not None else 0)
-                            
-                            # Handle code coverage
-                            code_coverage = metrics.get('code_coverage', 0)
-                            coverage_score = float(code_coverage if code_coverage is not None else 0)
-                            
-                            # Display metrics with proper formatting
-                            st.metric(
-                                "Maintainability Index",
-                                f"{maintainability_score:.1f}/100",
-                                help="Score from 0-100. Higher is better. Based on code structure, complexity, and documentation"
-                            )
-                            st.metric(
-                                "Cyclomatic Complexity",
-                                f"{complexity_score:.1f}",
-                                help="Number of linearly independent paths through the code"
-                            )
-                            st.metric(
-                                "Cognitive Complexity",
-                                f"{cognitive_score:.1f}",
-                                help="Measure of how difficult the code is to understand"
-                            )
-                            st.metric(
-                                "Code Coverage",
-                                f"{coverage_score:.1f}%",
-                                help="Percentage of code covered by tests"
-                            )
-                        
-                        with col2:
-                            st.markdown("##### 📏 Size Metrics")
-                            
-                            # Get raw metrics with proper type handling
-                            raw_metrics = metrics.get('raw_metrics', {})
-                            if not isinstance(raw_metrics, dict):
-                                raw_metrics = {}
-                            
-                            # Display size metrics with proper formatting
-                            st.metric(
-                                "Lines of Code",
-                                f"{raw_metrics.get('loc', 0):,}",
-                                help="Total number of lines of code"
-                            )
-                            st.metric(
-                                "Comment Density",
-                                f"{raw_metrics.get('comment_ratio', 0):.1f}%",
-                                help="Percentage of code that is comments"
-                            )
-                            st.metric(
-                                "Function Count",
-                                f"{raw_metrics.get('functions', 0) + raw_metrics.get('methods', 0):,}",
-                                help="Total number of functions and methods"
-                            )
-                            st.metric(
-                                "Class Count",
-                                f"{raw_metrics.get('classes', 0):,}",
-                                help="Total number of classes"
-                            )
-                    else:
-                        st.info("No metrics available for the selected file.")
-
-        elif st.session_state.selected_tab == "✏️ Code Editor":
-            with tab2:
-                st.markdown("#### Code Editor")
-
-                if st.session_state.current_code:
-                    # Code actions toolbar
-                    col1, col2, col3 = st.columns([1, 1, 1])
-                    with col1:
-                        if st.button("📋 Copy Code", use_container_width=True):
-                            st.toast("Code copied to clipboard!", icon="✅")
-                    with col2:
-                        if st.button("🔍 Find in Code", use_container_width=True):
-                            st.session_state.show_find = True
-                    with col3:
-                        if st.button("📝 Edit Code", use_container_width=True):
-                            st.session_state.edit_mode = True
-
-                    # Find in code functionality
-                    if st.session_state.get('show_find', False):
-                        find_term = st.text_input("Search in code", key="find_term")
-                        if find_term:
-                            # Highlight search term in code
-                            highlighted_code = highlight_search_term(st.session_state.current_code, find_term)
-                            # Add line numbers and display code
-                            lines = highlighted_code.split('\n')
-                            numbered_code = '\n'.join(f'{i+1:4d} | {line}' for i, line in enumerate(lines))
-                            st.markdown(f"""
-                                <div style="background-color: #f5f5f5; padding: 1rem; border-radius: 5px; font-family: monospace; white-space: pre; overflow-x: auto;">
-                                    <code>{numbered_code}</code>
-                                </div>
-                            """, unsafe_allow_html=True)
-                        else:
-                            # Display code with line numbers
-                            lines = st.session_state.current_code.split('\n')
-                            numbered_code = '\n'.join(f'{i+1:4d} | {line}' for i, line in enumerate(lines))
-                            st.code(numbered_code, language=st.session_state.current_metrics.get('language', 'python'))
-                    else:
-                        # Display code with line numbers
-                        lines = st.session_state.current_code.split('\n')
-                        numbered_code = '\n'.join(f'{i+1:4d} | {line}' for i, line in enumerate(lines))
-                        st.code(numbered_code, language=st.session_state.current_metrics.get('language', 'python'))
-                else:
-                    st.info(
-                        "No code available to edit. Please select a file first.")
-
+                            st.experimental_rerun()
+        
         elif st.session_state.selected_tab == "👀 Preview & Impact":
             with tab4:
                 if st.session_state.refactoring_suggestions:
-                    for i, suggestion in enumerate(
-                            st.session_state.refactoring_suggestions, 1):
+                    for i, suggestion in enumerate(st.session_state.refactoring_suggestions, 1):
                         with st.expander(f"Suggestion {i}: {suggestion['title']}", expanded=True):
                             st.markdown(suggestion['description'])
-
+                            
                             # Before/After comparison
                             col1, col2 = st.columns(2)
                             with col1:
                                 st.markdown("**Before:**")
-                                st.code(
-                                    suggestion['before'], language='python')
+                                st.code(suggestion['before'], language='python')
                             with col2:
                                 st.markdown("**After:**")
                                 st.code(suggestion['after'], language='python')
-
+                            
                             # Impact metrics
                             st.markdown("#### Impact Analysis")
                             impact = suggestion.get('impact', {})
                             imp_col1, imp_col2, imp_col3 = st.columns(3)
-
+                            
                             with imp_col1:
                                 st.metric(
                                     "Complexity Reduction",
@@ -1425,14 +1121,13 @@ def display_refactoring_options():
                                     impact.get('lines_changed', 0),
                                     help="Number of lines modified"
                                 )
-
+                            
                             # Apply button
-                            if st.button(
-                                    f"Apply Suggestion {i}", key=f"apply_{i}"):
+                            if st.button(f"Apply Suggestion {i}", key=f"apply_{i}"):
                                 # Update session state with refactored code
                                 st.session_state.refactored_code = suggestion['after']
                                 st.session_state.current_code = suggestion['after']
-
+                                
                                 # Add to refactoring history
                                 st.session_state.refactoring_history.append({
                                     'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -1440,7 +1135,7 @@ def display_refactoring_options():
                                     'suggestion': suggestion['title'],
                                     'impact': impact
                                 })
-
+                                
                                 # Save changes to file
                                 try:
                                     with open(st.session_state.current_file, 'w') as f:
@@ -1448,7 +1143,7 @@ def display_refactoring_options():
                                     st.success("Changes applied successfully!")
                                 except Exception as e:
                                     st.error(f"Error saving changes: {str(e)}")
-
+                                
                                 # Show updated metrics
                                 st.markdown("#### Updated Metrics")
                                 new_metrics = {
@@ -1458,7 +1153,7 @@ def display_refactoring_options():
                                     'complexity_delta': -15.0
                                 }
                                 metric_col1, metric_col2 = st.columns(2)
-
+                                
                                 with metric_col1:
                                     st.metric(
                                         "New Maintainability",
@@ -1472,14 +1167,11 @@ def display_refactoring_options():
                                         delta=f"{new_metrics.get('complexity_delta', 0):.1f}"
                                     )
                 else:
-                    st.info(
-                        "No refactoring suggestions available. Generate suggestions from the Refactoring Options tab.")
-                    if st.button(
-                        "Go to Refactoring Options",
-                            use_container_width=True):
+                    st.info("No refactoring suggestions available. Generate suggestions from the Refactoring Options tab.")
+                    if st.button("Go to Refactoring Options", use_container_width=True):
                         st.session_state.selected_tab = "🎯 Refactoring Options"
                         st.experimental_rerun()
-
+            
             # Display refactoring history
             if st.session_state.refactoring_history:
                 st.markdown("#### Refactoring History")
@@ -1495,7 +1187,6 @@ def display_refactoring_options():
                     hide_index=True
                 )
 
-
 def display_project_analysis():
     """Display project analysis results."""
     if not st.session_state.project_analysis:
@@ -1505,12 +1196,10 @@ def display_project_analysis():
     
     # Display metrics dashboard
     viz_manager = VisualizationManager()
-    viz_manager.display_metrics_dashboard(
-        analysis['metrics'], prefix="project")
+    viz_manager.display_metrics_dashboard(analysis['metrics'], prefix="project")
     
     # Display project structure
     viz_manager.display_project_structure(analysis['structure'])
-
 
 def display_directory_analysis(dir_path: str):
     """Display analysis for a specific directory."""
@@ -1523,12 +1212,10 @@ def display_directory_analysis(dir_path: str):
     
     # Display metrics dashboard for directory
     viz_manager = VisualizationManager()
-    viz_manager.display_metrics_dashboard(
-        analysis['metrics'], prefix=f"dir_{dir_path}")
+    viz_manager.display_metrics_dashboard(analysis['metrics'], prefix=f"dir_{dir_path}")
     
     # Display directory structure
     viz_manager.display_project_structure(analysis['structure'])
-
 
 def display_landing_stats():
     """Display dynamic statistics on the landing page."""
@@ -1650,824 +1337,631 @@ def display_landing_stats():
             help="Number of potential bugs identified and fixed"
         )
 
-
 def display_metrics_tab(metrics):
     """Display metrics tab with visualizations."""
-    try:
-        if not metrics or not isinstance(metrics, dict):
-            st.warning("No metrics available for visualization. Please select a file to analyze.")
-            return
+    if not metrics:
+        st.info("No metrics available for this file.")
+        return
+
+    st.header("📊 File Statistics")
+    
+    # Create three columns for the metrics
+    col1, col2, col3 = st.columns(3)
+    
+    # Extract metrics from the raw_metrics dictionary
+    raw_metrics = metrics.get('raw_metrics', {})
+    
+    with col1:
+        st.metric("Lines of Code", raw_metrics.get('loc', 0))
+        st.metric("Classes", raw_metrics.get('classes', 0))
+        st.metric("Methods", raw_metrics.get('methods', 0))
+    
+    with col2:
+        st.metric("Source Lines", raw_metrics.get('sloc', 0))
+        st.metric("Functions", raw_metrics.get('functions', 0))
+        st.metric("Imports", raw_metrics.get('imports', 0))
+    
+    with col3:
+        comments = raw_metrics.get('comments', 0) + raw_metrics.get('multi', 0)
+        st.metric("Comments", comments)
+        st.metric("Packages", len(metrics.get('imported_packages', [])))
+        comment_ratio = (comments / raw_metrics.get('loc', 1)) * 100 if raw_metrics.get('loc', 0) > 0 else 0
+        st.metric("Comment Ratio", f"{comment_ratio:.1f}%")
+
+    # Code Composition Chart
+    st.header("📈 Code Composition")
+    
+    composition_data = {
+        'Category': ['Source Lines', 'Comments', 'Blank Lines'],
+        'Lines': [
+            raw_metrics.get('sloc', 0),
+            comments,
+            raw_metrics.get('blank', 0)
+        ]
+    }
+    composition_df = pd.DataFrame(composition_data)
+    
+    fig_composition = px.bar(
+        composition_df,
+        x='Category',
+        y='Lines',
+        title='Code Composition',
+        color='Category',
+        color_discrete_sequence=['#1f77b4', '#2ca02c', '#d62728']
+    )
+    fig_composition.update_layout(
+        showlegend=True,
+        plot_bgcolor='white',
+        yaxis_title="Number of Lines",
+        xaxis_title=""
+    )
+    st.plotly_chart(fig_composition, use_container_width=True)
+
+    # Quality Metrics Charts
+    st.header("🎯 Quality Metrics")
+    
+    # Maintainability Index Gauge
+    maintainability = metrics.get('maintainability', {}).get('score', 0)
+    fig_maintainability = go.Figure(go.Indicator(
+        mode="gauge+number",
+        value=maintainability,
+        title={'text': "Maintainability Index"},
+        domain={'x': [0, 1], 'y': [0, 1]},
+        gauge={
+            'axis': {'range': [0, 100]},
+            'bar': {'color': "#1f77b4"},
+            'steps': [
+                {'range': [0, 40], 'color': "#ff7f0e"},
+                {'range': [40, 70], 'color': "#2ca02c"},
+                {'range': [70, 100], 'color': "#1f77b4"}
+            ],
+            'threshold': {
+                'line': {'color': "red", 'width': 4},
+                'thickness': 0.75,
+                'value': 40
+            }
+        }
+    ))
+    fig_maintainability.update_layout(height=300)
+    st.plotly_chart(fig_maintainability, use_container_width=True)
+
+    # Code Quality Score Gauge
+    quality_score = metrics.get('complexity', {}).get('score', 0)
+    fig_quality = go.Figure(go.Indicator(
+        mode="gauge+number",
+        value=quality_score,
+        title={'text': "Code Quality Score"},
+        domain={'x': [0, 1], 'y': [0, 1]},
+        gauge={
+            'axis': {'range': [0, 100]},
+            'bar': {'color': "#2ca02c"},
+            'steps': [
+                {'range': [0, 50], 'color': "#ff7f0e"},
+                {'range': [50, 80], 'color': "#2ca02c"},
+                {'range': [80, 100], 'color': "#1f77b4"}
+            ],
+            'threshold': {
+                'line': {'color': "red", 'width': 4},
+                'thickness': 0.75,
+                'value': 50
+            }
+        }
+    ))
+    fig_quality.update_layout(height=300)
+    st.plotly_chart(fig_quality, use_container_width=True)
+
+    # Code Structure Distribution
+    structure_data = {
+        'Category': ['Classes', 'Methods', 'Functions'],
+        'Count': [
+            raw_metrics.get('classes', 0),
+            raw_metrics.get('methods', 0),
+            raw_metrics.get('functions', 0)
+        ]
+    }
+    structure_df = pd.DataFrame(structure_data)
+    
+    fig_structure = px.pie(
+        structure_df,
+        values='Count',
+        names='Category',
+        title='Code Structure Distribution',
+        color_discrete_sequence=['#1f77b4', '#2ca02c', '#ff7f0e'],
+        hole=0.4
+    )
+    fig_structure.update_layout(
+        showlegend=True,
+        height=400
+    )
+    st.plotly_chart(fig_structure, use_container_width=True)
+
+    # Display issues if any
+    if metrics.get('code_smells') or metrics.get('maintainability', {}).get('issues'):
+        st.header("⚠️ Issues Found")
+        
+        issues_data = {
+            'Category': [],
+            'Count': []
+        }
+        
+        code_smells = len(metrics.get('code_smells', []))
+        maintainability_issues = len(metrics.get('maintainability', {}).get('issues', []))
+        complexity_issues = len(metrics.get('complexity', {}).get('issues', []))
+        
+        if code_smells > 0:
+            issues_data['Category'].append('Code Smells')
+            issues_data['Count'].append(code_smells)
+        if maintainability_issues > 0:
+            issues_data['Category'].append('Maintainability Issues')
+            issues_data['Count'].append(maintainability_issues)
+        if complexity_issues > 0:
+            issues_data['Category'].append('Complexity Issues')
+            issues_data['Count'].append(complexity_issues)
             
-        st.header("📊 File Statistics")
-
-        # Create three columns for the metrics
-        col1, col2, col3 = st.columns(3)
-
-        # Extract metrics from the raw_metrics dictionary
-        raw_metrics = metrics.get('raw_metrics', {})
-        if not raw_metrics:
-            st.warning("Raw metrics data is missing. Please reanalyze the file.")
-            return
-
-        with col1:
-            st.metric("Lines of Code", raw_metrics.get('loc', 0))
-            st.metric("Classes", raw_metrics.get('classes', 0))
-            st.metric("Methods", raw_metrics.get('methods', 0))
-
-        with col2:
-            st.metric("Source Lines", raw_metrics.get('sloc', 0))
-            st.metric("Functions", raw_metrics.get('functions', 0))
-            st.metric("Imports", raw_metrics.get('imports', 0))
-
-        with col3:
-            comments = raw_metrics.get('comments', 0) + raw_metrics.get('multi', 0)
-            st.metric("Comments", comments)
-            st.metric("Packages", len(metrics.get('imported_packages', [])))
-            comment_ratio = (comments / raw_metrics.get('loc', 1)) * 100 if raw_metrics.get('loc', 0) > 0 else 0
-            st.metric("Comment Ratio", f"{comment_ratio:.1f}%")
-
-        # Code Composition Chart
-        st.header("📈 Code Composition")
-
-        composition_data = {
-            'Category': ['Source Lines', 'Comments', 'Blank Lines'],
-            'Lines': [
-                raw_metrics.get('sloc', 0),
-                comments,
-                raw_metrics.get('blank', 0)
-            ]
-        }
-        composition_df = pd.DataFrame(composition_data)
-
-        fig_composition = px.bar(
-            composition_df,
-            x='Category',
-            y='Lines',
-            title='Code Composition',
-            color='Category',
-            color_discrete_sequence=['#1f77b4', '#2ca02c', '#d62728']
-        )
-        fig_composition.update_layout(
-            showlegend=True,
-            plot_bgcolor='white',
-            yaxis_title="Number of Lines",
-            xaxis_title=""
-        )
-        st.plotly_chart(fig_composition, use_container_width=True)
-
-        # Quality Metrics Charts
-        st.header("🎯 Quality Metrics")
-
-        # Maintainability Index Gauge
-        maintainability = metrics.get('maintainability', {}).get('score', 0)
-        fig_maintainability = go.Figure(go.Indicator(
-            mode="gauge+number",
-            value=maintainability,
-            title={'text': "Maintainability Index"},
-            domain={'x': [0, 1], 'y': [0, 1]},
-            gauge={
-                'axis': {'range': [0, 100]},
-                'bar': {'color': "#1f77b4"},
-                'steps': [
-                    {'range': [0, 40], 'color': "#ff7f0e"},
-                    {'range': [40, 70], 'color': "#2ca02c"},
-                    {'range': [70, 100], 'color': "#1f77b4"}
-                ],
-                'threshold': {
-                    'line': {'color': "red", 'width': 4},
-                    'thickness': 0.75,
-                    'value': 40
-                }
-            }
-        ))
-        fig_maintainability.update_layout(height=300)
-        st.plotly_chart(fig_maintainability, use_container_width=True)
-
-        # Code Quality Score Gauge
-        quality_score = metrics.get('complexity', {}).get('score', 0)
-        fig_quality = go.Figure(go.Indicator(
-            mode="gauge+number",
-            value=quality_score,
-            title={'text': "Code Quality Score"},
-            domain={'x': [0, 1], 'y': [0, 1]},
-            gauge={
-                'axis': {'range': [0, 100]},
-                'bar': {'color': "#2ca02c"},
-                'steps': [
-                    {'range': [0, 50], 'color': "#ff7f0e"},
-                    {'range': [50, 80], 'color': "#2ca02c"},
-                    {'range': [80, 100], 'color': "#1f77b4"}
-                ],
-                'threshold': {
-                    'line': {'color': "red", 'width': 4},
-                    'thickness': 0.75,
-                    'value': 50
-                }
-            }
-        ))
-        fig_quality.update_layout(height=300)
-        st.plotly_chart(fig_quality, use_container_width=True)
-
-        # Code Structure Distribution
-        structure_data = {
-            'Category': ['Classes', 'Methods', 'Functions'],
-            'Count': [
-                raw_metrics.get('classes', 0),
-                raw_metrics.get('methods', 0),
-                raw_metrics.get('functions', 0)
-            ]
-        }
-        structure_df = pd.DataFrame(structure_data)
-
-        fig_structure = px.pie(
-            structure_df,
-            values='Count',
-            names='Category',
-            title='Code Structure Distribution',
-            color_discrete_sequence=['#1f77b4', '#2ca02c', '#ff7f0e'],
-            hole=0.4
-        )
-        fig_structure.update_layout(
-            showlegend=True,
-            height=400
-        )
-        st.plotly_chart(fig_structure, use_container_width=True)
-
-        # Display issues if any
-        if metrics.get('code_smells') or metrics.get(
-                'maintainability', {}).get('issues'):
-            st.header("⚠️ Issues Found")
-
-            issues_data = {
-                'Category': [],
-                'Count': []
-            }
-
-            code_smells = len(metrics.get('code_smells', []))
-            maintainability_issues = len(
-                metrics.get(
-                    'maintainability', {}).get(
-                    'issues', []))
-            complexity_issues = len(
-                metrics.get(
-                    'complexity',
-                    {}).get(
-                    'issues',
-                    []))
-
-            if code_smells > 0:
-                issues_data['Category'].append('Code Smells')
-                issues_data['Count'].append(code_smells)
-            if maintainability_issues > 0:
-                issues_data['Category'].append('Maintainability Issues')
-                issues_data['Count'].append(maintainability_issues)
-            if complexity_issues > 0:
-                issues_data['Category'].append('Complexity Issues')
-                issues_data['Count'].append(complexity_issues)
-
-            if issues_data['Category']:
-                issues_df = pd.DataFrame(issues_data)
-                fig_issues = px.bar(
-                    issues_df,
-                    x='Category',
-                    y='Count',
-                    title='Issues Distribution',
-                    color='Category',
-                    color_discrete_sequence=['#ff7f0e', '#d62728', '#9467bd']
-                )
-                fig_issues.update_layout(
-                    showlegend=False,
-                    plot_bgcolor='white',
-                    yaxis_title="Number of Issues",
-                    xaxis_title=""
-                )
-                st.plotly_chart(fig_issues, use_container_width=True)
-    except Exception as e:
-        st.error(f"Error displaying metrics: {str(e)}")
-        st.info("Please try selecting the file again or reanalyzing it.")
-
+        if issues_data['Category']:
+            issues_df = pd.DataFrame(issues_data)
+            fig_issues = px.bar(
+                issues_df,
+                x='Category',
+                y='Count',
+                title='Issues Distribution',
+                color='Category',
+                color_discrete_sequence=['#ff7f0e', '#d62728', '#9467bd']
+            )
+            fig_issues.update_layout(
+                showlegend=False,
+                plot_bgcolor='white',
+                yaxis_title="Number of Issues",
+                xaxis_title=""
+            )
+            st.plotly_chart(fig_issues, use_container_width=True)
 
 def display_file_explorer():
-    """Display the file explorer interface."""
+    """Display the file explorer interface with enhanced features."""
+    # Initialize session state variables if they don't exist
+    if 'uploaded_files' not in st.session_state:
+        st.session_state.uploaded_files = {}
+    if 'current_file' not in st.session_state:
+        st.session_state.current_file = None
+    if 'current_metrics' not in st.session_state:
+        st.session_state.current_metrics = {}
+    if 'current_code' not in st.session_state:
+        st.session_state.current_code = ""
+    if 'analyzer' not in st.session_state:
+        st.session_state.analyzer = CodeAnalyzer(config)
+    if 'file_filter' not in st.session_state:
+        st.session_state.file_filter = ""
+    if 'expanded_dirs' not in st.session_state:
+        st.session_state.expanded_dirs = set()
+    if 'view_mode' not in st.session_state:
+        st.session_state.view_mode = "tree"  # Options: tree, list, grid
+    if 'sort_by' not in st.session_state:
+        st.session_state.sort_by = "name"  # Options: name, size, modified, type
+    if 'sort_order' not in st.session_state:
+        st.session_state.sort_order = "asc"  # Options: asc, desc
+    if 'file_type_filter' not in st.session_state:
+        st.session_state.file_type_filter = "all"  # Options: all, python, java, javascript, etc.
     if 'recent_files' not in st.session_state:
         st.session_state.recent_files = []
 
+    # Header with gradient background and search bar
+    st.markdown("""
+        <div style="
+            background: linear-gradient(120deg, #1E88E5 0%, #42A5F5 100%);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        ">
+            <h2 style="color: white; text-align: center; margin-bottom: 1rem; font-size: 1.8em;">
+                File Explorer
+            </h2>
+        </div>
+    """, unsafe_allow_html=True)
+
+    if not st.session_state.uploaded_files:
+        st.warning("Please upload or select files to analyze first.")
+        return
+
     # Create columns for file explorer with adjustable width
     explorer_col, content_col = st.columns([1.2, 2.8])
-
+    
     with explorer_col:
-        # File selection and filtering options
+        # Advanced search and filtering options
         with st.expander("🔍 Search & Filter", expanded=False):
+            # Search bar for files
             st.session_state.file_filter = st.text_input(
                 "Search files",
                 value=st.session_state.file_filter,
-                placeholder="Filter by filename..."
+                placeholder="Filter by filename...",
+                help="Type to filter files by name"
             )
             
-            # Add filtering options
+            # File type filter
+            file_types = ["all", "python", "java", "javascript", "html", "css", "json", "yaml", "markdown", "text"]
+            st.session_state.file_type_filter = st.selectbox(
+                "File Type",
+                file_types,
+                index=file_types.index(st.session_state.file_type_filter),
+                help="Filter by file type"
+            )
+            
+            # Sort options
             col1, col2 = st.columns(2)
-            
-            # Check if df exists in session state
-            if 'df' in st.session_state and st.session_state.df is not None:
-                with col1:
-                    category_filter = st.multiselect(
-                        "Filter by Category",
-                        options=st.session_state.df['Category'].unique(),
-                        key="category_filter_1"
-                    )
-                with col2:
-                    severity_filter = st.multiselect(
-                        "Filter by Severity",
-                        options=st.session_state.df['Severity'].unique(),
-                        key="severity_filter_1"
-                    )
-            else:
-                with col1:
-                    category_filter = st.multiselect(
-                        "Filter by Category",
-                        options=[],
-                        key="category_filter_1"
-                    )
-                with col2:
-                    severity_filter = st.multiselect(
-                        "Filter by Severity",
-                        options=[],
-                        key="severity_filter_1"
-                    )
-            
-            # Apply filters if selected
-            if category_filter or severity_filter:
-                filtered_df = df
-                if category_filter:
-                    filtered_df = filtered_df[filtered_df['Category'].isin(category_filter)]
-                if severity_filter:
-                    filtered_df = filtered_df[filtered_df['Severity'].isin(severity_filter)]
-                st.dataframe(
-                    filtered_df.style.applymap(color_severity, subset=['Severity']),
-                    use_container_width=True,
-                    height=400
+            with col1:
+                st.session_state.sort_by = st.selectbox(
+                    "Sort By",
+                    ["name", "size", "modified", "type"],
+                    index=["name", "size", "modified", "type"].index(st.session_state.sort_by),
+                    help="Sort files by"
                 )
-            else:
-                st.success("✅ No issues detected in the current file")
-        
-        # Create tabs for different views
-        tab1, tab2, tab3 = st.tabs([
-            "🔍 Analysis & Selection",
-            "📊 Metrics",
-            "📈 Charts"
-        ])
-        
-        with tab2:
-            st.markdown("#### Code Analysis")
-            if st.session_state.current_metrics:
-                # Create columns for different metric categories
-                col1, col2 = st.columns(2)
-                
-                with col1:
-                    st.markdown("##### 📊 Quality Metrics")
-                    
-                    # Get metrics with proper type handling
-                    metrics = st.session_state.current_metrics
-                    
-                    # Initialize metrics with safe defaults
-                    if not isinstance(metrics, dict):
-                        metrics = {}
-                    
-                    # Handle maintainability index
-                    maintainability = metrics.get('maintainability', {})
-                    maintainability_score = (
-                        maintainability.get('score', 0) 
-                        if isinstance(maintainability, dict) 
-                        else float(maintainability if maintainability is not None else 0)
-                    )
-                    
-                    # Handle cyclomatic complexity
-                    complexity = metrics.get('complexity', {})
-                    complexity_score = (
-                        complexity.get('score', 0) 
-                        if isinstance(complexity, dict) 
-                        else float(complexity if complexity is not None else 0)
-                    )
-                    
-                    # Handle cognitive complexity
-                    cognitive_complexity = metrics.get('cognitive_complexity', 0)
-                    cognitive_score = float(cognitive_complexity if cognitive_complexity is not None else 0)
-                    
-                    # Handle code coverage
-                    code_coverage = metrics.get('code_coverage', 0)
-                    coverage_score = float(code_coverage if code_coverage is not None else 0)
-                    
-                    # Display metrics with proper formatting
-                    st.metric(
-                        "Maintainability Index",
-                        f"{maintainability_score:.1f}/100",
-                        help="Score from 0-100. Higher is better. Based on code structure, complexity, and documentation"
-                    )
-                    st.metric(
-                        "Cyclomatic Complexity",
-                        f"{complexity_score:.1f}",
-                        help="Number of linearly independent paths through the code"
-                    )
-                    st.metric(
-                        "Cognitive Complexity",
-                        f"{cognitive_score:.1f}",
-                        help="Measure of how difficult the code is to understand"
-                    )
-                    st.metric(
-                        "Code Coverage",
-                        f"{coverage_score:.1f}%",
-                        help="Percentage of code covered by tests"
-                    )
-                
-                with col2:
-                    st.markdown("##### 📏 Size Metrics")
-                    
-                    # Get raw metrics with proper type handling
-                    raw_metrics = metrics.get('raw_metrics', {})
-                    if not isinstance(raw_metrics, dict):
-                        raw_metrics = {}
-                    
-                    # Display size metrics with proper formatting
-                    st.metric(
-                        "Lines of Code",
-                        f"{raw_metrics.get('loc', 0):,}",
-                        help="Total number of lines of code"
-                    )
-                    st.metric(
-                        "Comment Density",
-                        f"{raw_metrics.get('comment_ratio', 0):.1f}%",
-                        help="Percentage of code that is comments"
-                    )
-                    st.metric(
-                        "Function Count",
-                        f"{raw_metrics.get('functions', 0) + raw_metrics.get('methods', 0):,}",
-                        help="Total number of functions and methods"
-                    )
-                    st.metric(
-                        "Class Count",
-                        f"{raw_metrics.get('classes', 0):,}",
-                        help="Total number of classes"
-                    )
-            else:
-                st.info("No metrics available for the selected file.")
-
-        with tab3:
-            st.markdown("#### Interactive Metric Visualizations")
-            if st.session_state.current_metrics:
-                metrics = st.session_state.current_metrics
-                
-                # Add chart type selector
-                chart_type = st.selectbox(
-                    "Select Visualization Type",
-                    ["Quality Overview", "Size Analysis", "Composition", "Issues", "Trends"],
-                    key="chart_selector"
+            with col2:
+                st.session_state.sort_order = st.selectbox(
+                    "Order",
+                    ["asc", "desc"],
+                    index=["asc", "desc"].index(st.session_state.sort_order),
+                    help="Sort order"
                 )
-                
-                # Add interactive features
-                enable_animations = st.checkbox("Enable Animations", value=True)
-                show_details = st.checkbox("Show Detailed Information", value=True)
-                
-                # Common chart configurations
-                chart_config = {
-                    "displayModeBar": True,
-                    "scrollZoom": True,
-                    "displaylogo": False,
-                    "responsive": True
-                }
-                
-                if chart_type == "Quality Overview":
-                    st.subheader("🎯 Quality Metrics Overview")
-                    
-                    # Prepare quality metrics data with error handling
-                    maintainability = metrics.get('maintainability', {})
-                    maintainability_score = (
-                        maintainability.get('score', 0) if isinstance(maintainability, dict)
-                        else float(maintainability or 0)
-                    )
-                    
-                    complexity = metrics.get('complexity', {})
-                    complexity_score = (
-                        complexity.get('score', 0) if isinstance(complexity, dict)
-                        else float(complexity or 0)
-                    )
-                    
-                    cognitive_score = float(metrics.get('cognitive_complexity', 0) or 0)
-                    coverage_score = float(metrics.get('code_coverage', 0) or 0)
-                    
-                    # Enhanced radar chart
-                    quality_metrics = {
-                        'Metric': ['Maintainability', 'Code Quality', 'Cognitive Complexity', 'Code Coverage'],
-                        'Score': [maintainability_score, 100 - complexity_score, 100 - cognitive_score, coverage_score],
-                        'Description': [
-                            f"Maintainability Index: {maintainability_score:.1f}/100",
-                            f"Code Quality Score: {100 - complexity_score:.1f}/100",
-                            f"Cognitive Load: {100 - cognitive_score:.1f}/100",
-                            f"Test Coverage: {coverage_score:.1f}%"
-                        ]
-                    }
-                    
-                    fig_radar = go.Figure()
-                    fig_radar.add_trace(go.Scatterpolar(
-                        r=quality_metrics['Score'],
-                        theta=quality_metrics['Metric'],
-                        fill='toself',
-                        name='Quality Metrics',
-                        hovertemplate="<b>%{theta}</b><br>" +
-                                    "Score: %{r:.1f}<br>" +
-                                    "<extra>%{customdata}</extra>",
-                        customdata=quality_metrics['Description']
-                    ))
-                    
-                    fig_radar.update_layout(
-                        polar=dict(
-                            radialaxis=dict(
-                                visible=True,
-                                range=[0, 100],
-                                tickfont=dict(size=10),
-                                gridcolor="rgba(0,0,0,0.1)"
-                            ),
-                            angularaxis=dict(
-                                tickfont=dict(size=12),
-                                gridcolor="rgba(0,0,0,0.1)"
-                            )
-                        ),
-                        showlegend=False,
-                        title=dict(
-                            text="Code Quality Metrics Radar",
-                            x=0.5,
-                            y=0.95
-                        ),
-                        paper_bgcolor='rgba(0,0,0,0)',
-                        plot_bgcolor='rgba(0,0,0,0)',
-                        margin=dict(l=80, r=80, t=100, b=80)
-                    )
-                    
-                    st.plotly_chart(fig_radar, use_container_width=True, config=chart_config)
-                    
-                    if show_details:
-                        col1, col2 = st.columns(2)
-                        with col1:
-                            st.metric("Overall Quality Score", 
-                                     f"{(maintainability_score + (100-complexity_score) + (100-cognitive_score) + coverage_score)/4:.1f}/100")
-                        with col2:
-                            st.metric("Quality Grade", 
-                                     "A" if maintainability_score > 80 else "B" if maintainability_score > 60 else "C")
-                
-                elif chart_type == "Size Analysis":
-                    st.subheader("📏 Code Size Analysis")
-                    raw_metrics = metrics.get('raw_metrics', {})
-                    
-                    # Enhanced size metrics visualization
-                    size_metrics = {
-                        'Metric': ['Lines of Code', 'Comment Lines', 'Blank Lines', 'Functions', 'Classes'],
-                        'Count': [
-                            int(raw_metrics.get('loc', 0)),
-                            int(raw_metrics.get('comments', 0)) + int(raw_metrics.get('multi', 0)),
-                            int(raw_metrics.get('blank', 0)),
-                            int(raw_metrics.get('functions', 0)) + int(raw_metrics.get('methods', 0)),
-                            int(raw_metrics.get('classes', 0))
-                        ]
-                    }
-                    
-                    fig_size = px.bar(
-                        size_metrics,
-                        x='Metric',
-                        y='Count',
-                        title='Code Size Distribution',
-                        color='Count',
-                        color_continuous_scale='Viridis',
-                        custom_data=['Metric', 'Count']
-                    )
-                    
-                    fig_size.update_traces(
-                        hovertemplate="<b>%{customdata[0]}</b><br>" +
-                                    "Count: %{customdata[1]}<br>" +
-                                    "<extra></extra>"
-                    )
-                    
-                    fig_size.update_layout(
-                        xaxis_title="",
-                        yaxis_title="Count",
-                        showlegend=False,
-                        paper_bgcolor='rgba(0,0,0,0)',
-                        plot_bgcolor='rgba(0,0,0,0.02)',
-                        margin=dict(l=60, r=40, t=80, b=60)
-                    )
-                    
-                    st.plotly_chart(fig_size, use_container_width=True, config=chart_config)
-                    
-                    if show_details:
-                        st.markdown("#### Size Metrics Details")
+            
+            # View mode selection
+            st.session_state.view_mode = st.radio(
+                "View Mode",
+                ["tree", "list", "grid"],
+                index=["tree", "list", "grid"].index(st.session_state.view_mode),
+                horizontal=True,
+                help="Select view mode"
+            )
+        
+        # Recent files section
+        if st.session_state.recent_files:
+            with st.expander("🕒 Recent Files", expanded=True):
+                for file_path in st.session_state.recent_files[:5]:
+                    if file_path in st.session_state.uploaded_files:
+                        file_name = os.path.basename(file_path)
+                        file_ext = os.path.splitext(file_name)[1].lower()
                         
-                        # Create columns for different metric categories
-                        col1, col2 = st.columns(2)
+                        # Get appropriate icon based on file extension
+                        icon = get_file_icon(file_ext)
                         
-                        with col1:
-                            st.markdown("##### 📏 Code Structure")
-                            metrics = st.session_state.current_metrics
-                            raw = metrics.get('raw_metrics', {})
-                            
-                            # Display detailed code structure metrics
-                            structure_metrics = {
-                                "Total Lines": raw.get('loc', 0),
-                                "Effective Lines": raw.get('loc', 0) - raw.get('comments', 0) - raw.get('blank_lines', 0),
-                                "Comment Lines": raw.get('comments', 0),
-                                "Blank Lines": raw.get('blank_lines', 0),
-                                "Classes": raw.get('classes', 0),
-                                "Methods": raw.get('methods', 0),
-                                "Functions": raw.get('functions', 0),
-                                "Nested Depth": raw.get('max_nested_depth', 0)
-                            }
-                            
-                            for metric, value in structure_metrics.items():
-                                st.metric(
-                                    metric,
-                                    f"{value:,}",
-                                    help=f"Number of {metric.lower()}"
-                                )
-                        
-                        with col2:
-                            st.markdown("##### 🎯 Complexity Distribution")
-                            
-                            # Calculate complexity distribution
-                            methods = metrics.get('method_metrics', [])
-                            if methods:
-                                complexities = [m.get('complexity', 0) for m in methods]
-                                
-                                complexity_data = {
-                                    'Simple (1-5)': len([c for c in complexities if c <= 5]),
-                                    'Moderate (6-10)': len([c for c in complexities if 5 < c <= 10]),
-                                    'Complex (11-20)': len([c for c in complexities if 10 < c <= 20]),
-                                    'Very Complex (>20)': len([c for c in complexities if c > 20])
-                                }
-                                
-                                # Create a bar chart
-                                st.bar_chart(complexity_data)
-                        
-                        # Add Refactoring Opportunities section
-                        st.markdown("#### 🔄 Refactoring Opportunities")
-                        
-                        opportunities = []
-                        
-                        # Check for large methods
-                        large_methods = [m for m in methods if m.get('loc', 0) > 30]
-                        if large_methods:
-                            opportunities.append({
-                                'Type': 'Method Size',
-                                'Priority': 'High' if len(large_methods) > 5 else 'Medium',
-                                'Issue': f'Found {len(large_methods)} methods with more than 30 lines',
-                                'Impact': 'Large methods are harder to understand and maintain',
-                                'Suggestion': 'Extract related logic into smaller, focused methods'
-                            })
-                        
-                        # Check for deep nesting
-                        if raw.get('max_nested_depth', 0) > 3:
-                            opportunities.append({
-                                'Type': 'Code Nesting',
-                                'Priority': 'Medium',
-                                'Issue': f'Maximum nesting depth of {raw["max_nested_depth"]} levels',
-                                'Impact': 'Deeply nested code is hard to follow and test',
-                                'Suggestion': 'Extract nested logic into separate methods or use early returns'
-                            })
-                        
-                        # Check for low cohesion
-                        if raw.get('classes', 0) > 0:
-                            avg_methods = raw.get('methods', 0) / raw.get('classes', 1)
-                            if avg_methods > 15:
-                                opportunities.append({
-                                    'Type': 'Class Cohesion',
-                                    'Priority': 'High',
-                                    'Issue': f'Classes have an average of {avg_methods:.1f} methods',
-                                    'Impact': 'Large classes may have multiple responsibilities',
-                                    'Suggestion': 'Split large classes into smaller, focused classes'
-                                })
-                        
-                        # Check for comment ratio
-                        if raw.get('loc', 0) > 0:
-                            comment_ratio = (raw.get('comments', 0) + raw.get('multi', 0)) / raw.get('loc', 1)
-                            if comment_ratio < 0.1:
-                                opportunities.append({
-                                    'Type': 'Documentation',
-                                    'Priority': 'Medium',
-                                    'Issue': f'Low comment ratio ({comment_ratio:.1%})',
-                                    'Impact': 'Code may be difficult for others to understand',
-                                    'Suggestion': 'Add meaningful comments to explain complex logic and decisions'
-                                })
-                        
-                        # Display refactoring opportunities
-                        if opportunities:
-                            df = pd.DataFrame(opportunities)
-                            
-                            # Color coding for priority
-                            def color_priority(val):
-                                colors = {
-                                    'High': 'background-color: #ff6b6b; color: white',
-                                    'Medium': 'background-color: #ffd93d',
-                                    'Low': 'background-color: #95cd41'
-                                }
-                                return colors.get(val, '')
-                            
-                            st.dataframe(
-                                df.style.map(color_priority, subset=['Priority']),
-                                use_container_width=True,
-                                height=400
-                            )
-                            
-                            # Add action buttons for each opportunity
-                            selected_opportunity = st.selectbox(
-                                "Select an opportunity to see detailed refactoring steps",
-                                df['Type'].tolist()
-                            )
-                            
-                            if selected_opportunity:
-                                opp = df[df['Type'] == selected_opportunity].iloc[0]
-                                
-                                st.markdown("##### Refactoring Steps")
-                                steps = get_refactoring_steps(selected_opportunity)
-                                for i, step in enumerate(steps, 1):
-                                    st.markdown(f"{i}. {step}")
-                                
-                                if st.button("Generate Refactoring Preview"):
-                                    preview = generate_refactoring_preview(
-                                        selected_opportunity,
-                                        st.session_state.current_metrics.get('content', '')
-                                    )
-                                    st.code(preview, language='python')
+                        if st.button(
+                            f"{icon} {file_name}",
+                            key=f"recent_{file_path}",
+                            help=f"Click to view {file_name}",
+                            use_container_width=True
+                        ):
+                            select_file(file_path)
+        
+        # Project files section
+        st.markdown("""
+            <div class="file-tree" style="margin-top: 1rem;">
+                <h3 style="color: #1E88E5; font-size: 1.2em; margin-bottom: 1rem; font-weight: 500;">
+                    Project Files
+                </h3>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        # Group files by directory
+        files_by_dir = {}
+        for file_path in st.session_state.uploaded_files.keys():
+            dir_path = os.path.dirname(file_path)
+            if dir_path not in files_by_dir:
+                files_by_dir[dir_path] = []
+            files_by_dir[dir_path].append(file_path)
+        
+        # Display files based on selected view mode
+        if st.session_state.view_mode == "tree":
+            display_tree_view(files_by_dir)
+        elif st.session_state.view_mode == "list":
+            display_list_view(files_by_dir)
+        else:  # grid view
+            display_grid_view(files_by_dir)
+    
+    with content_col:
+        if st.session_state.current_file:
+            file_name = os.path.basename(st.session_state.current_file)
+            file_ext = os.path.splitext(file_name)[1].lower()
+            
+            # Enhanced file header with metadata
+            st.markdown(f"""
+                <div style="
+                    background: white;
+                    padding: 1.5rem;
+                    border-radius: 10px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                    margin-bottom: 2rem;
+                ">
+                    <h3 style="color: #1E88E5; font-size: 1.4em; margin-bottom: 0.5rem;">
+                        {file_name}
+                    </h3>
+                    <div style="display: flex; gap: 2rem; color: #666; font-size: 0.9em;">
+                        <div>
+                            <strong>Type:</strong> {st.session_state.current_metrics.get('language', 'unknown').upper()}
+                        </div>
+                        <div>
+                            <strong>Size:</strong> {os.path.getsize(st.session_state.current_file) / 1024:.1f} KB
+                        </div>
+                        <div>
+                            <strong>Last Modified:</strong> {datetime.fromtimestamp(os.path.getmtime(st.session_state.current_file)).strftime('%Y-%m-%d %H:%M')}
+                        </div>
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            # Create tabs for different views with icons
+            code_tab, metrics_tab, issues_tab, refactoring_tab = st.tabs([
+                "📝 Source Code",
+                "📊 Metrics",
+                "⚠️ Issues",
+                "🔄 Refactoring"
+            ])
+            
+            with code_tab:
+                if st.session_state.current_code:
+                    # Code actions toolbar
+                    col1, col2, col3 = st.columns([1, 1, 1])
+                    with col1:
+                        if st.button("📋 Copy Code", use_container_width=True):
+                            st.toast("Code copied to clipboard!", icon="✅")
+                    with col2:
+                        if st.button("🔍 Find in Code", use_container_width=True):
+                            st.session_state.show_find = True
+                    with col3:
+                        if st.button("📝 Edit Code", use_container_width=True):
+                            st.session_state.edit_mode = True
+                    
+                    # Find in code functionality
+                    if st.session_state.get('show_find', False):
+                        find_term = st.text_input("Search in code", key="find_term")
+                        if find_term:
+                            # Highlight search term in code
+                            highlighted_code = highlight_search_term(st.session_state.current_code, find_term)
+                            st.markdown(f"""
+                                <div class="code-viewer">
+                                    <pre><code>{highlighted_code}</code></pre>
+                                </div>
+                            """, unsafe_allow_html=True)
                         else:
-                            st.success("✅ No significant refactoring opportunities detected")
-                
-                elif chart_type == "Composition":
-                    st.subheader("🔄 Code Composition")
-                    raw_metrics = metrics.get('raw_metrics', {})
-                    
-                    # Enhanced composition visualization
-                    composition_data = {
-                        'Component': ['Source Code', 'Comments', 'Blank Lines'],
-                        'Lines': [
-                            int(raw_metrics.get('sloc', 0)),
-                            int(raw_metrics.get('comments', 0)) + int(raw_metrics.get('multi', 0)),
-                            int(raw_metrics.get('blank', 0))
-                        ]
-                    }
-                    
-                    total_lines = sum(composition_data['Lines'])
-                    composition_data['Percentage'] = [
-                        f"{(lines/total_lines)*100:.1f}%" for lines in composition_data['Lines']
-                    ]
-                    
-                    fig_composition = px.pie(
-        composition_data,
-        values='Lines',
-                        names='Component',
-                        title='Code Composition Distribution',
-                        color_discrete_sequence=px.colors.qualitative.Set3,
-                        custom_data=['Component', 'Lines', 'Percentage']
-                    )
-                    
-                    fig_composition.update_traces(
-                        textposition='inside',
-                        textinfo='percent+label',
-                        hovertemplate="<b>%{customdata[0]}</b><br>" +
-                                    "Lines: %{customdata[1]}<br>" +
-                                    "Percentage: %{customdata[2]}<br>" +
-                                    "<extra></extra>"
-                    )
-                    
-                    fig_composition.update_layout(
-                        showlegend=True,
-                        legend=dict(
-                            orientation="h",
-                            yanchor="bottom",
-                            y=1.02,
-                            xanchor="right",
-                            x=1
-                        ),
-                        paper_bgcolor='rgba(0,0,0,0)',
-                        margin=dict(l=40, r=40, t=80, b=40)
-                    )
-                    
-                    st.plotly_chart(fig_composition, use_container_width=True, config=chart_config)
-                    
-                    if show_details:
-                        st.markdown("#### Composition Analysis")
-                        col1, col2 = st.columns(2)
-                        with col1:
-                            st.metric("Code Density", 
-                                     f"{(composition_data['Lines'][0]/total_lines)*100:.1f}%",
-                                     help="Percentage of actual code lines")
-                        with col2:
-                            st.metric("Documentation Ratio", 
-                                     f"{(composition_data['Lines'][1]/composition_data['Lines'][0])*100:.1f}%",
-                                     help="Ratio of comments to code lines")
-                
-                elif chart_type == "Issues":
-                    st.subheader("⚠️ Issues Overview")
-                    
-                    # Enhanced issues visualization
-                    issues_data = {
-                        'Category': ['Design Issues', 'Code Smells', 'Performance Issues', 'Security Issues'],
-                        'Count': [
-                            len(metrics.get('design_issues', [])),
-                            len(metrics.get('code_smells', [])),
-                            len(metrics.get('performance_issues', [])),
-                            len(metrics.get('security_issues', []))
-                        ]
-                    }
-                    
-                    total_issues = sum(issues_data['Count'])
-                    issues_data['Percentage'] = [
-                        f"{(count/max(total_issues, 1))*100:.1f}%" for count in issues_data['Count']
-                    ]
-                    
-                    fig_issues = px.bar(
-                        issues_data,
-                        x='Category',
-                        y='Count',
-                        title='Code Issues Distribution',
-                        color='Category',
-                        color_discrete_sequence=['#FFA07A', '#98FB98', '#87CEFA', '#DDA0DD'],
-                        custom_data=['Category', 'Count', 'Percentage']
-                    )
-                    
-                    fig_issues.update_traces(
-                        hovertemplate="<b>%{customdata[0]}</b><br>" +
-                                    "Count: %{customdata[1]}<br>" +
-                                    "Percentage: %{customdata[2]}<br>" +
-                                    "<extra></extra>"
-                    )
-                    
-                    fig_issues.update_layout(
-                        xaxis_title="",
-                        yaxis_title="Number of Issues",
-                        showlegend=False,
-                        paper_bgcolor='rgba(0,0,0,0)',
-                        plot_bgcolor='rgba(0,0,0,0.02)',
-                        margin=dict(l=60, r=40, t=80, b=60)
-                    )
-                    
-                    st.plotly_chart(fig_issues, use_container_width=True, config=chart_config)
-                    
-                    if show_details and total_issues > 0:
-                        st.markdown("#### Issue Details")
-                        col1, col2, col3 = st.columns(3)
-                        with col1:
-                            st.metric("Total Issues", total_issues)
-                        with col2:
-                            st.metric("Critical Issues", 
-                                     sum(1 for i in metrics.get('security_issues', []) 
-                                         if i.get('severity') == 'critical'))
-                        with col3:
-                            st.metric("Issue Density", 
-                                     f"{total_issues/max(int(raw_metrics.get('loc', 1)), 1):.3f}",
-                                     help="Issues per line of code")
-                
-                elif chart_type == "Trends":
-                    st.subheader("📈 Complexity Trends")
-                    if 'complexity_trends' in metrics:
-                        trends = metrics['complexity_trends']
-                        
-                        fig_trends = go.Figure()
-                        fig_trends.add_trace(go.Scatter(
-                            x=list(range(len(trends))),
-                            y=trends,
-                            mode='lines+markers',
-                            name='Complexity Trend',
-                            line=dict(color='#2E86C1', width=2),
-                            marker=dict(size=8),
-                            hovertemplate="Time Period: %{x}<br>" +
-                                        "Complexity: %{y:.2f}<br>" +
-                                        "<extra></extra>"
-                        ))
-                        
-                        fig_trends.update_layout(
-                            title="Code Complexity Trend",
-                            xaxis_title="Time",
-                            yaxis_title="Complexity Score",
-                            paper_bgcolor='rgba(0,0,0,0)',
-                            plot_bgcolor='rgba(0,0,0,0.02)',
-                            margin=dict(l=60, r=40, t=80, b=60)
-                        )
-                        
-                        st.plotly_chart(fig_trends, use_container_width=True, config=chart_config)
-                        
-                        if show_details:
-                            st.markdown("#### Trend Analysis")
-                            col1, col2 = st.columns(2)
-                            with col1:
-                                st.metric("Trend Direction", 
-                                         "⬆️ Increasing" if trends[-1] > trends[0] else "⬇️ Decreasing",
-                                         delta=f"{trends[-1] - trends[0]:.2f}")
-                            with col2:
-                                st.metric("Volatility", 
-                                         f"{np.std(trends):.2f}",
-                                         help="Standard deviation of complexity scores")
+                            # Display code with syntax highlighting
+                            st.code(
+                                st.session_state.current_code,
+                                language=st.session_state.current_metrics.get('language', 'python')
+                            )
                     else:
-                        st.info("No trend data available for this file.")
+                        # Display code with syntax highlighting
+                        st.code(
+                            st.session_state.current_code,
+                            language=st.session_state.current_metrics.get('language', 'python')
+                        )
                 else:
-                    st.info("No metrics available for visualization. Please select a file to analyze.")
-            else:
-                st.info("Select a file from the file explorer to view its analysis.")
-
+                    st.info("No code content available for this file.")
+            
+            with metrics_tab:
+                if st.session_state.current_metrics:
+                    # Display file statistics in a modern card layout
+                    st.markdown("""
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: #1E88E5; margin-bottom: 1rem;">📊 File Statistics</h3>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    
+                    raw_metrics = st.session_state.current_metrics.get('raw_metrics', {})
+                    
+                    # Create a modern metrics grid
+                    col1, col2, col3 = st.columns(3)
+                    
+                    def metric_card(label, value, help_text=""):
+                        return f"""
+                            <div style="
+                                background: white;
+                                padding: 1rem;
+                                border-radius: 10px;
+                                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                                margin-bottom: 1rem;
+                                text-align: center;
+                            ">
+                                <h4 style="color: #666; font-size: 0.9em; margin-bottom: 0.5rem;">
+                                    {label}
+                                </h4>
+                                <div style="color: #1E88E5; font-size: 1.8em; font-weight: bold;">
+                                    {value}
+                                </div>
+                                <div style="color: #999; font-size: 0.8em; margin-top: 0.5rem;">
+                                    {help_text}
+                                </div>
+                            </div>
+                        """
+                    
+                    with col1:
+                        st.markdown(metric_card(
+                            "Lines of Code",
+                            raw_metrics.get('loc', 0),
+                            "Total number of lines"
+                        ), unsafe_allow_html=True)
+                        st.markdown(metric_card(
+                            "Classes",
+                            raw_metrics.get('classes', 0),
+                            "Number of classes"
+                        ), unsafe_allow_html=True)
+                        st.markdown(metric_card(
+                            "Methods",
+                            raw_metrics.get('methods', 0),
+                            "Number of methods"
+                        ), unsafe_allow_html=True)
+                    
+                    with col2:
+                        st.markdown(metric_card(
+                            "Source Lines",
+                            raw_metrics.get('sloc', 0),
+                            "Actual lines of code"
+                        ), unsafe_allow_html=True)
+                        st.markdown(metric_card(
+                            "Functions",
+                            raw_metrics.get('functions', 0),
+                            "Number of functions"
+                        ), unsafe_allow_html=True)
+                        st.markdown(metric_card(
+                            "Imports",
+                            raw_metrics.get('imports', 0),
+                            "Number of imports"
+                        ), unsafe_allow_html=True)
+                    
+                    with col3:
+                        st.markdown(metric_card(
+                            "Comments",
+                            raw_metrics.get('comments', 0),
+                            "Number of comments"
+                        ), unsafe_allow_html=True)
+                        st.markdown(metric_card(
+                            "Packages",
+                            len(st.session_state.current_metrics.get('imported_packages', [])),
+                            "Imported packages"
+                        ), unsafe_allow_html=True)
+                        comment_ratio = raw_metrics.get('comments', 0) / raw_metrics.get('loc', 1) * 100
+                        st.markdown(metric_card(
+                            "Comment Ratio",
+                            f"{comment_ratio:.1f}%",
+                            "Comments to code ratio"
+                        ), unsafe_allow_html=True)
+                    
+                    # Display quality metrics with gauges
+                    st.markdown("""
+                        <div style="margin: 2rem 0;">
+                            <h3 style="color: #1E88E5; margin-bottom: 1rem;">🎯 Quality Metrics</h3>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        maintainability = st.session_state.current_metrics.get('maintainability', {}).get('score', 0)
+                        fig = go.Figure(go.Indicator(
+                            mode="gauge+number",
+                            value=maintainability,
+                            domain={'x': [0, 1], 'y': [0, 1]},
+                            title={'text': "Maintainability Index"},
+                            gauge={
+                                'axis': {'range': [0, 100]},
+                                'bar': {'color': "#1E88E5"},
+                                'steps': [
+                                    {'range': [0, 50], 'color': "#ef5350"},
+                                    {'range': [50, 75], 'color': "#ffb74d"},
+                                    {'range': [75, 100], 'color': "#81c784"}
+                                ]
+                            }
+                        ))
+                        fig.update_layout(height=250)
+                        st.plotly_chart(fig, use_container_width=True)
+                    
+                    with col2:
+                        complexity = st.session_state.current_metrics.get('complexity', {}).get('score', 0)
+                        fig = go.Figure(go.Indicator(
+                            mode="gauge+number",
+                            value=complexity,
+                            domain={'x': [0, 1], 'y': [0, 1]},
+                            title={'text': "Code Quality Score"},
+                            gauge={
+                                'axis': {'range': [0, 100]},
+                                'bar': {'color': "#1E88E5"},
+                                'steps': [
+                                    {'range': [0, 50], 'color': "#ef5350"},
+                                    {'range': [50, 75], 'color': "#ffb74d"},
+                                    {'range': [75, 100], 'color': "#81c784"}
+                                ]
+                            }
+                        ))
+                        fig.update_layout(height=250)
+                        st.plotly_chart(fig, use_container_width=True)
+                    
+                    # Display dependencies if available
+                    if st.session_state.current_metrics.get('dependencies'):
+                        st.markdown("""
+                            <div style="margin: 2rem 0;">
+                                <h3 style="color: #1E88E5; margin-bottom: 1rem;">🔗 Dependencies</h3>
+                            </div>
+                        """, unsafe_allow_html=True)
+                        
+                        for dep in st.session_state.current_metrics['dependencies']:
+                            st.code(dep, language="plaintext")
+                else:
+                    st.info("No metrics data available for this file.")
+            
+            with issues_tab:
+                if st.session_state.current_metrics:
+                    st.markdown("""
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: #1E88E5;">⚠️ Code Issues</h3>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    
+                    # Create expandable sections for different types of issues
+                    complexity_issues = st.session_state.current_metrics.get('complexity', {}).get('issues', [])
+                    maintainability_issues = st.session_state.current_metrics.get('maintainability', {}).get('issues', [])
+                    code_smells = st.session_state.current_metrics.get('code_smells', [])
+                    
+                    if complexity_issues:
+                        with st.expander("Complexity Issues", expanded=True):
+                            for issue in complexity_issues:
+                                st.warning(issue)
+                    
+                    if maintainability_issues:
+                        with st.expander("Maintainability Issues", expanded=True):
+                            for issue in maintainability_issues:
+                                st.warning(issue)
+                    
+                    if code_smells:
+                        with st.expander("Code Smells", expanded=True):
+                            for smell in code_smells:
+                                st.error(smell)
+                    
+                    if not any([complexity_issues, maintainability_issues, code_smells]):
+                        st.success("✨ No significant issues detected in this file.")
+                else:
+                    st.info("No issues data available for this file.")
+            
+            with refactoring_tab:
+                if st.session_state.current_metrics:
+                    st.markdown("""
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: #1E88E5;">🔄 Refactoring Opportunities</h3>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    
+                    opportunities = st.session_state.current_metrics.get('refactoring_opportunities', [])
+                    if opportunities:
+                        for opportunity in opportunities:
+                            st.info(opportunity)
+                        
+                        if st.button("🚀 Generate Detailed Refactoring Plan", use_container_width=True):
+                            st.markdown("#### Suggested Refactoring Steps")
+                            for i, opportunity in enumerate(opportunities, 1):
+                                with st.expander(f"Step {i}: {opportunity[:50]}...", expanded=True):
+                                    st.markdown(f"**Description:** {opportunity}")
+                                    col1, col2, col3 = st.columns(3)
+                                    with col1:
+                                        st.markdown("**Impact:** Medium")
+                                    with col2:
+                                        st.markdown("**Effort:** Medium")
+                                    with col3:
+                                        st.markdown("**Priority:** High")
+                    else:
+                        st.success("✨ No immediate refactoring opportunities identified.")
+                else:
+                    st.info("No refactoring data available for this file.")
+        else:
+            # Display welcome message when no file is selected
+            st.markdown("""
+                <div style="
+                    text-align: center;
+                    padding: 3rem;
+                    background: white;
+                    border-radius: 10px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                ">
+                    <h3 style="color: #1E88E5; margin-bottom: 1rem;">👈 Select a file to view its contents and analysis</h3>
+                    <p style="color: #666;">
+                        Choose a file from the file explorer on the left to view its code, metrics, and analysis.
+                    </p>
+                </div>
+            """, unsafe_allow_html=True)
 
 def get_file_icon(file_ext):
     """Get appropriate icon based on file extension."""
@@ -2500,55 +1994,30 @@ def get_file_icon(file_ext):
         icon = "📱"
     return icon
 
-
 def select_file(file_path):
     """Select a file and update session state."""
+    st.session_state.current_file = file_path
+    # Add to recent files
+    if file_path not in st.session_state.recent_files:
+        st.session_state.recent_files.insert(0, file_path)
+        # Keep only the 10 most recent files
+        st.session_state.recent_files = st.session_state.recent_files[:10]
+    else:
+        # Move to the top of recent files
+        st.session_state.recent_files.remove(file_path)
+        st.session_state.recent_files.insert(0, file_path)
+    
+    # Load file content and analyze metrics
     try:
-        if not os.path.exists(file_path):
-            st.error(f"File not found: {file_path}")
-            return
-
-        st.session_state.current_file = file_path
-        
-        # Add to recent files
-        if 'recent_files' not in st.session_state:
-            st.session_state.recent_files = []
-        if file_path not in st.session_state.recent_files:
-            st.session_state.recent_files.insert(0, file_path)
-            st.session_state.recent_files = st.session_state.recent_files[:10]
-        else:
-            st.session_state.recent_files.remove(file_path)
-            st.session_state.recent_files.insert(0, file_path)
-
-        # Load file content and analyze metrics
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, 'r') as f:
             content = f.read()
             st.session_state.current_code = content
-            
-            # Initialize metrics if not already present
-            if 'analyzer' not in st.session_state:
-                st.error("Code analyzer not initialized. Please refresh the page.")
-                return
-                
             # Analyze file and store metrics
             metrics = st.session_state.analyzer.analyze_file(file_path)
-            if not metrics:
-                st.warning("No metrics generated for the file. Please try again.")
-                return
-                
             st.session_state.current_metrics = metrics
-            if 'uploaded_files' not in st.session_state:
-                st.session_state.uploaded_files = {}
             st.session_state.uploaded_files[file_path] = metrics
-            
-            # Force refresh to show metrics
-            st.experimental_rerun()
-            
     except Exception as e:
         st.error(f"Error loading file: {str(e)}")
-        if 'current_metrics' in st.session_state:
-            del st.session_state.current_metrics
-
 
 def display_tree_view(files_by_dir):
     """Display files in tree view."""
@@ -2559,12 +2028,11 @@ def display_tree_view(files_by_dir):
         for file_path in files:
             file_name = os.path.basename(file_path)
             file_ext = os.path.splitext(file_name)[1].lower()
-
+            
             # Apply filters
-            if st.session_state.file_filter and st.session_state.file_filter.lower(
-            ) not in file_name.lower():
+            if st.session_state.file_filter and st.session_state.file_filter.lower() not in file_name.lower():
                 continue
-
+                
             if st.session_state.file_type_filter != "all":
                 if st.session_state.file_type_filter == "python" and file_ext != ".py":
                     continue
@@ -2584,19 +2052,19 @@ def display_tree_view(files_by_dir):
                     continue
                 elif st.session_state.file_type_filter == "text" and file_ext not in [".txt", ".text"]:
                     continue
-
+            
             filtered_files.append(file_path)
-
+        
         if filtered_files:
             filtered_files_by_dir[dir_path] = filtered_files
-
+    
     # Sort directories
     sorted_dirs = sorted(filtered_files_by_dir.keys())
-
+    
     # Display files grouped by directory with filtering
     for dir_path in sorted_dirs:
         files = filtered_files_by_dir[dir_path]
-
+        
         # Sort files based on selected criteria
         if st.session_state.sort_by == "name":
             files.sort(key=lambda x: os.path.basename(x).lower())
@@ -2606,25 +2074,25 @@ def display_tree_view(files_by_dir):
             files.sort(key=lambda x: os.path.getmtime(x))
         elif st.session_state.sort_by == "type":
             files.sort(key=lambda x: os.path.splitext(x)[1].lower())
-
+        
         # Apply sort order
         if st.session_state.sort_order == "desc":
             files.reverse()
-
+        
         dir_name = os.path.basename(dir_path) if dir_path else "Root"
         is_expanded = dir_path in st.session_state.expanded_dirs
-
+        
         with st.expander(f"📁 {dir_name}", expanded=is_expanded):
             if not is_expanded:
                 st.session_state.expanded_dirs.add(dir_path)
-
+            
             for file_path in files:
                 file_name = os.path.basename(file_path)
                 file_ext = os.path.splitext(file_name)[1].lower()
-
+                
                 # Get appropriate icon based on file extension
                 icon = get_file_icon(file_ext)
-
+                
                 # Create a button with hover effect
                 button_style = """
                     <style>
@@ -2640,7 +2108,7 @@ def display_tree_view(files_by_dir):
                     </style>
                 """
                 st.markdown(button_style, unsafe_allow_html=True)
-
+                
                 if st.button(
                     f"{icon} {file_name}",
                     key=f"file_{file_path}",
@@ -2649,7 +2117,6 @@ def display_tree_view(files_by_dir):
                 ):
                     select_file(file_path)
 
-
 def display_list_view(files_by_dir):
     """Display files in list view."""
     # Flatten the directory structure for list view
@@ -2657,18 +2124,17 @@ def display_list_view(files_by_dir):
     for dir_path, files in files_by_dir.items():
         for file_path in files:
             all_files.append((dir_path, file_path))
-
+    
     # Filter files based on search term and file type
     filtered_files = []
     for dir_path, file_path in all_files:
         file_name = os.path.basename(file_path)
         file_ext = os.path.splitext(file_name)[1].lower()
-
+        
         # Apply filters
-        if st.session_state.file_filter and st.session_state.file_filter.lower(
-        ) not in file_name.lower():
+        if st.session_state.file_filter and st.session_state.file_filter.lower() not in file_name.lower():
             continue
-
+            
         if st.session_state.file_type_filter != "all":
             if st.session_state.file_type_filter == "python" and file_ext != ".py":
                 continue
@@ -2688,9 +2154,9 @@ def display_list_view(files_by_dir):
                 continue
             elif st.session_state.file_type_filter == "text" and file_ext not in [".txt", ".text"]:
                 continue
-
+        
         filtered_files.append((dir_path, file_path))
-
+    
     # Sort files based on selected criteria
     if st.session_state.sort_by == "name":
         filtered_files.sort(key=lambda x: os.path.basename(x[1]).lower())
@@ -2700,19 +2166,19 @@ def display_list_view(files_by_dir):
         filtered_files.sort(key=lambda x: os.path.getmtime(x[1]))
     elif st.session_state.sort_by == "type":
         filtered_files.sort(key=lambda x: os.path.splitext(x[1])[1].lower())
-
+    
     # Apply sort order
     if st.session_state.sort_order == "desc":
         filtered_files.reverse()
-
+    
     # Display files in list view
     for dir_path, file_path in filtered_files:
         file_name = os.path.basename(file_path)
         file_ext = os.path.splitext(file_name)[1].lower()
-
+        
         # Get appropriate icon based on file extension
         icon = get_file_icon(file_ext)
-
+        
         # Create a button with hover effect
         button_style = """
             <style>
@@ -2728,7 +2194,7 @@ def display_list_view(files_by_dir):
             </style>
         """
         st.markdown(button_style, unsafe_allow_html=True)
-
+        
         # Display file path and name
         dir_name = os.path.basename(dir_path) if dir_path else "Root"
         if st.button(
@@ -2739,7 +2205,6 @@ def display_list_view(files_by_dir):
         ):
             select_file(file_path)
 
-
 def display_grid_view(files_by_dir):
     """Display files in grid view."""
     # Flatten the directory structure for grid view
@@ -2747,18 +2212,17 @@ def display_grid_view(files_by_dir):
     for dir_path, files in files_by_dir.items():
         for file_path in files:
             all_files.append((dir_path, file_path))
-
+    
     # Filter files based on search term and file type
     filtered_files = []
     for dir_path, file_path in all_files:
         file_name = os.path.basename(file_path)
         file_ext = os.path.splitext(file_name)[1].lower()
-
+        
         # Apply filters
-        if st.session_state.file_filter and st.session_state.file_filter.lower(
-        ) not in file_name.lower():
+        if st.session_state.file_filter and st.session_state.file_filter.lower() not in file_name.lower():
             continue
-
+            
         if st.session_state.file_type_filter != "all":
             if st.session_state.file_type_filter == "python" and file_ext != ".py":
                 continue
@@ -2778,9 +2242,9 @@ def display_grid_view(files_by_dir):
                 continue
             elif st.session_state.file_type_filter == "text" and file_ext not in [".txt", ".text"]:
                 continue
-
+        
         filtered_files.append((dir_path, file_path))
-
+    
     # Sort files based on selected criteria
     if st.session_state.sort_by == "name":
         filtered_files.sort(key=lambda x: os.path.basename(x[1]).lower())
@@ -2790,20 +2254,20 @@ def display_grid_view(files_by_dir):
         filtered_files.sort(key=lambda x: os.path.getmtime(x[1]))
     elif st.session_state.sort_by == "type":
         filtered_files.sort(key=lambda x: os.path.splitext(x[1])[1].lower())
-
+    
     # Apply sort order
     if st.session_state.sort_order == "desc":
         filtered_files.reverse()
-
+    
     # Display files in grid view
     cols = st.columns(3)
     for i, (dir_path, file_path) in enumerate(filtered_files):
         file_name = os.path.basename(file_path)
         file_ext = os.path.splitext(file_name)[1].lower()
-
+        
         # Get appropriate icon based on file extension
         icon = get_file_icon(file_ext)
-
+        
         # Create a card for each file
         with cols[i % 3]:
             st.markdown(f"""
@@ -2828,7 +2292,7 @@ def display_grid_view(files_by_dir):
                     </div>
                 </div>
             """, unsafe_allow_html=True)
-
+            
             if st.button(
                 "View File",
                 key=f"file_{file_path}",
@@ -2837,306 +2301,18 @@ def display_grid_view(files_by_dir):
             ):
                 select_file(file_path)
 
-
 def highlight_search_term(code, term):
     """Highlight search term in code."""
     if not term:
         return code
-
+    
     # Escape HTML special characters
     code = code.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-
+    
     # Highlight the search term
-    highlighted_code = code.replace(
-        term,
-        f'<span style="background-color: yellow; font-weight: bold;">{term}</span>')
-
+    highlighted_code = code.replace(term, f'<span style="background-color: yellow; font-weight: bold;">{term}</span>')
+    
     return highlighted_code
-
-
-def generate_refactoring_suggestions(file_path, metrics, model, goals, constraints, custom_instructions):
-    """Generate refactoring suggestions based on code analysis and user preferences."""
-    try:
-        # Get file content and language
-        with open(file_path, 'r') as f:
-            content = f.read()
-        
-        file_ext = os.path.splitext(file_path)[1].lower()
-        suggestions = []
-        
-        # Check complexity issues
-        complexity = metrics.get('complexity', {})
-        if isinstance(complexity, dict):
-            complexity_score = complexity.get('score', 0)
-        else:
-            complexity_score = complexity
-
-        if complexity_score < 70 or "Reduce complexity" in goals:
-            suggestions.append({
-                'title': 'Reduce Code Complexity',
-                'description': 'The code has high cyclomatic complexity. Consider breaking down complex functions into smaller, more manageable pieces.',
-                'before': content,
-                'after': content,  # This would be replaced with actual refactored code
-                'impact': {
-                    'complexity_reduction': 25,
-                    'maintainability_improvement': 20,
-                    'lines_changed': 10
-                }
-            })
-        
-        # Check maintainability issues
-        maintainability = metrics.get('maintainability', {})
-        if isinstance(maintainability, dict):
-            maintainability_score = maintainability.get('score', 0)
-        else:
-            maintainability_score = maintainability
-
-        if maintainability_score < 70 or "Enhance maintainability" in goals:
-            suggestions.append({
-                'title': 'Improve Code Maintainability',
-                'description': 'The code has low maintainability. Consider adding documentation and improving code structure.',
-                'before': content,
-                'after': content,  # This would be replaced with actual refactored code
-                'impact': {
-                    'complexity_reduction': 15,
-                    'maintainability_improvement': 30,
-                    'lines_changed': 15
-                }
-            })
-        
-        # Check code smells
-        code_smells = metrics.get('code_smells', [])
-        if code_smells and ("Fix code smells" in goals or "Improve readability" in goals):
-            for smell in code_smells:
-                suggestions.append({
-                    'title': f'Fix Code Smell: {smell}',
-                    'description': f'Detected code smell: {smell}. Consider refactoring to improve code quality.',
-                    'before': content,
-                    'after': content,  # This would be replaced with actual refactored code
-                    'impact': {
-                        'complexity_reduction': 10,
-                        'maintainability_improvement': 15,
-                        'lines_changed': 5
-                    }
-                })
-        
-        # Check documentation
-        if "Add documentation" in goals:
-            raw_metrics = metrics.get('raw_metrics', {})
-            comment_ratio = raw_metrics.get('comment_ratio', 0)
-            if comment_ratio < 0.2:
-                suggestions.append({
-                    'title': 'Improve Documentation',
-                    'description': 'The code has a low comment ratio. Consider adding more documentation to improve code understanding.',
-                    'before': content,
-                    'after': content,  # This would be replaced with actual refactored code
-                    'impact': {
-                        'complexity_reduction': 0,
-                        'maintainability_improvement': 25,
-                        'lines_changed': 20
-                    }
-                })
-
-        # Check performance optimization
-        if "Optimize performance" in goals:
-            suggestions.append({
-                'title': 'Optimize Code Performance',
-                'description': 'Consider optimizing code performance through algorithmic improvements and better resource usage.',
-                'before': content,
-                'after': content,  # This would be replaced with actual refactored code
-                'impact': {
-                    'complexity_reduction': 5,
-                    'maintainability_improvement': 10,
-                    'lines_changed': 8
-                }
-            })
-
-        return suggestions
-        
-    except Exception as e:
-        print(f"Error generating refactoring suggestions: {str(e)}")
-        return []
-
-
-def metric_card(title, value, description=None):
-    """Generate HTML for a metric card with consistent styling."""
-    card_html = f"""
-        <div style="
-            background-color: white;
-            padding: 1rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin: 1rem 0;
-        ">
-            <h4 style="color: #1E88E5; margin-bottom: 0.5rem;">{title}</h4>
-            <div style="font-size: 1.5em; font-weight: bold; margin-bottom: 0.5rem;">{value}</div>
-            {f'<div style="color: #666; font-size: 0.9em;">{description}</div>' if description else ''}
-        </div>
-    """
-    return card_html
-
-
-def group_files_by_directory():
-    """Group files by their directory structure."""
-    files_by_dir = {}
-    
-    if not st.session_state.uploaded_files:
-        return files_by_dir
-        
-    for file_path in st.session_state.uploaded_files.keys():
-        # Get directory path
-        dir_path = os.path.dirname(file_path)
-        
-        # Filter based on search term if present
-        if st.session_state.file_filter:
-            if st.session_state.file_filter.lower() not in os.path.basename(file_path).lower():
-                continue
-        
-        # Filter based on file type
-        if st.session_state.file_type_filter != "all":
-            file_ext = os.path.splitext(file_path)[1].lower()
-            if st.session_state.file_type_filter == "python" and file_ext != ".py":
-                continue
-            elif st.session_state.file_type_filter == "java" and file_ext != ".java":
-                continue
-            elif st.session_state.file_type_filter == "javascript" and file_ext not in [".js", ".jsx"]:
-                continue
-            elif st.session_state.file_type_filter == "typescript" and file_ext not in [".ts", ".tsx"]:
-                continue
-            elif st.session_state.file_type_filter == "html" and file_ext != ".html":
-                continue
-            elif st.session_state.file_type_filter == "css" and file_ext != ".css":
-                continue
-            elif st.session_state.file_type_filter == "json" and file_ext != ".json":
-                continue
-            elif st.session_state.file_type_filter == "yaml" and file_ext not in [".yml", ".yaml"]:
-                continue
-            elif st.session_state.file_type_filter == "markdown" and file_ext not in [".md", ".markdown"]:
-                continue
-        
-        # Initialize directory in dictionary if not present
-        if dir_path not in files_by_dir:
-            files_by_dir[dir_path] = []
-        
-        # Add file to directory list
-        files_by_dir[dir_path].append(file_path)
-    
-    # Sort files based on selected criteria
-    for dir_path in files_by_dir:
-        if st.session_state.sort_by == "name":
-            files_by_dir[dir_path].sort(
-                key=lambda x: os.path.basename(x).lower(),
-                reverse=(st.session_state.sort_order == "desc")
-            )
-        elif st.session_state.sort_by == "size":
-            files_by_dir[dir_path].sort(
-                key=lambda x: os.path.getsize(x),
-                reverse=(st.session_state.sort_order == "desc")
-            )
-        elif st.session_state.sort_by == "modified":
-            files_by_dir[dir_path].sort(
-                key=lambda x: os.path.getmtime(x),
-                reverse=(st.session_state.sort_order == "desc")
-            )
-        elif st.session_state.sort_by == "type":
-            files_by_dir[dir_path].sort(
-                key=lambda x: os.path.splitext(x)[1].lower(),
-                reverse=(st.session_state.sort_order == "desc")
-            )
-    
-    return files_by_dir
-
-
-def analyze_code_quality(code_content):
-    """Analyze code content and return quality metrics"""
-    metrics = {
-        'raw_metrics': {
-            'loc': len(code_content.splitlines()),
-            'comments': len([line for line in code_content.splitlines() if line.strip().startswith('#')]),
-            'multi': len([line for line in code_content.splitlines() if '"""' in line or "'''" in line]),
-            'classes': len([line for line in code_content.splitlines() if line.strip().startswith('class ')]),
-            'methods': len([line for line in code_content.splitlines() if line.strip().startswith('def ')]),
-        }
-    }
-    
-    # Calculate complexity
-    complexity = 1
-    for line in code_content.splitlines():
-        if any(keyword in line for keyword in ['if', 'for', 'while', 'except', 'with', 'and', 'or']):
-            complexity += 1
-    metrics['complexity'] = complexity
-    
-    return metrics
-
-
-def get_refactoring_steps(opportunity_type):
-    """Return detailed steps for each refactoring opportunity"""
-    steps = {
-        'Method Size': [
-            "Identify logical segments within the large method",
-            "Extract each segment into a new method with a descriptive name",
-            "Replace the original code with calls to the new methods",
-            "Pass necessary parameters and return values",
-            "Update documentation to reflect the changes"
-        ],
-        'Code Nesting': [
-            "Identify the deepest nested conditions",
-            "Consider inverting conditions to reduce nesting",
-            "Extract nested blocks into separate methods",
-            "Use guard clauses for early returns",
-            "Consider using pattern matching or lookup tables"
-        ],
-        'Class Cohesion': [
-            "Group related methods and attributes",
-            "Identify distinct responsibilities in the class",
-            "Create new classes for each responsibility",
-            "Move related methods and attributes to new classes",
-            "Update references and maintain necessary relationships"
-        ],
-        'Documentation': [
-            "Add class-level documentation explaining purpose and usage",
-            "Document complex methods with clear explanations",
-            "Add inline comments for non-obvious code segments",
-            "Include examples in docstrings",
-            "Update existing comments to be more descriptive"
-        ]
-    }
-    return steps.get(opportunity_type, ["No specific steps available for this opportunity"])
-
-
-def generate_refactoring_preview(opportunity_type, code_content):
-    """Generate a preview of the refactored code"""
-    if opportunity_type == 'Method Size':
-        # Example preview for method size refactoring
-        return '''def original_large_method(data):
-    """Split into smaller, focused methods"""
-    # Extract data validation
-    validated_data = validate_input_data(data)
-    
-    # Extract data processing
-    processed_data = process_data(validated_data)
-    
-    # Extract result generation
-    return generate_result(processed_data)
-
-def validate_input_data(data):
-    """Validate input data"""
-    # Validation logic here
-    return validated_data
-
-def process_data(data):
-    """Process the validated data"""
-    # Processing logic here
-    return processed_data
-
-def generate_result(data):
-    """Generate the final result"""
-    # Result generation logic here
-    return result'''
-    
-    # Add more preview generators for other opportunity types
-    return "# Refactoring preview not available for this opportunity type"
-
 
 if __name__ == "__main__":
     main() 
