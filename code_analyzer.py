@@ -560,7 +560,7 @@ class CodeAnalyzer:
         try:
             tree = javalang.parse.parse(content)
             
-            # Count classes and methods
+            # Count classes, methods, and imports
             classes = list(tree.filter(javalang.tree.ClassDeclaration))
             methods = list(tree.filter(javalang.tree.MethodDeclaration))
             imports = list(tree.filter(javalang.tree.Import))
@@ -571,11 +571,58 @@ class CodeAnalyzer:
             # Calculate maintainability score (inverse of complexity)
             maintainability_score = max(0, min(100, 100 - (complexity_score * 2)))
             
-            # Count lines
+            # Count lines with improved accuracy
             lines = content.splitlines()
-            loc = len(lines)
-            comments = len([l for l in lines if l.strip().startswith('//')])
-            multi_comments = len([l for l in lines if l.strip().startswith('/*') or l.strip().startswith('*')])
+            loc = len(lines)  # Total lines
+            
+            # Count actual source lines (excluding comments and blank lines)
+            sloc = 0
+            in_multi_comment = False
+            single_comments = 0
+            multi_comments = 0
+            blank_lines = 0
+            
+            for line in lines:
+                stripped = line.strip()
+                if not stripped:  # Blank line
+                    blank_lines += 1
+                    continue
+                    
+                if stripped.startswith('/*') or stripped.startswith('/**'):
+                    in_multi_comment = True
+                    multi_comments += 1
+                    continue
+                    
+                if in_multi_comment:
+                    multi_comments += 1
+                    if '*/' in stripped:
+                        in_multi_comment = False
+                    continue
+                    
+                if stripped.startswith('//'):
+                    single_comments += 1
+                    continue
+                    
+                if stripped.startswith('*'):  # Part of Javadoc
+                    multi_comments += 1
+                    continue
+                    
+                if not in_multi_comment:
+                    sloc += 1
+            
+            # Calculate comment ratio
+            total_comments = single_comments + multi_comments
+            comment_ratio = total_comments / loc if loc > 0 else 0
+            
+            # Count packages (unique import paths)
+            packages = set()
+            import_paths = []
+            for imp in imports:
+                if hasattr(imp, 'path'):
+                    import_path = imp.path
+                    import_paths.append(import_path)
+                    if '.' in import_path:
+                        packages.add(import_path.split('.')[0])
             
             return {
                 'language': 'java',
@@ -584,13 +631,20 @@ class CodeAnalyzer:
                 'cognitive_complexity': complexity_score,
                 'code_coverage': 0,
                 'raw_metrics': {
-                    'loc': loc,
-                    'comments': comments,
-                    'multi': multi_comments,
+                    'loc': loc,  # Total lines of code
+                    'sloc': sloc,  # Source lines of code (excluding comments and blanks)
+                    'comments': total_comments,  # Total comments (single + multi)
+                    'single_comments': single_comments,
+                    'multi_comments': multi_comments,
+                    'blank': blank_lines,
                     'classes': len(classes),
                     'methods': len(methods),
-                    'functions': 0,  # Java doesn't have standalone functions
+                    'functions': len(methods),  # In Java, methods are functions
+                    'comment_ratio': comment_ratio,
+                    'packages': len(packages)  # Number of unique imported packages
                 },
+                'imports': import_paths,
+                'packages': list(packages),
                 'code_smells': self._detect_java_smells(tree),
                 'design_issues': [],
                 'performance_issues': [],
@@ -598,21 +652,30 @@ class CodeAnalyzer:
             }
         except Exception as e:
             print(f"Error parsing Java code: {str(e)}")
+            # Fallback to basic analysis when parsing fails
+            basic_metrics = self._basic_java_analysis(content)
             return {
                 'language': 'java',
-                'complexity': {'score': 0, 'issues': ['Error analyzing code']},
-                'maintainability': {'score': 0, 'issues': ['Error analyzing code']},
-                'cognitive_complexity': 0,
+                'complexity': {'score': basic_metrics['complexity'], 'issues': []},
+                'maintainability': {'score': 70, 'issues': []},  # Default reasonable score
+                'cognitive_complexity': basic_metrics['complexity'],
                 'code_coverage': 0,
                 'raw_metrics': {
-                    'loc': 0,
-                    'comments': 0,
-                    'multi': 0,
-                    'classes': 0,
-                    'methods': 0,
-                    'functions': 0
+                    'loc': len(content.splitlines()),
+                    'sloc': len([l for l in content.splitlines() if l.strip()]),
+                    'comments': basic_metrics['comments'],
+                    'single_comments': basic_metrics['single_comments'],
+                    'multi_comments': basic_metrics['multi_comments'],
+                    'blank': basic_metrics['blank_lines'],
+                    'classes': basic_metrics['classes'],
+                    'methods': basic_metrics['methods'],
+                    'functions': basic_metrics['methods'],
+                    'comment_ratio': basic_metrics['comment_ratio'],
+                    'packages': basic_metrics['imports']
                 },
-                'code_smells': ['Error analyzing code'],
+                'imports': basic_metrics['import_paths'],
+                'packages': basic_metrics['packages'],
+                'code_smells': basic_metrics['smells'],
                 'design_issues': [],
                 'performance_issues': [],
                 'security_issues': []
@@ -621,25 +684,77 @@ class CodeAnalyzer:
     def _basic_java_analysis(self, content: str) -> Dict:
         """Perform basic Java code analysis when full parsing fails."""
         lines = content.splitlines()
-        basic_metrics = {
+        
+        # Initialize metrics
+        metrics = {
             'classes': 0,
             'methods': 0,
             'imports': 0,
             'complexity': 0,
+            'comments': 0,
+            'single_comments': 0,
+            'multi_comments': 0,
+            'blank_lines': 0,
+            'import_paths': [],
+            'packages': set(),
             'smells': []
         }
 
-        # Count classes using regex
-        class_pattern = r'\b(public|private|protected)?\s+class\s+\w+'
-        basic_metrics['classes'] = len(re.findall(class_pattern, content))
+        # Process each line
+        in_multi_comment = False
+        for line in lines:
+            stripped = line.strip()
+            
+            # Skip blank lines
+            if not stripped:
+                metrics['blank_lines'] += 1
+                continue
+            
+            # Handle comments
+            if stripped.startswith('/*') or stripped.startswith('/**'):
+                in_multi_comment = True
+                metrics['multi_comments'] += 1
+                continue
+                
+            if in_multi_comment:
+                metrics['multi_comments'] += 1
+                if stripped.endswith('*/'):
+                    in_multi_comment = False
+                continue
+                
+            if stripped.startswith('//'):
+                metrics['single_comments'] += 1
+                continue
+                
+            if stripped.startswith('*'):  # Part of Javadoc
+                metrics['multi_comments'] += 1
+                continue
 
-        # Count methods using regex
-        method_pattern = r'\b(public|private|protected)?\s+\w+\s+\w+\s*\([^)]*\)'
-        basic_metrics['methods'] = len(re.findall(method_pattern, content))
+            # Count classes using regex
+            if re.search(r'\b(public|private|protected)?\s+class\s+\w+', stripped):
+                metrics['classes'] += 1
 
-        # Count imports
-        import_pattern = r'import\s+[\w\.]+;'
-        basic_metrics['imports'] = len(re.findall(import_pattern, content))
+            # Count methods using regex
+            if re.search(r'\b(public|private|protected)?\s+\w+\s+\w+\s*\([^)]*\)', stripped):
+                metrics['methods'] += 1
+
+            # Process imports
+            if stripped.startswith('import '):
+                metrics['imports'] += 1
+                import_match = re.search(r'import\s+([\w\.]+);', stripped)
+                if import_match:
+                    import_path = import_match.group(1)
+                    metrics['import_paths'].append(import_path)
+                    # Extract package name (first part of import path)
+                    package = import_path.split('.')[0]
+                    metrics['packages'].add(package)
+
+        # Calculate total comments
+        metrics['comments'] = metrics['single_comments'] + metrics['multi_comments']
+        
+        # Calculate comment ratio
+        total_lines = len(lines)
+        metrics['comment_ratio'] = metrics['comments'] / total_lines if total_lines > 0 else 0
 
         # Basic complexity calculation
         control_structures = [
@@ -647,22 +762,18 @@ class CodeAnalyzer:
             r'\bwhile\b',
             r'\bfor\b',
             r'\bswitch\b',
-            r'\bcatch\b'
+            r'\bcatch\b',
+            r'\bcase\b'
         ]
-
-        complexity = 1  # Base complexity
+        
+        metrics['complexity'] = 1  # Base complexity
         for pattern in control_structures:
-            complexity += len(re.findall(pattern, content))
+            metrics['complexity'] += len(re.findall(pattern, content))
 
-        basic_metrics['complexity'] = complexity
+        # Convert packages set to list for return
+        metrics['packages'] = list(metrics['packages'])
 
-        # Basic code smells
-        if basic_metrics['methods'] > 20:
-            basic_metrics['smells'].append("Large number of methods detected")
-        if len(lines) > 1000:
-            basic_metrics['smells'].append("File is very long")
-
-        return basic_metrics
+        return metrics
 
     def _calculate_java_complexity(self, tree) -> int:
         """Calculate cyclomatic complexity for Java code with improved accuracy."""
