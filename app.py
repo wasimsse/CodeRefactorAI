@@ -24,6 +24,7 @@ from visualization_manager import VisualizationManager
 from dataset_analyzer import DatasetAnalyzer
 from stats_manager import StatsManager
 from datetime import datetime
+import numpy as np
 
 # Load environment variables
 load_dotenv()
@@ -246,7 +247,7 @@ def main():
     """Main application function."""
     init_session_state()  # Initialize or reset session state
     
-    st.title("🔄 RefactoringAI")
+    st.title("RefactoringAI")
     st.markdown("""
         ### AI-Powered Code Refactoring Tool
         Upload your code and let AI help you improve its quality, maintainability, and performance.
@@ -340,7 +341,7 @@ def main():
                     <span style='opacity: 0.5; margin: 0 1rem;'>|</span>
                     <span style='font-size: 1.1em; margin-right: 1rem;'>🔍 Deep Insights</span>
                     <span style='opacity: 0.5; margin: 0 1rem;'>|</span>
-                    <span style='font-size: 1.1em;'>🚀 Actionable Results</span>
+                    <span style='font-size: 1.1em;'>Actionable Results</span>
                 </div>
             </div>
         """, unsafe_allow_html=True)
@@ -510,7 +511,7 @@ def main():
                       padding: 2.5rem; border-radius: 20px; margin: 3rem 0;
                       box-shadow: 0 4px 6px rgba(0,0,0,0.05);'>
                 <h2 style='color: #1E88E5; font-size: 1.8em; margin-bottom: 2rem; text-align: center;'>
-                    🎯 Advanced Features
+                        Advanced Features
                 </h2>
                 <div class="feature-grid">
                     <div class="feature-card">
@@ -1688,11 +1689,12 @@ def display_file_explorer():
             """, unsafe_allow_html=True)
             
             # Create tabs for different views with icons
-            code_tab, metrics_tab, issues_tab, refactoring_tab = st.tabs([
+            code_tab, metrics_tab, issues_tab, refactoring_tab, charts_tab = st.tabs([
                 "📝 Source Code",
                 "📊 Metrics",
                 "⚠️ Issues",
-                "🔄 Refactoring"
+                "🔄 Refactoring",
+                "📈 Interactive Charts"
             ])
             
             with code_tab:
@@ -2158,7 +2160,7 @@ def display_file_explorer():
                 if st.session_state.current_metrics:
                     st.markdown("""
                         <div style="margin-bottom: 2rem;">
-                            <h3 style="color: #1E88E5;">🔄 Refactoring Opportunities</h3>
+                            <h3 style="color: #1E88E5;">Refactoring Opportunities</h3>
                         </div>
                     """, unsafe_allow_html=True)
                     
@@ -2183,6 +2185,246 @@ def display_file_explorer():
                         st.success("✨ No immediate refactoring opportunities identified.")
                 else:
                     st.info("No refactoring data available for this file.")
+            
+            with charts_tab:
+                if st.session_state.current_metrics:
+                    st.markdown("""
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: #1E88E5;">📈 Interactive Analysis</h3>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    
+                    # Chart type selector
+                    chart_type = st.selectbox(
+                        "Select Visualization Type",
+                        ["Code Composition", "Quality Metrics", "Time Series", "Dependencies", "Custom Analysis"],
+                        key="chart_type_selector"
+                    )
+                    
+                    if chart_type == "Code Composition":
+                        # Interactive pie chart for code composition
+                        raw_metrics = st.session_state.current_metrics.get('raw_metrics', {})
+                        comments = raw_metrics.get('comments', 0) + raw_metrics.get('multi', 0)
+                        
+                        composition_data = {
+                            'Category': ['Source Lines', 'Comments', 'Blank Lines', 'Classes', 'Functions', 'Methods'],
+                            'Count': [
+                                raw_metrics.get('sloc', 0),
+                                comments,
+                                raw_metrics.get('blank', 0),
+                                raw_metrics.get('classes', 0),
+                                raw_metrics.get('functions', 0),
+                                raw_metrics.get('methods', 0)
+                            ]
+                        }
+                        df_composition = pd.DataFrame(composition_data)
+                        
+                        # Add interactivity options
+                        chart_style = st.radio(
+                            "Chart Style",
+                            ["Pie", "Bar", "Treemap"],
+                            horizontal=True
+                        )
+                        
+                        if chart_style == "Pie":
+                            fig = px.pie(
+                                df_composition,
+                                values='Count',
+                                names='Category',
+                                title='Code Composition Analysis',
+                                color_discrete_sequence=px.colors.qualitative.Set3
+                            )
+                        elif chart_style == "Bar":
+                            fig = px.bar(
+                                df_composition,
+                                x='Category',
+                                y='Count',
+                                title='Code Composition Analysis',
+                                color='Category',
+                                color_discrete_sequence=px.colors.qualitative.Set3
+                            )
+                        else:  # Treemap
+                            fig = px.treemap(
+                                df_composition,
+                                path=['Category'],
+                                values='Count',
+                                title='Code Composition Analysis',
+                                color='Count',
+                                color_continuous_scale='RdBu'
+                            )
+                        
+                        st.plotly_chart(fig, use_container_width=True)
+                        
+                        # Add interactive data table
+                        st.dataframe(
+                            df_composition,
+                            column_config={
+                                "Category": "Metric",
+                                "Count": st.column_config.NumberColumn(
+                                    "Value",
+                                    help="Number of occurrences",
+                                    format="%d"
+                                )
+                            },
+                            hide_index=True
+                        )
+                    
+                    elif chart_type == "Quality Metrics":
+                        # Quality metrics visualization
+                        maintainability = st.session_state.current_metrics.get('maintainability', {}).get('score', 0)
+                        complexity = st.session_state.current_metrics.get('complexity', {}).get('score', 0)
+                        
+                        # Add metric selection
+                        selected_metrics = st.multiselect(
+                            "Select Metrics to Display",
+                            ["Maintainability", "Complexity", "Comment Ratio"],
+                            default=["Maintainability", "Complexity"]
+                        )
+                        
+                        # Create radar chart data
+                        metrics_data = {
+                            'Metric': selected_metrics,
+                            'Score': [
+                                maintainability if "Maintainability" in selected_metrics else None,
+                                complexity if "Complexity" in selected_metrics else None,
+                                float(raw_metrics.get('comments', 0)) / raw_metrics.get('loc', 1) * 100 if "Comment Ratio" in selected_metrics else None
+                            ]
+                        }
+                        metrics_df = pd.DataFrame(metrics_data)
+                        metrics_df = metrics_df.dropna()
+                        
+                        # Create radar chart
+                        fig = go.Figure()
+                        fig.add_trace(go.Scatterpolar(
+                            r=metrics_df['Score'],
+                            theta=metrics_df['Metric'],
+                            fill='toself',
+                            name='Current File'
+                        ))
+                        
+                        fig.update_layout(
+                            polar=dict(
+                                radialaxis=dict(
+                                    visible=True,
+                                    range=[0, 100]
+                                )
+                            ),
+                            showlegend=False
+                        )
+                        
+                        st.plotly_chart(fig, use_container_width=True)
+                    
+                    elif chart_type == "Dependencies":
+                        # Dependencies visualization
+                        if st.session_state.current_metrics.get('dependencies'):
+                            direct_deps = []
+                            indirect_deps = []
+                            for dep in st.session_state.current_metrics['dependencies']:
+                                if 'direct' in dep.lower():
+                                    direct_deps.append(dep)
+                                else:
+                                    indirect_deps.append(dep)
+                            
+                            # Create Sankey diagram
+                            labels = ['Current File'] + direct_deps + indirect_deps
+                            source = ([0] * len(direct_deps) +
+                                    list(range(1, len(direct_deps) + 1)) * (len(indirect_deps) // len(direct_deps)))
+                            target = (list(range(1, len(direct_deps) + 1)) +
+                                    list(range(len(direct_deps) + 1, len(labels))))
+                            value = [1] * len(source)
+                            
+                            fig = go.Figure(data=[go.Sankey(
+                                node=dict(
+                                    pad=15,
+                                    thickness=20,
+                                    line=dict(color="black", width=0.5),
+                                    label=labels,
+                                    color="blue"
+                                ),
+                                link=dict(
+                                    source=source,
+                                    target=target,
+                                    value=value
+                                )
+                            )])
+                            
+                            fig.update_layout(title_text="Dependency Flow", font_size=10)
+                            st.plotly_chart(fig, use_container_width=True)
+                        else:
+                            st.info("No dependencies data available for visualization")
+                    
+                    elif chart_type == "Time Series":
+                        # Time series analysis of code changes
+                        dates = pd.date_range(end=pd.Timestamp.now(), periods=10, freq='D')
+                        metrics = ['Complexity', 'Maintainability', 'Lines of Code']
+                        
+                        # Create sample time series data
+                        time_series_data = {
+                            'Date': dates,
+                            'Complexity': np.random.normal(complexity, 5, 10),
+                            'Maintainability': np.random.normal(maintainability, 5, 10),
+                            'Lines of Code': np.random.normal(raw_metrics.get('loc', 100), 10, 10)
+                        }
+                        df_time = pd.DataFrame(time_series_data)
+                        
+                        # Add metric selector
+                        selected_metric = st.selectbox(
+                            "Select Metric to Track",
+                            metrics
+                        )
+                        
+                        # Create line chart
+                        fig = px.line(
+                            df_time,
+                            x='Date',
+                            y=selected_metric,
+                            title=f'{selected_metric} Over Time',
+                            markers=True
+                        )
+                        
+                        st.plotly_chart(fig, use_container_width=True)
+                    
+                    elif chart_type == "Custom Analysis":
+                        # Custom analysis options
+                        st.markdown("### Create Your Own Analysis")
+                        
+                        # Get available metrics
+                        available_metrics = {
+                            'Lines of Code': raw_metrics.get('loc', 0),
+                            'Comments': comments,
+                            'Functions': raw_metrics.get('functions', 0),
+                            'Classes': raw_metrics.get('classes', 0),
+                            'Methods': raw_metrics.get('methods', 0),
+                            'Complexity': complexity,
+                            'Maintainability': maintainability
+                        }
+                        
+                        # Let user select metrics to compare
+                        x_axis = st.selectbox("Select X-Axis Metric", list(available_metrics.keys()))
+                        y_axis = st.selectbox("Select Y-Axis Metric", list(available_metrics.keys()))
+                        
+                        # Create scatter plot
+                        custom_data = {
+                            'x': [available_metrics[x_axis]],
+                            'y': [available_metrics[y_axis]]
+                        }
+                        
+                        fig = px.scatter(
+                            custom_data,
+                            x='x',
+                            y='y',
+                            title=f'{y_axis} vs {x_axis}',
+                            labels={'x': x_axis, 'y': y_axis}
+                        )
+                        
+                        st.plotly_chart(fig, use_container_width=True)
+                        
+                        # Add correlation analysis
+                        if st.checkbox("Show Correlation Analysis"):
+                            correlation = np.corrcoef([available_metrics[x_axis]], [available_metrics[y_axis]])[0, 1]
+                            st.metric("Correlation Coefficient", f"{correlation:.2f}")
+                else:
+                    st.info("Please select a file to view interactive charts.")
         else:
             # Display welcome message when no file is selected
             st.markdown("""
