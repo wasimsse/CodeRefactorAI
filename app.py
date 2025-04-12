@@ -847,19 +847,20 @@ def handle_github_upload(repo_url):
 
 def display_refactoring_options():
     """Display refactoring options and interface."""
-    # Initialize session state variables if not present
-    if 'current_metrics' not in st.session_state:
-        st.session_state.current_metrics = None
-    if 'current_file' not in st.session_state:
-        st.session_state.current_file = None
-    if 'refactoring_history' not in st.session_state:
-        st.session_state.refactoring_history = []
-    if 'edited_code' not in st.session_state:
-        st.session_state.edited_code = None
-    if 'refactoring_suggestions' not in st.session_state:
-        st.session_state.refactoring_suggestions = None
-    if 'impact_analysis' not in st.session_state:
-        st.session_state.impact_analysis = None
+    # Initialize session state variables
+    if 'refactoring_state' not in st.session_state:
+        st.session_state.refactoring_state = {
+            'current_file': None,
+            'current_metrics': None,
+            'refactoring_history': [],
+            'edited_code': None,
+            'refactoring_suggestions': None,
+            'impact_analysis': None,
+            'before_after_diff': None,
+            'selected_model': 'gpt-4',
+            'api_configured': False,
+            'last_refactor_backup': None
+        }
 
     # Check if files are available for refactoring
     if not st.session_state.files:
@@ -880,151 +881,397 @@ def display_refactoring_options():
         </div>
     """, unsafe_allow_html=True)
 
-    # Main layout
-    col1, col2 = st.columns([1, 2])
+    # Main layout with tabs
+    tab1, tab2, tab3, tab4 = st.tabs(["📝 Code Editor", "⚙️ Refactoring Options", "📊 Analysis & Impact", "📜 History"])
 
-    with col1:
-        # File selection section
-        st.markdown("### Select File")
-        file_options = list(st.session_state.files.keys())
-        selected_file = st.selectbox(
-            "Choose a file to refactor",
-            file_options,
-            index=file_options.index(st.session_state.current_file) if st.session_state.current_file in file_options else 0
-        )
+    with tab1:
+        col1, col2 = st.columns([1, 2])
+        
+        with col1:
+            # File selection and information
+            st.markdown("### Select File")
+            file_options = list(st.session_state.files.keys())
+            selected_file = st.selectbox(
+                "Choose a file to refactor",
+                file_options,
+                index=file_options.index(st.session_state.current_file) if st.session_state.current_file in file_options else 0
+            )
 
-        # Update session state when file selection changes
-        if selected_file != st.session_state.current_file:
-            st.session_state.current_file = selected_file
-            st.session_state.current_metrics = st.session_state.files[selected_file]
-            st.session_state.edited_code = None
-            st.session_state.refactoring_suggestions = None
-            st.session_state.impact_analysis = None
+            if selected_file != st.session_state.refactoring_state['current_file']:
+                st.session_state.refactoring_state.update({
+                    'current_file': selected_file,
+                    'current_metrics': st.session_state.files[selected_file],
+                    'edited_code': None,
+                    'refactoring_suggestions': None,
+                    'impact_analysis': None,
+                    'before_after_diff': None
+                })
 
-        # Display file information
-        if st.session_state.current_file:
-            file_info = st.session_state.files[st.session_state.current_file]
-            st.markdown("#### File Information")
-            st.markdown(f"**Language:** {file_info.get('language', 'Unknown')}")
-            st.markdown(f"**Size:** {file_info.get('size', 0)} bytes")
-            st.markdown(f"**Lines:** {file_info.get('lines', 0)}")
+            # Display file information
+            if selected_file:
+                file_info = st.session_state.files[selected_file]
+                st.markdown("#### File Information")
+                st.markdown(f"**Language:** {file_info.get('language', 'Unknown')}")
+                st.markdown(f"**Size:** {file_info.get('size', 0):,} bytes")
+                st.markdown(f"**Lines:** {file_info.get('lines', 0):,}")
+                
+                # Add backup option
+                if st.button("📥 Create Backup", use_container_width=True):
+                    try:
+                        backup_path = f"{selected_file}.backup"
+                        shutil.copy2(selected_file, backup_path)
+                        st.session_state.refactoring_state['last_refactor_backup'] = backup_path
+                        st.success("Backup created successfully!")
+                    except Exception as e:
+                        st.error(f"Error creating backup: {str(e)}")
 
-    with col2:
-        # Create tabs for different aspects of refactoring
-        tab1, tab2, tab3 = st.tabs(["Code Editor", "Refactoring Options", "Analysis & Impact"])
-
-        with tab1:
-            # Display current code
-            if st.session_state.current_file:
-                code = st.session_state.files[st.session_state.current_file].get('code', '')
+        with col2:
+            # Code editor with syntax highlighting and diff view
+            if selected_file:
+                st.markdown("### Code Editor")
+                
+                # Add code selection options
+                selection_mode = st.radio(
+                    "Selection Mode",
+                    ["Entire File", "Function/Method", "Custom Selection"],
+                    horizontal=True
+                )
+                
+                code = st.session_state.files[selected_file].get('code', '')
+                
+                if selection_mode == "Function/Method":
+                    # Parse code to extract functions/methods
+                    try:
+                        import ast
+                        tree = ast.parse(code)
+                        functions = [node.name for node in ast.walk(tree) if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))]
+                        selected_function = st.selectbox("Select Function/Method", functions)
+                        
+                        # Extract selected function code
+                        for node in ast.walk(tree):
+                            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == selected_function:
+                                start_line = node.lineno
+                                end_line = node.end_lineno
+                                code = '\n'.join(code.split('\n')[start_line-1:end_line])
+                                break
+                    except Exception as e:
+                        st.error(f"Error parsing functions: {str(e)}")
+                
+                # Code editor with syntax highlighting
                 edited_code = st.text_area(
                     "Edit Code",
-                    value=st.session_state.edited_code if st.session_state.edited_code else code,
-                    height=400
+                    value=st.session_state.refactoring_state['edited_code'] if st.session_state.refactoring_state['edited_code'] else code,
+                    height=400,
+                    key="code_editor"
                 )
-                st.session_state.edited_code = edited_code
-
-                col1, col2 = st.columns(2)
+                
+                st.session_state.refactoring_state['edited_code'] = edited_code
+                
+                # Show diff if code was modified
+                if edited_code != code:
+                    st.markdown("### Code Changes")
+                    from difflib import unified_diff
+                    diff = list(unified_diff(
+                        code.splitlines(keepends=True),
+                        edited_code.splitlines(keepends=True),
+                        fromfile='Original',
+                        tofile='Modified'
+                    ))
+                    if diff:
+                        st.code(''.join(diff), language="diff")
+                
+                # Action buttons
+                col1, col2, col3 = st.columns(3)
                 with col1:
-                    if st.button("Save Changes"):
+                    if st.button("💾 Save Changes", use_container_width=True):
                         try:
-                            with open(st.session_state.current_file, 'w') as f:
+                            with open(selected_file, 'w') as f:
                                 f.write(edited_code)
                             st.success("Changes saved successfully!")
+                            
+                            # Update history
+                            st.session_state.refactoring_state['refactoring_history'].append({
+                                'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                'file': selected_file,
+                                'type': 'Manual Edit',
+                                'changes': len(diff) if 'diff' in locals() else 0
+                            })
                         except Exception as e:
                             st.error(f"Error saving changes: {str(e)}")
+                
                 with col2:
-                    if st.button("Reset"):
-                        st.session_state.edited_code = code
+                    if st.button("↩️ Undo Changes", use_container_width=True):
+                        st.session_state.refactoring_state['edited_code'] = code
                         st.rerun()
+                
+                with col3:
+                    if st.session_state.refactoring_state.get('last_refactor_backup'):
+                        if st.button("⚡ Restore Backup", use_container_width=True):
+                            try:
+                                backup_path = st.session_state.refactoring_state['last_refactor_backup']
+                                shutil.copy2(backup_path, selected_file)
+                                st.success("Backup restored successfully!")
+                                st.session_state.refactoring_state['edited_code'] = None
+                                st.rerun()
+                            except Exception as e:
+                                st.error(f"Error restoring backup: {str(e)}")
 
-        with tab2:
-            # Refactoring options
-            st.markdown("### Refactoring Configuration")
+    with tab2:
+        st.markdown("### Refactoring Configuration")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            # Model selection and configuration
+            st.markdown("#### AI Model Configuration")
             
-            # Model selection
-            model = st.selectbox(
-                "Select AI Model",
-                ["GPT-4", "GPT-3.5", "Claude"],
-                index=0
+            model_type = st.radio(
+                "Model Type",
+                ["Cloud Models", "Local Models"],
+                horizontal=True
             )
             
+            if model_type == "Cloud Models":
+                model = st.selectbox(
+                    "Select Model",
+                    ["gpt-4", "gpt-3.5-turbo", "claude-3-opus", "claude-3-sonnet", "gemini-pro"],
+                    index=0
+                )
+                
+                # API key configuration
+                with st.expander("🔑 API Configuration"):
+                    api_key = st.text_input(
+                        "API Key",
+                        type="password",
+                        help="Enter your API key for the selected model"
+                    )
+                    if api_key:
+                        st.session_state.refactoring_state['api_configured'] = True
+            else:
+                model = st.selectbox(
+                    "Select Model",
+                    ["codellama-7b", "deepseek-coder-6.7b", "phi-2"],
+                    index=0
+                )
+                st.session_state.refactoring_state['api_configured'] = True
+            
+            st.session_state.refactoring_state['selected_model'] = model
+            
             # Refactoring scope
+            st.markdown("#### Refactoring Scope")
             scope = st.multiselect(
-                "Refactoring Scope",
+                "Select Scope",
                 ["Function Level", "Class Level", "File Level", "Project Level"],
                 default=["Function Level"]
             )
-            
-            # Refactoring goals
+        
+        with col2:
+            # Refactoring goals and constraints
+            st.markdown("#### Refactoring Goals")
             goals = st.multiselect(
-                "Refactoring Goals",
-                ["Improve Readability", "Reduce Complexity", "Enhance Maintainability", "Optimize Performance"],
+                "Select Goals",
+                [
+                    "Improve Readability",
+                    "Reduce Complexity",
+                    "Enhance Maintainability",
+                    "Optimize Performance",
+                    "Fix Code Smells",
+                    "Apply Design Patterns",
+                    "Improve Error Handling"
+                ],
                 default=["Improve Readability", "Reduce Complexity"]
             )
             
-            # Constraints
+            st.markdown("#### Constraints")
             constraints = st.multiselect(
-                "Constraints",
-                ["Preserve Functionality", "Maintain Backward Compatibility", "Follow Style Guide", "Minimize Changes"],
+                "Select Constraints",
+                [
+                    "Preserve Functionality",
+                    "Maintain Backward Compatibility",
+                    "Follow Style Guide",
+                    "Minimize Changes",
+                    "Keep Public API",
+                    "Maintain Performance",
+                    "Preserve Comments"
+                ],
                 default=["Preserve Functionality"]
             )
-            
-            # Generate refactoring suggestions
-            if st.button("Generate Refactoring Suggestions"):
+        
+        # Custom instructions
+        st.markdown("#### Custom Instructions")
+        custom_instructions = st.text_area(
+            "Add specific instructions or requirements",
+            height=100,
+            help="Add any specific instructions for the refactoring process"
+        )
+        
+        # Generate suggestions button
+        if st.button("🚀 Generate Refactoring Suggestions", type="primary", use_container_width=True):
+            if not st.session_state.refactoring_state['api_configured']:
+                st.error("Please configure API key first!")
+            else:
                 with st.spinner("Analyzing code and generating suggestions..."):
-                    # Placeholder for actual refactoring logic
-                    st.session_state.refactoring_suggestions = {
-                        "suggestions": [
+                    try:
+                        # Create backup before refactoring
+                        backup_path = f"{selected_file}.backup"
+                        shutil.copy2(selected_file, backup_path)
+                        st.session_state.refactoring_state['last_refactor_backup'] = backup_path
+                        
+                        # Get code context
+                        code = st.session_state.refactoring_state['edited_code'] or st.session_state.files[selected_file].get('code', '')
+                        
+                        # Prepare prompt for the AI model
+                        prompt = f"""
+                        Analyze and suggest refactoring for the following code.
+                        
+                        Goals: {', '.join(goals)}
+                        Constraints: {', '.join(constraints)}
+                        Custom Instructions: {custom_instructions}
+                        
+                        Code:
+                        ```{st.session_state.files[selected_file].get('language', 'python')}
+                        {code}
+                        ```
+                        """
+                        
+                        # TODO: Implement actual AI model call here
+                        # For now, using placeholder suggestions
+                        suggestions = [
                             {
                                 "type": "Extract Method",
-                                "description": "Extract repeated code into a new method",
+                                "description": "Extract repeated code block into a new method for better reusability",
                                 "location": "Lines 45-52",
                                 "impact": "High",
-                                "effort": "Medium"
+                                "effort": "Medium",
+                                "code_changes": {
+                                    "before": "...",
+                                    "after": "..."
+                                }
                             }
                         ]
-                    }
-                    st.session_state.impact_analysis = {
-                        "complexity_reduction": 15,
-                        "maintainability_improvement": 20,
-                        "readability_improvement": 25
-                    }
+                        
+                        st.session_state.refactoring_state['refactoring_suggestions'] = suggestions
+                        
+                        # Calculate impact analysis
+                        st.session_state.refactoring_state['impact_analysis'] = {
+                            "complexity_reduction": 15,
+                            "maintainability_improvement": 20,
+                            "readability_improvement": 25
+                        }
+                        
+                        st.success("Generated refactoring suggestions!")
+                        st.experimental_rerun()
+                    except Exception as e:
+                        st.error(f"Error generating suggestions: {str(e)}")
 
-        with tab3:
-            # Display refactoring suggestions and impact analysis
-            if st.session_state.refactoring_suggestions:
-                st.markdown("### Refactoring Suggestions")
-                for suggestion in st.session_state.refactoring_suggestions["suggestions"]:
-                    with st.expander(f"{suggestion['type']} - {suggestion['location']}"):
+    with tab3:
+        if st.session_state.refactoring_state['refactoring_suggestions']:
+            st.markdown("### Refactoring Suggestions")
+            
+            # Display suggestions with preview
+            for i, suggestion in enumerate(st.session_state.refactoring_state['refactoring_suggestions']):
+                with st.expander(f"💡 {suggestion['type']} - {suggestion['location']}", expanded=True):
+                    col1, col2 = st.columns([2, 1])
+                    
+                    with col1:
                         st.markdown(f"**Description:** {suggestion['description']}")
                         st.markdown(f"**Impact:** {suggestion['impact']}")
                         st.markdown(f"**Effort:** {suggestion['effort']}")
                         
-                        if st.button("Apply This Suggestion", key=f"apply_{suggestion['type']}"):
-                            # Placeholder for applying suggestion
-                            st.success("Suggestion applied successfully!")
-                
-                if st.session_state.impact_analysis:
-                    st.markdown("### Impact Analysis")
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        st.metric("Complexity Reduction", f"{st.session_state.impact_analysis['complexity_reduction']}%")
+                        # Code diff preview
+                        if 'code_changes' in suggestion:
+                            st.markdown("#### Code Changes Preview")
+                            st.code(suggestion['code_changes']['before'], language="python")
+                            st.markdown("↓ Changes to:")
+                            st.code(suggestion['code_changes']['after'], language="python")
+                    
                     with col2:
-                        st.metric("Maintainability Improvement", f"{st.session_state.impact_analysis['maintainability_improvement']}%")
-                    with col3:
-                        st.metric("Readability Improvement", f"{st.session_state.impact_analysis['readability_improvement']}%")
-            else:
-                st.info("No refactoring suggestions available. Configure and generate suggestions in the Refactoring Options tab.")
+                        # Action buttons
+                        if st.button("✅ Apply", key=f"apply_{i}", use_container_width=True):
+                            try:
+                                # TODO: Implement actual code modification
+                                st.success(f"Applied suggestion: {suggestion['type']}")
+                                
+                                # Update history
+                                st.session_state.refactoring_state['refactoring_history'].append({
+                                    'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                    'file': selected_file,
+                                    'type': suggestion['type'],
+                                    'changes': suggestion['description']
+                                })
+                            except Exception as e:
+                                st.error(f"Error applying suggestion: {str(e)}")
+                        
+                        if st.button("❌ Skip", key=f"skip_{i}", use_container_width=True):
+                            st.info(f"Skipped suggestion: {suggestion['type']}")
+            
+            # Impact Analysis
+            if st.session_state.refactoring_state['impact_analysis']:
+                st.markdown("### Impact Analysis")
+                
+                # Metrics comparison
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric(
+                        "Complexity Reduction",
+                        f"{st.session_state.refactoring_state['impact_analysis']['complexity_reduction']}%",
+                        delta=-st.session_state.refactoring_state['impact_analysis']['complexity_reduction']
+                    )
+                with col2:
+                    st.metric(
+                        "Maintainability Improvement",
+                        f"{st.session_state.refactoring_state['impact_analysis']['maintainability_improvement']}%",
+                        delta=st.session_state.refactoring_state['impact_analysis']['maintainability_improvement']
+                    )
+                with col3:
+                    st.metric(
+                        "Readability Improvement",
+                        f"{st.session_state.refactoring_state['impact_analysis']['readability_improvement']}%",
+                        delta=st.session_state.refactoring_state['impact_analysis']['readability_improvement']
+                    )
+        else:
+            st.info("No refactoring suggestions available. Generate suggestions in the Refactoring Options tab.")
 
-    # Display refactoring history
-    if st.session_state.refactoring_history:
+    with tab4:
         st.markdown("### Refactoring History")
-        for entry in st.session_state.refactoring_history:
-            with st.expander(f"Refactoring on {entry['timestamp']}"):
-                st.markdown(f"**File:** {entry['file']}")
-                st.markdown(f"**Changes:** {entry['changes']}")
-                st.markdown(f"**Impact:** {entry['impact']}")
+        
+        if st.session_state.refactoring_state['refactoring_history']:
+            # Add filter options
+            col1, col2 = st.columns(2)
+            with col1:
+                filter_date = st.date_input(
+                    "Filter by Date",
+                    value=None,
+                    help="Show refactoring history for specific date"
+                )
+            with col2:
+                filter_type = st.multiselect(
+                    "Filter by Type",
+                    ["Manual Edit", "Extract Method", "Move Method", "Rename", "Other"],
+                    default=[]
+                )
+            
+            # Display filtered history
+            for entry in reversed(st.session_state.refactoring_state['refactoring_history']):
+                entry_date = datetime.strptime(entry['timestamp'], "%Y-%m-%d %H:%M:%S").date()
+                
+                if (filter_date and entry_date != filter_date) or \
+                   (filter_type and entry['type'] not in filter_type):
+                    continue
+                
+                with st.expander(f"🕒 {entry['timestamp']} - {entry['type']}", expanded=True):
+                    st.markdown(f"**File:** {entry['file']}")
+                    st.markdown(f"**Changes:** {entry['changes']}")
+                    
+                    # Add restore point option
+                    if st.button("⚡ Restore to this point", key=f"restore_{entry['timestamp']}", use_container_width=True):
+                        try:
+                            # TODO: Implement restore functionality
+                            st.success("Restored to selected point!")
+                        except Exception as e:
+                            st.error(f"Error restoring: {str(e)}")
+        else:
+            st.info("No refactoring history available yet.")
 
 def display_project_analysis():
     """Display project analysis results."""

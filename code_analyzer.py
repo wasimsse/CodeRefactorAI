@@ -1498,6 +1498,73 @@ class CodeAnalyzer:
             'bugs': 0
         }
 
+    def _get_basic_metrics(self, content, language=None):
+        """Get basic code metrics regardless of language."""
+        try:
+            lines = content.splitlines()
+            total_lines = len(lines)
+            blank_lines = len([line for line in lines if not line.strip()])
+            comment_lines = 0
+            code_lines = 0
+            
+            # Language specific comment detection
+            single_line_comment = '//'  # Default for C-style languages
+            multi_line_start = '/*'
+            multi_line_end = '*/'
+            
+            if language == 'python':
+                single_line_comment = '#'
+                multi_line_start = '"""'
+                multi_line_end = '"""'
+            elif language == 'ruby':
+                single_line_comment = '#'
+                multi_line_start = '=begin'
+                multi_line_end = '=end'
+            
+            in_multi_line_comment = False
+            
+            for line in lines:
+                stripped_line = line.strip()
+                
+                # Skip empty lines
+                if not stripped_line:
+                    continue
+                
+                # Handle multi-line comments
+                if multi_line_start in stripped_line:
+                    in_multi_line_comment = True
+                    comment_lines += 1
+                    continue
+                
+                if in_multi_line_comment:
+                    comment_lines += 1
+                    if multi_line_end in stripped_line:
+                        in_multi_line_comment = False
+                    continue
+                
+                # Handle single-line comments
+                if stripped_line.startswith(single_line_comment):
+                    comment_lines += 1
+                else:
+                    code_lines += 1
+            
+            return {
+                'total_lines': total_lines,
+                'code_lines': code_lines,
+                'comment_lines': comment_lines,
+                'blank_lines': blank_lines,
+                'comment_ratio': comment_lines / total_lines if total_lines > 0 else 0
+            }
+        except Exception as e:
+            print(f"Error in _get_basic_metrics: {str(e)}")
+            return {
+                'total_lines': 0,
+                'code_lines': 0,
+                'comment_lines': 0,
+                'blank_lines': 0,
+                'comment_ratio': 0
+            }
+
 
 def analyze_file(file_path: str, content: str = None) -> dict:
     """
