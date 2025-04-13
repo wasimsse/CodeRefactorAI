@@ -1,0 +1,92 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Project specific
+temp_analysis/
+models/
+*.bin
+*.gguf
+llama.cpp/
+codellama-*
+llama2-*
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# OS generated files
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Local development
+.env
+.env.local
+.env.*.local
+
+# Local TODO list
+TODO.md
+
+# Data directory
+data/
+
+# Project specific
+temp_repo/
+*.log
+uploads/
+analysis_results/
+
+# Streamlit
+.streamlit/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# OS specific
+.DS_Store
+Thumbs.db 

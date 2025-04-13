@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": "2025-03-31T17:16:51.673649",
+    "context": "ZIP upload error",
+    "exception_type": "AttributeError",
+    "message": "'int' object has no attribute 'get'"
+  },
+  {
+    "timestamp": "2025-03-31T17:17:08.920128",
+    "context": "ZIP upload error",
+    "exception_type": "AttributeError",
+    "message": "'int' object has no attribute 'get'"
+  },
+  {
+    "timestamp": "2025-03-31T17:17:08.922979",
+    "context": "File content display error: RegularDecoder.py",
+    "exception_type": "AttributeError",
+    "message": "'Config' object has no attribute '_get_language_from_extension'"
+  },
+  {
+    "timestamp": "2025-03-31T17:17:18.375125",
+    "context": "ZIP upload error",
+    "exception_type": "AttributeError",
+    "message": "'int' object has no attribute 'get'"
+  },
+  {
+    "timestamp": "2025-03-31T17:17:18.377952",
+    "context": "File content display error: exact.py",
+    "exception_type": "AttributeError",
+    "message": "'Config' object has no attribute '_get_language_from_extension'"
+  }
+]

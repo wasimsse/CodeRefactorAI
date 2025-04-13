@@ -1,0 +1,30 @@
+[
+  {
+    "timestamp": "2025-03-31T17:16:22.390000",
+    "event": "application_shutdown"
+  },
+  {
+    "timestamp": "2025-03-31T17:16:29.579089",
+    "event": "application_shutdown"
+  },
+  {
+    "timestamp": "2025-03-31T17:16:35.996721",
+    "event": "application_shutdown"
+  },
+  {
+    "timestamp": "2025-03-31T17:16:51.685990",
+    "event": "application_shutdown"
+  },
+  {
+    "timestamp": "2025-03-31T17:17:08.936461",
+    "event": "application_shutdown"
+  },
+  {
+    "timestamp": "2025-03-31T17:17:18.391409",
+    "event": "application_shutdown"
+  },
+  {
+    "timestamp": "2025-03-31T17:18:04.456092",
+    "event": "application_shutdown"
+  }
+]

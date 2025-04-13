@@ -1,0 +1,50 @@
+{
+    "codellama-7b": {
+        "name": "CodeLlama 7B",
+        "path": "models/codellama-7b.gguf",
+        "type": "llama",
+        "parameters": {
+            "context_length": 4096,
+            "temperature": 0.7,
+            "top_p": 0.95,
+            "repeat_penalty": 1.1,
+            "n_predict": 2048
+        },
+        "capabilities": ["code_refactoring", "code_analysis", "documentation"]
+    },
+    "codellama-13b": {
+        "name": "CodeLlama 13B",
+        "path": "models/codellama-13b.gguf",
+        "type": "llama",
+        "parameters": {
+            "context_length": 8192,
+            "temperature": 0.7,
+            "top_p": 0.95,
+            "repeat_penalty": 1.1,
+            "n_predict": 4096
+        },
+        "capabilities": ["code_refactoring", "code_analysis", "documentation"]
+    },
+    "llama2-7b": {
+        "name": "Llama 2 7B",
+        "path": "models/llama2-7b.gguf",
+        "type": "llama",
+        "parameters": {
+            "context_length": 4096,
+            "temperature": 0.8,
+            "top_p": 0.95,
+            "repeat_penalty": 1.1,
+            "n_predict": 2048
+        },
+        "capabilities": ["code_refactoring", "code_analysis"]
+    },
+    "mistral": {
+        "name": "Mistral",
+        "path": "/Users/svm648/llama.cpp/models/mistral-7b-v0.1.Q4_K_M.gguf",
+        "type": "mistral",
+        "parameters": {
+            "context_length": 8192,
+            "temperature": 0.7
+        }
+    }
+} 
