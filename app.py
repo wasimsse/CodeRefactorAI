@@ -623,23 +623,7 @@ def main():
             st.info("Select a file from the File Explorer to start refactoring.")
 
 def handle_file_upload(uploaded_file):
-    """
-    Handle single file upload and analysis.
-    
-    This function processes individual source code files in any supported language.
-    It performs the following steps:
-    1. Validates file extension against supported languages
-    2. Saves the file to a temporary directory
-    3. Analyzes the file using the CodeAnalyzer
-    4. Updates session state with analysis results
-    5. Updates statistics for the analyzed file
-    
-    Args:
-        uploaded_file: StreamlitUploadedFile object containing the source code
-        
-    Returns:
-        bool: True if analysis was successful, False otherwise
-    """
+    """Handle single file upload and analysis."""
     if uploaded_file is not None:
         try:
             # Validate file extension
@@ -658,32 +642,58 @@ def handle_file_upload(uploaded_file):
             
             file_path = temp_dir / uploaded_file.name
             content = uploaded_file.getvalue().decode('utf-8')
+            
+            # Write file to disk
             with open(file_path, "wb") as f:
                 f.write(uploaded_file.getbuffer())
             
-            # Use the analyze_file function directly
-            file_metrics = analyze_file(str(file_path), content)
+            # Update all session state variables
+            st.session_state.current_file = str(file_path)
+            st.session_state.current_code = content
             
-            # Update session state for both files and uploaded_files
+            # Update source code state
+            if 'source_code' not in st.session_state:
+                st.session_state.source_code = {}
+            st.session_state.source_code[str(file_path)] = content
+            
+            # Update uploaded_files state
             if 'uploaded_files' not in st.session_state:
                 st.session_state.uploaded_files = {}
+            st.session_state.uploaded_files[str(file_path)] = {
+                'content': content,
+                'code': content
+            }
+            
+            # Update files state for compatibility
             if 'files' not in st.session_state:
                 st.session_state.files = {}
-                
-            st.session_state.uploaded_files[str(file_path)] = file_metrics
-            st.session_state.files[str(file_path)] = file_metrics
-            st.session_state.current_file = str(file_path)
+            st.session_state.files[str(file_path)] = {
+                'content': content,
+                'code': content
+            }
             
-            # Update statistics
-            st.session_state.stats_manager.update_file_analysis(
-                uploaded_file.name,
-                file_metrics
-            )
+            # Add to recent files
+            if 'recent_files' not in st.session_state:
+                st.session_state.recent_files = []
+            if str(file_path) not in st.session_state.recent_files:
+                st.session_state.recent_files.insert(0, str(file_path))
+                st.session_state.recent_files = st.session_state.recent_files[:10]
+            
+            # Analyze file
+            try:
+                file_metrics = analyze_file(str(file_path), content)
+                st.session_state.current_metrics = file_metrics
+                st.session_state.uploaded_files[str(file_path)].update(file_metrics)
+                st.session_state.files[str(file_path)].update(file_metrics)
+            except Exception as e:
+                st.warning(f"Could not analyze file: {str(e)}")
             
             return True
+            
         except Exception as e:
             st.error(f"Error processing file: {str(e)}")
             return False
+    return False
 
 def handle_zip_upload(uploaded_zip):
     """
@@ -2703,28 +2713,61 @@ def get_file_icon(file_ext):
 
 def select_file(file_path):
     """Select a file and update session state."""
-    st.session_state.current_file = file_path
-    # Add to recent files
-    if file_path not in st.session_state.recent_files:
-        st.session_state.recent_files.insert(0, file_path)
-        # Keep only the 10 most recent files
-        st.session_state.recent_files = st.session_state.recent_files[:10]
-    else:
-        # Move to the top of recent files
-        st.session_state.recent_files.remove(file_path)
-        st.session_state.recent_files.insert(0, file_path)
-    
-    # Load file content and analyze metrics
     try:
-        with open(file_path, 'r') as f:
+        # Read file content
+        with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
-            st.session_state.current_code = content
-            # Analyze file and store metrics
-            metrics = st.session_state.analyzer.analyze_file(file_path)
-            st.session_state.current_metrics = metrics
-            st.session_state.uploaded_files[file_path] = metrics
+            
+        # Update all session state variables
+        st.session_state.current_file = file_path
+        st.session_state.current_code = content
+        
+        # Update source code state
+        if 'source_code' not in st.session_state:
+            st.session_state.source_code = {}
+        st.session_state.source_code[file_path] = content
+        
+        # Update uploaded_files state
+        if 'uploaded_files' not in st.session_state:
+            st.session_state.uploaded_files = {}
+        if file_path not in st.session_state.uploaded_files:
+            st.session_state.uploaded_files[file_path] = {}
+        st.session_state.uploaded_files[file_path]['content'] = content
+        st.session_state.uploaded_files[file_path]['code'] = content
+        
+        # Update files state for compatibility
+        if 'files' not in st.session_state:
+            st.session_state.files = {}
+        if file_path not in st.session_state.files:
+            st.session_state.files[file_path] = {}
+        st.session_state.files[file_path]['content'] = content
+        st.session_state.files[file_path]['code'] = content
+        
+        # Add to recent files
+        if 'recent_files' not in st.session_state:
+            st.session_state.recent_files = []
+        if file_path not in st.session_state.recent_files:
+            st.session_state.recent_files.insert(0, file_path)
+            st.session_state.recent_files = st.session_state.recent_files[:10]  # Keep only 10 most recent
+        else:
+            # Move to top if already exists
+            st.session_state.recent_files.remove(file_path)
+            st.session_state.recent_files.insert(0, file_path)
+            
+        # Analyze file if analyzer exists
+        if 'analyzer' in st.session_state:
+            try:
+                metrics = st.session_state.analyzer.analyze_file(file_path)
+                st.session_state.current_metrics = metrics
+                st.session_state.uploaded_files[file_path].update(metrics)
+                st.session_state.files[file_path].update(metrics)
+            except Exception as e:
+                st.warning(f"Could not analyze file: {str(e)}")
+                
     except Exception as e:
         st.error(f"Error loading file: {str(e)}")
+        return False
+    return True
 
 def display_tree_view(files_by_dir):
     """Display files in tree view."""

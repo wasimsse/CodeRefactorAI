@@ -8,6 +8,7 @@ from llm_refactoring import LLMRefactoringManager, LLMType
 from refactoring_phases import RefactoringPhases
 from llama_integration import llama_cpp_manager
 from local_models import local_model_manager
+import os
 
 class RefactoringTab:
     def __init__(self):
@@ -23,154 +24,239 @@ class RefactoringTab:
             st.session_state.selected_llm = 'local'  # Default to local
         if 'selected_local_model' not in st.session_state:
             st.session_state.selected_local_model = 'codellama-7b'
-        if 'current_code' not in st.session_state:
-            st.session_state.current_code = None
         if 'current_file' not in st.session_state:
             st.session_state.current_file = None
+        if 'current_code' not in st.session_state:
+            st.session_state.current_code = None
+        if 'uploaded_files' not in st.session_state:
+            st.session_state.uploaded_files = {}
+        if 'files' not in st.session_state:
+            st.session_state.files = {}
+        if 'source_code' not in st.session_state:
+            st.session_state.source_code = {}
 
-    def load_file_content(self, file_path: str) -> str:
+    def load_file_content(self, file_path: str) -> Optional[str]:
         """Load content from a file."""
         try:
-            # First check uploaded_files (primary storage)
-            if 'uploaded_files' in st.session_state and file_path in st.session_state.uploaded_files:
+            # First check if the file content is in the source code view
+            if 'source_code' in st.session_state and file_path in st.session_state.source_code:
+                content = st.session_state.source_code[file_path]
+                if content and content.strip():
+                    return content
+
+            # Then try to read directly from the file
+            if os.path.exists(file_path):
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    if content.strip():
+                        # Update source code state to maintain consistency
+                        if 'source_code' not in st.session_state:
+                            st.session_state.source_code = {}
+                        st.session_state.source_code[file_path] = content
+                        return content
+                    else:
+                        st.warning(f"File {os.path.basename(file_path)} exists but is empty.")
+                        return None
+            
+            # If file doesn't exist, check session state
+            if file_path in st.session_state.uploaded_files:
                 file_data = st.session_state.uploaded_files[file_path]
                 if isinstance(file_data, dict):
-                    if 'content' in file_data:
-                        return file_data['content']
-                    elif 'code' in file_data:
-                        return file_data['code']
-                elif isinstance(file_data, str):
+                    content = file_data.get('content') or file_data.get('code')
+                    if content and content.strip():
+                        # Update source code state to maintain consistency
+                        if 'source_code' not in st.session_state:
+                            st.session_state.source_code = {}
+                        st.session_state.source_code[file_path] = content
+                        return content
+                elif isinstance(file_data, str) and file_data.strip():
+                    # Update source code state to maintain consistency
+                    if 'source_code' not in st.session_state:
+                        st.session_state.source_code = {}
+                    st.session_state.source_code[file_path] = file_data
                     return file_data
-
-            # Then check files (secondary storage)
-            if 'files' in st.session_state and file_path in st.session_state.files:
-                file_data = st.session_state.files[file_path]
-                if isinstance(file_data, dict):
-                    if 'content' in file_data:
-                        return file_data['content']
-                    elif 'code' in file_data:
-                        return file_data['code']
-                elif isinstance(file_data, str):
-                    return file_data
-
-            # If not in session state, read from file
-            with open(file_path, 'r') as f:
-                content = f.read()
-                # Store in both session states
-                if 'uploaded_files' not in st.session_state:
-                    st.session_state.uploaded_files = {}
-                if 'files' not in st.session_state:
-                    st.session_state.files = {}
-                file_data = {'content': content}
-                st.session_state.uploaded_files[file_path] = file_data
-                st.session_state.files[file_path] = file_data
-                return content
+            
+            st.warning(f"No content found for {os.path.basename(file_path)}.")
+            return None
         except Exception as e:
-            st.error(f"Error loading file: {str(e)}")
+            st.error(f"Error loading file {os.path.basename(file_path)}: {str(e)}")
             return None
 
     def render(self):
         """Render the refactoring tab with file selection and code display."""
-        st.markdown("## Code Refactoring")
+        st.markdown("""
+            <div style="
+                background: linear-gradient(120deg, #1E88E5 0%, #42A5F5 100%);
+                padding: 1.5rem;
+                border-radius: 15px;
+                margin-bottom: 2rem;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            ">
+                <h2 style="color: white; margin: 0;">Code Refactoring</h2>
+            </div>
+        """, unsafe_allow_html=True)
         
-        # Debug information
-        st.write("Debug Info:")
-        if 'uploaded_files' in st.session_state:
-            st.write("Files in uploaded_files:", list(st.session_state.uploaded_files.keys()))
-        else:
-            st.write("No files in uploaded_files")
-            
-        if 'files' in st.session_state:
-            st.write("Files in files:", list(st.session_state.files.keys()))
-        else:
-            st.write("No files in files")
+        # File Selection Section
+        st.markdown("""
+            <div style="
+                background: white;
+                padding: 1.5rem;
+                border-radius: 10px;
+                margin-bottom: 2rem;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            ">
+                <h3 style="color: #1E88E5; margin-bottom: 1rem;">Select File</h3>
+            </div>
+        """, unsafe_allow_html=True)
         
-        if 'current_file' in st.session_state:
-            st.write("Current file:", st.session_state.current_file)
-        else:
-            st.write("No current file selected")
+        # Get available files from both session states and source code
+        available_files = list(set(
+            list(st.session_state.uploaded_files.keys()) +
+            list(st.session_state.files.keys()) +
+            list(st.session_state.source_code.keys())
+        ))
         
-        # File selection - use uploaded_files as primary source
-        available_files = []
-        if 'uploaded_files' in st.session_state:
-            available_files.extend(st.session_state.uploaded_files.keys())
-        if 'files' in st.session_state:
-            available_files.extend(st.session_state.files.keys())
-        available_files = sorted(set(available_files))  # Remove duplicates
-        
-        if available_files:
+        if not available_files:
+            st.warning("No files available. Please upload files first.")
+            return
+
+        # Sync with File Explorer selection
+        if st.session_state.get('current_file') and st.session_state.current_file not in available_files:
+            available_files.append(st.session_state.current_file)
+
+        # File selection with improved UI
+        col1, col2 = st.columns([3, 1])
+        with col1:
             selected_file = st.selectbox(
                 "Choose a file to refactor",
                 available_files,
-                index=available_files.index(st.session_state.current_file) if st.session_state.current_file in available_files else 0
+                index=available_files.index(st.session_state.current_file) if st.session_state.current_file in available_files else 0,
+                format_func=lambda x: os.path.basename(x) if x else "Select a file"
             )
+        
+        with col2:
+            if st.button("🔄 Refresh Files", use_container_width=True):
+                st.rerun()
 
-            if selected_file:
-                # Debug selected file
-                st.write("Selected file:", selected_file)
+        if selected_file:
+            # Load file content
+            content = self.load_file_content(selected_file)
+            
+            if content is not None and content.strip():  # Check if content exists and is not empty
+                # Update session state
+                st.session_state.current_file = selected_file
+                st.session_state.current_code = content
+                # Update source code state to maintain consistency
+                st.session_state.source_code[selected_file] = content
+
+                # Display file information in a card
+                st.markdown("""
+                    <div style="
+                        background: white;
+                        padding: 1.5rem;
+                        border-radius: 10px;
+                        margin: 2rem 0;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                    ">
+                        <h3 style="color: #1E88E5; margin-bottom: 1rem;">File Information</h3>
+                    </div>
+                """, unsafe_allow_html=True)
                 
-                # Load and display file content
-                content = self.load_file_content(selected_file)
-                if content is not None:
-                    # Debug content
-                    st.write("Content loaded successfully, length:", len(content))
-                    
-                    st.session_state.current_file = selected_file
-                    st.session_state.current_code = content
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("File", os.path.basename(selected_file))
+                with col2:
+                    st.metric("Size", f"{len(content)} bytes")
+                with col3:
+                    st.metric("Lines", len(content.splitlines()))
 
-                    # Display file information
-                    st.markdown("### File Information")
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        st.text(f"File: {selected_file.split('/')[-1]}")
-                        st.text(f"Size: {len(content)} bytes")
-                    with col2:
-                        st.text(f"Lines: {len(content.splitlines())}")
+                # Code Editor Section
+                st.markdown("""
+                    <div style="
+                        background: white;
+                        padding: 1.5rem;
+                        border-radius: 10px;
+                        margin: 2rem 0;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                    ">
+                        <h3 style="color: #1E88E5; margin-bottom: 1rem;">Code Editor</h3>
+                    </div>
+                """, unsafe_allow_html=True)
 
-                    # Code editor
-                    st.markdown("### Edit Code")
-                    selection_mode = st.radio(
-                        "Selection Mode",
-                        ["Entire File", "Function/Method", "Custom Selection"],
-                        horizontal=True
-                    )
+                # Selection Mode with better styling
+                selection_mode = st.radio(
+                    "Selection Mode",
+                    ["Entire File", "Function/Method", "Custom Selection"],
+                    horizontal=True,
+                    help="Choose how you want to select code for refactoring"
+                )
 
-                    # Debug before displaying code
-                    st.write("About to display code with length:", len(content))
-                    
-                    # Use text_area instead of st.code for editing
-                    edited_code = st.text_area(
-                        "Edit Code",
-                        value=content,
-                        height=400,
-                        key="code_editor"
-                    )
-                    
-                    # Save and Undo buttons
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        if st.button("💾 Save Changes"):
+                # Code editor with syntax highlighting
+                st.markdown("""
+                    <style>
+                        .stTextArea textarea {
+                            font-family: 'Courier New', Courier, monospace;
+                            font-size: 14px;
+                            line-height: 1.4;
+                            background-color: #f8f9fa;
+                            border: 1px solid #e9ecef;
+                            border-radius: 5px;
+                        }
+                    </style>
+                """, unsafe_allow_html=True)
+                
+                edited_code = st.text_area(
+                    "Edit Code",
+                    value=content,
+                    height=500,
+                    key="code_editor"
+                )
+
+                # Action buttons with improved styling
+                col1, col2, col3 = st.columns([1, 1, 2])
+                with col1:
+                    if st.button("💾 Save Changes", use_container_width=True):
+                        if not edited_code or not edited_code.strip():
+                            st.error("Cannot save empty file content!")
+                        else:
                             try:
                                 with open(selected_file, 'w') as f:
                                     f.write(edited_code)
                                 st.success("Changes saved successfully!")
                                 st.session_state.current_code = edited_code
-                                # Update both session states
+                                # Update all session states for consistency
                                 file_data = {'content': edited_code}
                                 st.session_state.uploaded_files[selected_file] = file_data
                                 st.session_state.files[selected_file] = file_data
+                                st.session_state.source_code[selected_file] = edited_code
                             except Exception as e:
                                 st.error(f"Error saving changes: {str(e)}")
-                    
-                    with col2:
-                        if st.button("↩️ Undo Changes"):
-                            st.session_state.current_code = content
-                            st.rerun()
 
-                    # Refactoring options
-                    self._render_refactoring_options()
-                else:
-                    st.warning("Unable to load file content. Please try another file.")
+                with col2:
+                    if st.button("↩️ Undo Changes", use_container_width=True):
+                        original_content = st.session_state.source_code.get(selected_file)
+                        if original_content:
+                            st.session_state.current_code = original_content
+                            st.rerun()
+                        else:
+                            st.error("Original content not found in source code view.")
+
+                # Refactoring options with improved styling
+                st.markdown("""
+                    <div style="
+                        background: white;
+                        padding: 1.5rem;
+                        border-radius: 10px;
+                        margin: 2rem 0;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                    ">
+                        <h3 style="color: #1E88E5; margin-bottom: 1rem;">Refactoring Options</h3>
+                    </div>
+                """, unsafe_allow_html=True)
+                
+                self._render_refactoring_options()
+            else:
+                st.error(f"Unable to load content from {os.path.basename(selected_file)}. The file appears to be empty or inaccessible.")
         else:
             st.info("Please select a file to begin refactoring.")
 
